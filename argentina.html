@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Evolución Temporal Selección Argentina - Dashboard Interactivo</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  
+
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+    rel="stylesheet">
 
   <style type="text/css">
     /* Estilos basados en design.md */
@@ -55,14 +58,23 @@
 
     /* Animación sutil de pulso para indicador Live */
     @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
     }
+
     .pulse-indicator {
       animation: pulse-dot 2s infinite;
     }
   </style>
 </head>
+
 <body class="p-0 m-0 min-h-screen flex flex-col antialiased">
 
   <!-- CABECERA EDITORIAL (Masthead) -->
@@ -77,17 +89,15 @@
           Fecha 2026-07-13
         </span>
       </div>
-      
+
       <div class="border-t border-[#e2e2e2] pt-4 mt-1">
         <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
-          La Crónica Albiceleste
+          Evolución colectiva de la Selección Argentina a lo largo del torneo
         </h1>
-        <p class="font-serif text-lg md:text-xl text-[#414752] mt-1 italic">
-          Evolución colectiva de la Selección Argentina a lo largo del torneo.
-        </p>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-2 text-xs text-[#414752]">
+      <div
+        class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-2 text-xs text-[#414752]">
         <div class="flex items-center gap-4">
           <span><strong>REPORTE:</strong> Historial del Torneo</span>
           <span class="text-[#e0e0e0]">|</span>
@@ -102,13 +112,16 @@
 
       <!-- NAVEGACIÓN ENTRE PÁGINAS -->
       <nav class="flex border-t border-[#e0e0e0] mt-4 text-xs font-bold font-sans">
-        <a href="index.html" class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
+        <a href="index.html"
+          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
           Métricas de Jugadores (ARG)
         </a>
-        <a href="argentina.html" class="py-3.5 px-4 border-b-2 border-[#0059a4] text-[#0059a4] uppercase tracking-wider transition-colors duration-150">
+        <a href="argentina.html"
+          class="py-3.5 px-4 border-b-2 border-[#0059a4] text-[#0059a4] uppercase tracking-wider transition-colors duration-150">
           Evolución Argentina
         </a>
-        <a href="inglaterra.html" class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
+        <a href="inglaterra.html"
+          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
           Evolución Inglaterra
         </a>
       </nav>
@@ -117,7 +130,7 @@
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-6">
-    
+
     <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos) -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
@@ -130,7 +143,8 @@
       </div>
 
       <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
-        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles Esperados (xG)</span>
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles Esperados
+          (xG)</span>
         <div class="mt-2 flex items-baseline gap-1">
           <span class="text-3xl font-bold font-sans text-[#1a1c1c]">13.90</span>
           <span class="text-sm font-semibold text-[#414752] font-sans">xg</span>
@@ -160,9 +174,10 @@
     <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
       <div>
         <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Eficacia Goleadora: Goles vs Goles Esperados (xG)</h3>
-        <p class="text-xs text-[#414752] font-sans">Permite visualizar si el equipo definió por encima o por debajo de la calidad de sus oportunidades de gol.</p>
+        <p class="text-xs text-[#414752] font-sans">Permite visualizar si el equipo definió por encima o por debajo de
+          la calidad de sus oportunidades de gol.</p>
       </div>
-      
+
       <!-- Contenedor del gráfico de barras -->
       <div class="relative w-full aspect-[4/3] md:aspect-[21/9] min-h-[300px] flex items-center justify-center">
         <canvas id="golesXgChart"></canvas>
@@ -171,7 +186,7 @@
 
     <!-- SECTOR SECUNDARIO: GRID DE TRES METRICAS TEMPORALES -->
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
+
       <!-- Card 1: Posesión -->
       <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-3">
         <div>
@@ -197,7 +212,8 @@
       <!-- Card 3: Rupturas de línea -->
       <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-3">
         <div>
-          <span class="text-[10px] font-bold text-[#59595a] tracking-wider uppercase font-sans">Verticalidad y Pase</span>
+          <span class="text-[10px] font-bold text-[#59595a] tracking-wider uppercase font-sans">Verticalidad y
+            Pase</span>
           <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-0.5">Líneas de Ruptura Completadas</h4>
         </div>
         <div class="relative w-full h-[180px]">
@@ -341,7 +357,7 @@
     // RENDERIZADO DE GRÁFICOS CON CHART.JS
     function renderCharts() {
       const matchLabels = ARGENTINA_HISTORY_DATA.map(m => `vs ${m.rival}`);
-      
+
       // 1. Gráfico Goles vs xG (Barras Comparativo)
       const ctxGolesXg = document.getElementById('golesXgChart').getContext('2d');
       new Chart(ctxGolesXg, {
@@ -528,4 +544,5 @@
     }
   </script>
 </body>
+
 </html>
