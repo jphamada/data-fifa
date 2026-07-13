@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Evolución Temporal Selección Inglaterra - Dashboard Interactivo</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap" rel="stylesheet">
+
+  <style type="text/css">
+    /* Estilos basados en design.md */
+    :root {
+      --color-primary: #0059a4;
+      --color-primary-dark: #004785;
+      --color-secondary: #b6171e;
+      --color-bg: #f9f9f9;
+      --color-surface: #ffffff;
+      --color-border: #e0e0e0;
+      --color-text-main: #1a1c1c;
+      --color-text-muted: #414752;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+    }
+
+    .font-serif {
+      font-family: 'Source Serif 4', serif;
+    }
+
+    .font-sans {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Forzado estricto de bordes a 90 grados (Sharp 0) */
+    .sharp-ui {
+      border-radius: 0px !important;
+    }
+
+    /* Quitar sombras para estética plana editorial */
+    .no-shadow {
+      box-shadow: none !important;
+    }
+
+    /* Animación sutil de pulso para indicador Live */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .pulse-indicator {
+      animation: pulse-dot 2s infinite;
+    }
+  </style>
+</head>
+<body class="p-0 m-0 min-h-screen flex flex-col antialiased">
+
+  <!-- CABECERA EDITORIAL (Masthead) -->
+  <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-0">
+    <div class="max-w-[1280px] mx-auto flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold tracking-widest text-[#b6171e] flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 bg-[#b6171e] pulse-indicator sharp-ui"></span>
+          ANÁLISIS ESTADÍSTICO DEPORTIVO
+        </span>
+        <span class="text-xs font-semibold text-[#414752] tracking-wider uppercase font-sans">
+          Fecha 2026-07-13
+        </span>
+      </div>
+      
+      <div class="border-t border-[#e2e2e2] pt-4 mt-1">
+        <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
+          La Crónica Albiceleste
+        </h1>
+        <p class="font-serif text-lg md:text-xl text-[#414752] mt-1 italic">
+          Evolución colectiva de la Selección de Inglaterra a lo largo del torneo.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-2 text-xs text-[#414752]">
+        <div class="flex items-center gap-4">
+          <span><strong>REPORTE:</strong> Historial del Torneo</span>
+          <span class="text-[#e0e0e0]">|</span>
+          <span><strong>PARTIDOS ANALIZADOS:</strong> 6 Encuentros</span>
+        </div>
+        <div>
+          <span class="bg-[#eeeeee] text-[#1a1c1c] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
+            INGLATERRA
+          </span>
+        </div>
+      </div>
+
+      <!-- NAVEGACIÓN ENTRE PÁGINAS -->
+      <nav class="flex border-t border-[#e0e0e0] mt-4 text-xs font-bold font-sans">
+        <a href="index.html" class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
+          Métricas de Jugadores (ARG)
+        </a>
+        <a href="argentina.html" class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
+          Evolución Argentina
+        </a>
+        <a href="inglaterra.html" class="py-3.5 px-4 border-b-2 border-[#0059a4] text-[#0059a4] uppercase tracking-wider transition-colors duration-150">
+          Evolución Inglaterra
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-6">
+    
+    <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos) -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles Totales</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span class="text-3xl font-bold font-sans text-[#0059a4]">13</span>
+          <span class="text-sm font-semibold text-[#414752] font-sans">goles</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">Promedio de 2.17 por partido</p>
+      </div>
+
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles Esperados (xG)</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span class="text-3xl font-bold font-sans text-[#1a1c1c]">12.23</span>
+          <span class="text-sm font-semibold text-[#414752] font-sans">xg</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">Diferencia de efectividad: +0.77</p>
+      </div>
+
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Posesión Promedio</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span class="text-3xl font-bold font-sans text-[#0059a4]">51.9%</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">Máxima: 72.4% (vs Ghana)</p>
+      </div>
+
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Remates Producidos</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span class="text-3xl font-bold font-sans text-[#1a1c1c]">94</span>
+          <span class="text-sm font-semibold text-[#414752] font-sans">totales</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">Promedio de 15.7 por partido</p>
+      </div>
+    </section>
+
+    <!-- SECTOR PRINCIPAL: COMPARATIVA GOLES VS XG -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+      <div>
+        <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Eficacia Goleadora: Goles vs Goles Esperados (xG)</h3>
+        <p class="text-xs text-[#414752] font-sans">Permite visualizar si el equipo definió por encima o por debajo de la calidad de sus oportunidades de gol.</p>
+      </div>
+      
+      <!-- Contenedor del gráfico de barras -->
+      <div class="relative w-full aspect-[4/3] md:aspect-[21/9] min-h-[300px] flex items-center justify-center">
+        <canvas id="golesXgChart"></canvas>
+      </div>
+    </section>
+
+    <!-- SECTOR SECUNDARIO: GRID DE TRES METRICAS TEMPORALES -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Card 1: Posesión -->
+      <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-3">
+        <div>
+          <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Control de Balón</span>
+          <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-0.5">Evolución de Posesión (%)</h4>
+        </div>
+        <div class="relative w-full h-[180px]">
+          <canvas id="posesionChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Card 2: Remates -->
+      <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-3">
+        <div>
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Volumen de Ataque</span>
+          <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-0.5">Evolución de Remates</h4>
+        </div>
+        <div class="relative w-full h-[180px]">
+          <canvas id="rematesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Card 3: Rupturas de línea -->
+      <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-3">
+        <div>
+          <span class="text-[10px] font-bold text-[#59595a] tracking-wider uppercase font-sans">Verticalidad y Pase</span>
+          <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-0.5">Líneas de Ruptura Completadas</h4>
+        </div>
+        <div class="relative w-full h-[180px]">
+          <canvas id="rupturasChart"></canvas>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TABLA DE DETALLE DEL HISTORIAL DE PARTIDOS -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+      <div>
+        <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Historial Completo de Encuentros (Inglaterra)</h3>
+        <p class="text-xs text-[#414752] font-sans">Registro numérico colectivo acumulado durante la campaña.</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
+              <th class="py-3 font-sans">Fase</th>
+              <th class="py-3 font-sans">Rival</th>
+              <th class="py-3 font-sans">Fecha</th>
+              <th class="py-3 text-center font-sans">Goles</th>
+              <th class="py-3 text-center font-sans">xG</th>
+              <th class="py-3 text-center font-sans">Posesión (%)</th>
+              <th class="py-3 text-center font-sans">Remates</th>
+              <th class="py-3 text-center font-sans">Líneas Ruptura</th>
+            </tr>
+          </thead>
+          <tbody id="match-history-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+            <!-- Llenado dinámico -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="w-full bg-white border-t border-[#e0e0e0] py-6 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p>&copy; 2026 La Crónica Deportiva. Historial colectivo de la Selección de Inglaterra.</p>
+      <p class="text-[#0059a4] font-bold">Hecho con Estilo Chronicle &bull; Mobile-First &bull; Carga Instantánea</p>
+    </div>
+  </footer>
+
+  <!-- DATA & LOGIC -->
+  <script>
+    // DATASET DE HISTORIAL COMPLETO DE INGLATERRA EMBEBIDO
+    const ENGLAND_HISTORY_DATA = [
+      {
+        "fase": "Fase de Grupos - Fecha 1",
+        "fecha": "2026-06-17",
+        "rival": "Croacia",
+        "goles": 4,
+        "xg": 3.33,
+        "posesion_porcentaje": 49.0,
+        "remates_totales": 22,
+        "lineas_ruptura_completadas": 82
+      },
+      {
+        "fase": "Fase de Grupos - Fecha 2",
+        "fecha": "2026-06-23",
+        "rival": "Ghana",
+        "goles": 0,
+        "xg": 1.78,
+        "posesion_porcentaje": 72.4,
+        "remates_totales": 19,
+        "lineas_ruptura_completadas": 106
+      },
+      {
+        "fase": "Fase de Grupos - Fecha 3",
+        "fecha": "2026-06-27",
+        "rival": "Panamá",
+        "goles": 2,
+        "xg": 1.61,
+        "posesion_porcentaje": 57.7,
+        "remates_totales": 17,
+        "lineas_ruptura_completadas": 114
+      },
+      {
+        "fase": "Dieciseisavos de Final",
+        "fecha": "2026-07-01",
+        "rival": "Congo DR",
+        "goles": 2,
+        "xg": 1.75,
+        "posesion_porcentaje": 53.5,
+        "remates_totales": 16,
+        "lineas_ruptura_completadas": 125
+      },
+      {
+        "fase": "Octavos de Final",
+        "fecha": "2026-07-05",
+        "rival": "México",
+        "goles": 3,
+        "xg": 2.12,
+        "posesion_porcentaje": 31.5,
+        "remates_totales": 6,
+        "lineas_ruptura_completadas": 53
+      },
+      {
+        "fase": "Cuartos de Final",
+        "fecha": "2026-07-11",
+        "rival": "Noruega",
+        "goles": 2,
+        "xg": 1.64,
+        "posesion_porcentaje": 47.4,
+        "remates_totales": 14,
+        "lineas_ruptura_completadas": 121
+      }
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderMatchHistoryTable();
+      renderCharts();
+    });
+
+    // LLENADO DE LA TABLA COMPARATIVA
+    function renderMatchHistoryTable() {
+      const tbody = document.getElementById('match-history-tbody');
+      tbody.innerHTML = '';
+
+      ENGLAND_HISTORY_DATA.forEach(match => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-[#f9f9f9] transition-colors duration-100';
+        tr.innerHTML = `
+          <td class="py-3.5 font-bold text-[#1a1c1c] font-sans">${match.fase}</td>
+          <td class="py-3.5 font-semibold text-[#0059a4] font-sans">vs ${match.rival}</td>
+          <td class="py-3.5 text-[#414752] font-sans">${match.fecha}</td>
+          <td class="py-3.5 text-center font-bold text-[#1a1c1c] font-sans">${match.goles}</td>
+          <td class="py-3.5 text-center font-semibold text-[#414752] font-sans">${match.xg.toFixed(2)}</td>
+          <td class="py-3.5 text-center font-semibold text-[#1a1c1c] font-sans">${match.posesion_porcentaje}%</td>
+          <td class="py-3.5 text-center font-semibold text-[#1a1c1c] font-sans">${match.remates_totales}</td>
+          <td class="py-3.5 text-center font-bold text-[#0059a4] font-sans">${match.lineas_ruptura_completadas}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // RENDERIZADO DE GRÁFICOS CON CHART.JS
+    function renderCharts() {
+      const matchLabels = ENGLAND_HISTORY_DATA.map(m => `vs ${m.rival}`);
+      
+      // 1. Gráfico Goles vs xG (Barras Comparativo)
+      const ctxGolesXg = document.getElementById('golesXgChart').getContext('2d');
+      new Chart(ctxGolesXg, {
+        type: 'bar',
+        data: {
+          labels: matchLabels,
+          datasets: [
+            {
+              label: 'Goles Anotados',
+              data: ENGLAND_HISTORY_DATA.map(m => m.goles),
+              backgroundColor: '#0059a4', // Primary Blue
+              hoverBackgroundColor: '#004785',
+              barThickness: 16
+            },
+            {
+              label: 'Goles Esperados (xG)',
+              data: ENGLAND_HISTORY_DATA.map(m => m.xg),
+              backgroundColor: '#a5c8ff', // Primary Fixed Dim (Celeste desaturado)
+              hoverBackgroundColor: '#86b4f7',
+              barThickness: 16
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
+            },
+            y: {
+              grid: { color: '#e8e8e8' },
+              ticks: { font: { family: 'Inter', size: 11 }, color: '#414752', stepSize: 1 },
+              min: 0
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { font: { family: 'Inter', size: 12, weight: '600' }, color: '#1a1c1c', boxWidth: 12, boxHeight: 12 }
+            },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              titleFont: { family: 'Inter', size: 12, weight: '700' },
+              bodyFont: { family: 'Inter', size: 12 },
+              cornerRadius: 0
+            }
+          }
+        }
+      });
+
+      // 2. Gráfico Posesión (Línea / Área)
+      const ctxPosesion = document.getElementById('posesionChart').getContext('2d');
+      new Chart(ctxPosesion, {
+        type: 'line',
+        data: {
+          labels: matchLabels,
+          datasets: [{
+            label: 'Posesión',
+            data: ENGLAND_HISTORY_DATA.map(m => m.posesion_porcentaje),
+            borderColor: '#0059a4', // Primary Blue
+            backgroundColor: 'rgba(0, 89, 164, 0.08)',
+            fill: true,
+            tension: 0.2,
+            borderWidth: 2,
+            pointBackgroundColor: '#0059a4',
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752', callback: val => val + '%' },
+              suggestedMin: 20,
+              suggestedMax: 80
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              callbacks: { label: ctx => `Posesión: ${ctx.parsed.y}%` }
+            }
+          }
+        }
+      });
+
+      // 3. Gráfico Remates (Línea / Área)
+      const ctxRemates = document.getElementById('rematesChart').getContext('2d');
+      new Chart(ctxRemates, {
+        type: 'line',
+        data: {
+          labels: matchLabels,
+          datasets: [{
+            label: 'Remates',
+            data: ENGLAND_HISTORY_DATA.map(m => m.remates_totales),
+            borderColor: '#b6171e', // Secondary Red
+            backgroundColor: 'rgba(182, 23, 30, 0.08)',
+            fill: true,
+            tension: 0.2,
+            borderWidth: 2,
+            pointBackgroundColor: '#b6171e',
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' },
+              suggestedMin: 0,
+              suggestedMax: 25
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              callbacks: { label: ctx => `Remates: ${ctx.parsed.y}` }
+            }
+          }
+        }
+      });
+
+      // 4. Gráfico Líneas de Ruptura (Línea / Área)
+      const ctxRupturas = document.getElementById('rupturasChart').getContext('2d');
+      new Chart(ctxRupturas, {
+        type: 'line',
+        data: {
+          labels: matchLabels,
+          datasets: [{
+            label: 'Rupturas Completadas',
+            data: ENGLAND_HISTORY_DATA.map(m => m.lineas_ruptura_completadas),
+            borderColor: '#59595a', // Tertiary/Neutral Scale Dark
+            backgroundColor: 'rgba(89, 89, 90, 0.08)',
+            fill: true,
+            tension: 0.2,
+            borderWidth: 2,
+            pointBackgroundColor: '#59595a',
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' },
+              suggestedMin: 40,
+              suggestedMax: 150
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              callbacks: { label: ctx => `Líneas Rotas: ${ctx.parsed.y}` }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

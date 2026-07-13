@@ -1,0 +1,62 @@
+[
+    {
+        "fase": "Fase de Grupos - Fecha 1",
+        "fecha": "2026-06-17",
+        "rival": "Croacia",
+        "goles": 4,
+        "xg": 3.33,
+        "posesion_porcentaje": 49.0,
+        "remates_totales": 22,
+        "lineas_ruptura_completadas": 82
+    },
+    {
+        "fase": "Fase de Grupos - Fecha 2",
+        "fecha": "2026-06-23",
+        "rival": "Ghana",
+        "goles": 0,
+        "xg": 1.78,
+        "posesion_porcentaje": 72.4,
+        "remates_totales": 19,
+        "lineas_ruptura_completadas": 106
+    },
+    {
+        "fase": "Fase de Grupos - Fecha 3",
+        "fecha": "2026-06-27",
+        "rival": "Panamá",
+        "goles": 2,
+        "xg": 1.61,
+        "posesion_porcentaje": 57.7,
+        "remates_totales": 17,
+        "lineas_ruptura_completadas": 114
+    },
+    {
+        "fase": "Dieciseisavos de Final",
+        "fecha": "2026-07-01",
+        "rival": "Congo DR",
+        "goles": 2,
+        "xg": 1.75,
+        "posesion_porcentaje": 53.5,
+        "remates_totales": 16,
+        "lineas_ruptura_completadas": 125
+    },
+    {
+        "fase": "Octavos de Final",
+        "fecha": "2026-07-05",
+        "rival": "México",
+        "goles": 3,
+        "xg": 2.12,
+        "posesion_porcentaje": 31.5,
+        "remates_totales": 6,
+        "lineas_ruptura_completadas": 53
+    },
+    {
+        "fase": "Cuartos de Final",
+        "fecha": "2026-07-11",
+        "rival": "Noruega",
+        "goles": 2,
+        "xg": 1.64,
+        "posesion_porcentaje": 47.4,
+        "remates_totales": 14,
+        "lineas_ruptura_completadas": 121
+    }
+]

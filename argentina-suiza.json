@@ -1,0 +1,211 @@
+{
+  "equipo": "Argentina",
+  "partido": "Argentina vs Suiza",
+  "fecha": "11 July 2026",
+  "jugadores": [
+    {
+      "dorsal": 23,
+      "nombre": "Emiliano MARTINEZ",
+      "posicion": "GK",
+      "metricas": {
+        "efectividad_pases_porcentaje": 64,
+        "rupturas_linea_completadas": 10,
+        "recuperaciones_posesion": 8,
+        "ofertas_pase_recibidas": 5,
+        "distancia_total_metros": 6455.4
+      }
+    },
+    {
+      "dorsal": 3,
+      "nombre": "Nicolas TAGLIAFICO",
+      "posicion": "DF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 84,
+        "rupturas_linea_completadas": 3,
+        "recuperaciones_posesion": 0,
+        "ofertas_pase_recibidas": 4,
+        "distancia_total_metros": 7520.8
+      }
+    },
+    {
+      "dorsal": 5,
+      "nombre": "Leandro PAREDES",
+      "posicion": "MF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 94,
+        "rupturas_linea_completadas": 18,
+        "recuperaciones_posesion": 5,
+        "ofertas_pase_recibidas": 20,
+        "distancia_total_metros": 11256.5
+      }
+    },
+    {
+      "dorsal": 6,
+      "nombre": "Lisandro MARTINEZ",
+      "posicion": "DF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 87,
+        "rupturas_linea_completadas": 12,
+        "recuperaciones_posesion": 7,
+        "ofertas_pase_recibidas": 3,
+        "distancia_total_metros": 11939.2
+      }
+    },
+    {
+      "dorsal": 7,
+      "nombre": "Rodrigo DE PAUL",
+      "posicion": "MF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 91,
+        "rupturas_linea_completadas": 5,
+        "recuperaciones_posesion": 2,
+        "ofertas_pase_recibidas": 23,
+        "distancia_total_metros": 8659.4
+      }
+    },
+    {
+      "dorsal": 9,
+      "nombre": "Julian ALVAREZ",
+      "posicion": "FW",
+      "metricas": {
+        "efectividad_pases_porcentaje": 89,
+        "rupturas_linea_completadas": 6,
+        "recuperaciones_posesion": 1,
+        "ofertas_pase_recibidas": 13,
+        "distancia_total_metros": 13653.3
+      }
+    },
+    {
+      "dorsal": 10,
+      "nombre": "Lionel MESSI",
+      "posicion": "FW",
+      "metricas": {
+        "efectividad_pases_porcentaje": 83,
+        "rupturas_linea_completadas": 12,
+        "recuperaciones_posesion": 3,
+        "ofertas_pase_recibidas": 26,
+        "distancia_total_metros": 10269.4
+      }
+    },
+    {
+      "dorsal": 13,
+      "nombre": "Cristian ROMERO",
+      "posicion": "DF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 95,
+        "rupturas_linea_completadas": 9,
+        "recuperaciones_posesion": 5,
+        "ofertas_pase_recibidas": 11,
+        "distancia_total_metros": 9294.5
+      }
+    },
+    {
+      "dorsal": 20,
+      "nombre": "Alexis MAC ALLISTER",
+      "posicion": "MF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 94,
+        "rupturas_linea_completadas": 5,
+        "recuperaciones_posesion": 6,
+        "ofertas_pase_recibidas": 17,
+        "distancia_total_metros": 14236.5
+      }
+    },
+    {
+      "dorsal": 24,
+      "nombre": "Enzo FERNANDEZ",
+      "posicion": "MF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 94,
+        "rupturas_linea_completadas": 6,
+        "recuperaciones_posesion": 0,
+        "ofertas_pase_recibidas": 14,
+        "distancia_total_metros": 11162.1
+      }
+    },
+    {
+      "dorsal": 26,
+      "nombre": "Nahuel MOLINA",
+      "posicion": "DF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 82,
+        "rupturas_linea_completadas": 6,
+        "recuperaciones_posesion": 4,
+        "ofertas_pase_recibidas": 15,
+        "distancia_total_metros": 8538.2
+      }
+    },
+    {
+      "dorsal": 4,
+      "nombre": "Gonzalo MONTIEL",
+      "posicion": "DF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 77,
+        "rupturas_linea_completadas": 1,
+        "recuperaciones_posesion": 3,
+        "ofertas_pase_recibidas": 1,
+        "distancia_total_metros": 5492.5
+      }
+    },
+    {
+      "dorsal": 15,
+      "nombre": "Nico GONZALEZ",
+      "posicion": "MF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 87,
+        "rupturas_linea_completadas": 0,
+        "recuperaciones_posesion": 4,
+        "ofertas_pase_recibidas": 2,
+        "distancia_total_metros": 5830.9
+      }
+    },
+    {
+      "dorsal": 16,
+      "nombre": "Thiago ALMADA",
+      "posicion": "FW",
+      "metricas": {
+        "efectividad_pases_porcentaje": 93,
+        "rupturas_linea_completadas": 5,
+        "recuperaciones_posesion": 0,
+        "ofertas_pase_recibidas": 9,
+        "distancia_total_metros": 4018.2
+      }
+    },
+    {
+      "dorsal": 19,
+      "nombre": "Nicolas OTAMENDI",
+      "posicion": "DF",
+      "metricas": {
+        "efectividad_pases_porcentaje": 86,
+        "rupturas_linea_completadas": 1,
+        "recuperaciones_posesion": 0,
+        "ofertas_pase_recibidas": 1,
+        "distancia_total_metros": 1897.2
+      }
+    },
+    {
+      "dorsal": 21,
+      "nombre": "Jose Manuel LOPEZ",
+      "posicion": "FW",
+      "metricas": {
+        "efectividad_pases_porcentaje": 100,
+        "rupturas_linea_completadas": 0,
+        "recuperaciones_posesion": 0,
+        "ofertas_pase_recibidas": 0,
+        "distancia_total_metros": 1615.5
+      }
+    },
+    {
+      "dorsal": 22,
+      "nombre": "Lautaro MARTINEZ",
+      "posicion": "FW",
+      "metricas": {
+        "efectividad_pases_porcentaje": 86,
+        "rupturas_linea_completadas": 0,
+        "recuperaciones_posesion": 1,
+        "ofertas_pase_recibidas": 5,
+        "distancia_total_metros": 4906.7
+      }
+    }
+  ]
+}

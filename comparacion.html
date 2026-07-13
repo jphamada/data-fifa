@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cara a Cara: Argentina vs Inglaterra - Dashboard Interactivo</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+    rel="stylesheet">
+
+  <style type="text/css">
+    /* Estilos basados en design.md */
+    :root {
+      --color-primary: #0059a4;
+      /* Azul Argentina */
+      --color-primary-light: #a5c8ff;
+      --color-england: #b6171e;
+      /* Rojo Inglaterra */
+      --color-england-light: #ffb3ac;
+      --color-bg: #f9f9f9;
+      --color-surface: #ffffff;
+      --color-border: #e0e0e0;
+      --color-text-main: #1a1c1c;
+      --color-text-muted: #414752;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+    }
+
+    .font-serif {
+      font-family: 'Source Serif 4', serif;
+    }
+
+    .font-sans {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Forzado estricto de bordes a 90 grados (Sharp 0) */
+    .sharp-ui {
+      border-radius: 0px !important;
+    }
+
+    /* Estructura Scroll-Snap */
+    .scroll-container {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .scroll-section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+  </style>
+</head>
+
+<body class="p-0 m-0 h-screen flex flex-col antialiased overflow-hidden">
+
+  <!-- CABECERA DE CONTROL FIJA (Sticky Header) -->
+  <header
+    class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 z-50 flex-shrink-0 sharp-ui">
+    <div class="flex items-center gap-3 w-full sm:w-auto">
+
+      <span class="text-[#e0e0e0] hidden sm:inline">|</span>
+      <h1 class="font-serif text-base font-bold text-[#1a1c1c] tracking-tight">
+        Análisis Cara a Cara
+      </h1>
+    </div>
+
+    <!-- CONTROLES DE FILTRADO (Aislamiento de Selección) -->
+    <div
+      class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none text-[10px] sm:text-xs font-bold tracking-wider font-sans w-full sm:w-auto justify-center">
+      <button id="btn-filter-both" onclick="setFilter('both')"
+        class="flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-black text-white">
+        AMBAS
+      </button>
+      <button id="btn-filter-arg" onclick="setFilter('arg')"
+        class="flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
+        ARGENTINA (AZUL)
+      </button>
+      <button id="btn-filter-eng" onclick="setFilter('eng')"
+        class="flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
+        INGLATERRA (ROJO)
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL SNAP SCROLL (Excluye la cabecera fija de 60px) -->
+  <div class="flex-grow scroll-container overflow-y-auto h-[calc(100vh-68px)]">
+
+    <!-- SECCIÓN 1: PORTADA -->
+    <section class="scroll-section w-full h-[calc(100vh-68px)] flex flex-col justify-between p-6 md:p-12 bg-white">
+      <div class="flex-shrink-0 flex items-center justify-between border-b border-[#e0e0e0] pb-4">
+        <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">INFORME ESPECIAL</span>
+        <span class="text-xs font-bold text-[#414752] font-mono">[ SECCIÓN 1/5 ]</span>
+      </div>
+
+      <div class="my-auto max-w-[800px] mx-auto text-center flex flex-col gap-6">
+        <h2 class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
+          Cara a Cara:<br>Argentina vs Inglaterra
+        </h2>
+        <p class="font-serif text-lg md:text-xl text-[#414752] italic max-w-[600px] mx-auto">
+          Comparativa estadística de la campaña completa de ambas selecciones rumbo a las fases decisivas.
+        </p>
+        <div class="grid grid-cols-2 gap-8 border-t border-b border-[#e0e0e0] py-6 my-2 text-left">
+          <div class="border-r border-[#e0e0e0] pr-6">
+            <span class="text-xs font-bold tracking-widest text-[#0059a4] uppercase font-sans">ARGENTINA</span>
+            <ul class="text-xs text-[#414752] mt-3 space-y-1 font-sans">
+              <li>&bull; Goles anotados: <strong>17</strong></li>
+              <li>&bull; Posesión media: <strong>55.2%</strong></li>
+              <li>&bull; Eficacia xG: <strong>+3.10</strong></li>
+              <li>&bull; Estilo: <strong>Posesión y ruptura interna</strong></li>
+            </ul>
+          </div>
+          <div class="pl-6">
+            <span class="text-xs font-bold tracking-widest text-[#b6171e] uppercase font-sans">INGLATERRA</span>
+            <ul class="text-xs text-[#414752] mt-3 space-y-1 font-sans">
+              <li>&bull; Goles anotados: <strong>13</strong></li>
+              <li>&bull; Posesión media: <strong>51.9%</strong></li>
+              <li>&bull; Eficacia xG: <strong>+0.77</strong></li>
+              <li>&bull; Estilo: <strong>Volumen y remate directo</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="flex-shrink-0 flex justify-center items-center gap-2 text-xs text-[#414752] animate-bounce select-none">
+        <span>Desliza hacia abajo para comparar métricas</span>
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: GOLES VS XG -->
+    <section
+      class="scroll-section w-full h-[calc(100vh-68px)] flex flex-col justify-between p-6 md:p-12 bg-white border-t border-[#e0e0e0]">
+      <div class="flex-shrink-0 flex items-center justify-between border-b border-[#e0e0e0] pb-4">
+        <div>
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">COMPARATIVA DE
+            EFICACIA</span>
+          <h2 class="font-serif text-xl md:text-2xl font-bold text-[#1a1c1c] mt-0.5">Goles vs Goles Esperados (xG)</h2>
+        </div>
+        <span class="text-xs font-bold text-[#414752] font-mono">[ SECCIÓN 2/5 ]</span>
+      </div>
+
+      <!-- Área de gráfico grande -->
+      <div
+        class="flex-grow relative w-full flex items-center justify-center p-2 min-h-[250px] max-h-[45vh] md:max-h-[50vh]">
+        <canvas id="golesXgChart"></canvas>
+      </div>
+
+      <!-- Estadísticas comparadas abajo -->
+      <div class="flex-shrink-0 grid grid-cols-2 gap-6 border-t border-[#e0e0e0] pt-4">
+        <div class="border-r border-[#e0e0e0] pr-4">
+          <span class="text-[10px] font-bold text-[#0059a4] tracking-wider uppercase font-sans">Efectividad
+            Argentina</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#0059a4] mt-1">17 Goles <span
+              class="text-xs font-normal text-[#414752]">/ 13.90 xG</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Argentina anotó +3.10 goles de lo esperado por la calidad de sus
+            tiros.</p>
+        </div>
+        <div class="pl-4">
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Efectividad
+            Inglaterra</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#b6171e] mt-1">13 Goles <span
+              class="text-xs font-normal text-[#414752]">/ 12.23 xG</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Inglaterra anotó +0.77 goles esperados, con marcas más ajustadas
+            a su xG.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: POSESIÓN -->
+    <section
+      class="scroll-section w-full h-[calc(100vh-68px)] flex flex-col justify-between p-6 md:p-12 bg-white border-t border-[#e0e0e0]">
+      <div class="flex-shrink-0 flex items-center justify-between border-b border-[#e0e0e0] pb-4">
+        <div>
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">CONTROL DEL JUEGO</span>
+          <h2 class="font-serif text-xl md:text-2xl font-bold text-[#1a1c1c] mt-0.5">Evolución de Posesión de Balón (%)
+          </h2>
+        </div>
+        <span class="text-xs font-bold text-[#414752] font-mono">[ SECCIÓN 3/5 ]</span>
+      </div>
+
+      <div
+        class="flex-grow relative w-full flex items-center justify-center p-2 min-h-[250px] max-h-[45vh] md:max-h-[50vh]">
+        <canvas id="posesionChart"></canvas>
+      </div>
+
+      <div class="flex-shrink-0 grid grid-cols-2 gap-6 border-t border-[#e0e0e0] pt-4">
+        <div class="border-r border-[#e0e0e0] pr-4">
+          <span class="text-[10px] font-bold text-[#0059a4] tracking-wider uppercase font-sans">Posesión
+            Argentina</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#0059a4] mt-1">55.2% <span
+              class="text-xs font-normal text-[#414752]">Promedio</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Pico máximo de 67.6% de posesión en la Fecha 3 (vs Jordania).</p>
+        </div>
+        <div class="pl-4">
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Posesión
+            Inglaterra</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#b6171e] mt-1">51.9% <span
+              class="text-xs font-normal text-[#414752]">Promedio</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Pico máximo de 72.4% en la Fecha 2 (vs Ghana), pero cayó a 31.5%
+            ante México.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: REMATES -->
+    <section
+      class="scroll-section w-full h-[calc(100vh-68px)] flex flex-col justify-between p-6 md:p-12 bg-white border-t border-[#e0e0e0]">
+      <div class="flex-shrink-0 flex items-center justify-between border-b border-[#e0e0e0] pb-4">
+        <div>
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">VOLUMEN OFENSIVO</span>
+          <h2 class="font-serif text-xl md:text-2xl font-bold text-[#1a1c1c] mt-0.5">Evolución de Remates Totales</h2>
+        </div>
+        <span class="text-xs font-bold text-[#414752] font-mono">[ SECCIÓN 4/5 ]</span>
+      </div>
+
+      <div
+        class="flex-grow relative w-full flex items-center justify-center p-2 min-h-[250px] max-h-[45vh] md:max-h-[50vh]">
+        <canvas id="rematesChart"></canvas>
+      </div>
+
+      <div class="flex-shrink-0 grid grid-cols-2 gap-6 border-t border-[#e0e0e0] pt-4">
+        <div class="border-r border-[#e0e0e0] pr-4">
+          <span class="text-[10px] font-bold text-[#0059a4] tracking-wider uppercase font-sans">Remates Argentina</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#0059a4] mt-1">98 <span
+              class="text-xs font-normal text-[#414752]">Remates</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Constante volumen creciente, con pico de 22 tiros en los octavos
+            y cuartos.</p>
+        </div>
+        <div class="pl-4">
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Remates
+            Inglaterra</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#b6171e] mt-1">94 <span
+              class="text-xs font-normal text-[#414752]">Remates</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Comenzó con alto volumen (22 vs Croacia), pero experimentó caídas
+            severas (6 vs México).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 5: LÍNEAS DE RUPTURA -->
+    <section
+      class="scroll-section w-full h-[calc(100vh-68px)] flex flex-col justify-between p-6 md:p-12 bg-white border-t border-[#e0e0e0]">
+      <div class="flex-shrink-0 flex items-center justify-between border-b border-[#e0e0e0] pb-4">
+        <div>
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">CREATIVIDAD Y
+            verticalidad</span>
+          <h2 class="font-serif text-xl md:text-2xl font-bold text-[#1a1c1c] mt-0.5">Líneas de Ruptura Completadas</h2>
+        </div>
+        <span class="text-xs font-bold text-[#414752] font-mono">[ SECCIÓN 5/5 ]</span>
+      </div>
+
+      <div
+        class="flex-grow relative w-full flex items-center justify-center p-2 min-h-[250px] max-h-[45vh] md:max-h-[50vh]">
+        <canvas id="rupturasChart"></canvas>
+      </div>
+
+      <div class="flex-shrink-0 grid grid-cols-2 gap-6 border-t border-[#e0e0e0] pt-4">
+        <div class="border-r border-[#e0e0e0] pr-4">
+          <span class="text-[10px] font-bold text-[#0059a4] tracking-wider uppercase font-sans">Rupturas
+            Argentina</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#0059a4] mt-1">698 <span
+              class="text-xs font-normal text-[#414752]">Pases filtrados</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Gran capacidad para romper líneas enemigas, promediando 116.3 por
+            partido.</p>
+        </div>
+        <div class="pl-4">
+          <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Rupturas
+            Inglaterra</span>
+          <div class="text-xl md:text-2xl font-bold font-sans text-[#b6171e] mt-1">601 <span
+              class="text-xs font-normal text-[#414752]">Pases filtrados</span></div>
+          <p class="text-[10px] text-[#414752] mt-0.5">Sólido registro de verticalidad, promediando 100.2. Caída
+            drástica ante México (53).</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- DATA & LOGIC -->
+  <script>
+    // DATASETS EMBEBIDOS
+    const MATCH_METADATA = {
+      labels: ['Fecha 1', 'Fecha 2', 'Fecha 3', '16vos de Final', 'Octavos de Final', 'Cuartos de Final'],
+      argRivals: ['Argelia', 'Austria', 'Jordania', 'Cabo Verde', 'Egipto', 'Suiza'],
+      engRivals: ['Croacia', 'Ghana', 'Panamá', 'Congo DR', 'México', 'Noruega']
+    };
+
+    const DATA_ARG = {
+      goles: [3, 2, 3, 3, 3, 3],
+      xg: [1.58, 2.45, 2.52, 2.73, 2.63, 1.99],
+      posesion: [44.6, 48.2, 67.6, 59.2, 57.1, 54.7],
+      remates: [10, 12, 13, 22, 19, 22],
+      rupturas: [102, 87, 130, 152, 129, 98]
+    };
+
+    const DATA_ENG = {
+      goles: [4, 0, 2, 2, 3, 2],
+      xg: [3.33, 1.78, 1.61, 1.75, 2.12, 1.64],
+      posesion: [49.0, 72.4, 57.7, 53.5, 31.5, 47.4],
+      remates: [22, 19, 17, 16, 6, 14],
+      rupturas: [82, 106, 114, 125, 53, 121]
+    };
+
+    // INSTANCIAS DE GRÁFICOS
+    let golesChart, posesionChart, rematesChart, rupturasChart;
+    let currentFilter = 'both';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAllCharts();
+    });
+
+    // CONTROL DE VISIBILIDAD DE DATASETS
+    function setFilter(team) {
+      currentFilter = team;
+
+      const btnBoth = document.getElementById('btn-filter-both');
+      const btnArg = document.getElementById('btn-filter-arg');
+      const btnEng = document.getElementById('btn-filter-eng');
+
+      // Limpiar clases
+      [btnBoth, btnArg, btnEng].forEach(btn => {
+        btn.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]";
+      });
+
+      // Aplicar color activo
+      if (team === 'both') {
+        btnBoth.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-black text-white";
+      } else if (team === 'arg') {
+        btnArg.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-[#0059a4] text-white";
+      } else if (team === 'eng') {
+        btnEng.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-colors duration-150 cursor-pointer bg-[#b6171e] text-white";
+      }
+
+      // 1. Filtrar gráfico Goles vs xG (tiene 4 datasets)
+      if (golesChart) {
+        if (team === 'both') {
+          golesChart.setDatasetVisibility(0, true);
+          golesChart.setDatasetVisibility(1, true);
+          golesChart.setDatasetVisibility(2, true);
+          golesChart.setDatasetVisibility(3, true);
+        } else if (team === 'arg') {
+          golesChart.setDatasetVisibility(0, true);
+          golesChart.setDatasetVisibility(1, true);
+          golesChart.setDatasetVisibility(2, false);
+          golesChart.setDatasetVisibility(3, false);
+        } else if (team === 'eng') {
+          golesChart.setDatasetVisibility(0, false);
+          golesChart.setDatasetVisibility(1, false);
+          golesChart.setDatasetVisibility(2, true);
+          golesChart.setDatasetVisibility(3, true);
+        }
+        golesChart.update();
+      }
+
+      // 2. Filtrar gráficos de líneas/área (tienen 2 datasets: 0 = ARG, 1 = ENG)
+      const lineCharts = [posesionChart, rematesChart, rupturasChart];
+      lineCharts.forEach(chart => {
+        if (chart) {
+          if (team === 'both') {
+            chart.setDatasetVisibility(0, true);
+            chart.setDatasetVisibility(1, true);
+          } else if (team === 'arg') {
+            chart.setDatasetVisibility(0, true);
+            chart.setDatasetVisibility(1, false);
+          } else if (team === 'eng') {
+            chart.setDatasetVisibility(0, false);
+            chart.setDatasetVisibility(1, true);
+          }
+          chart.update();
+        }
+      });
+    }
+
+    // RENDERIZADO DE TODOS LOS GRÁFICOS
+    function renderAllCharts() {
+      // --- 1. GRÁFICO DE GOLES VS XG (BARRAS MULTI-DATASET) ---
+      const ctxGoles = document.getElementById('golesXgChart').getContext('2d');
+      golesChart = new Chart(ctxGoles, {
+        type: 'bar',
+        data: {
+          labels: MATCH_METADATA.labels,
+          datasets: [
+            {
+              label: 'Goles ARG',
+              data: DATA_ARG.goles,
+              backgroundColor: '#0059a4', // Azul oscuro
+              barThickness: 8
+            },
+            {
+              label: 'xG ARG',
+              data: DATA_ARG.xg,
+              backgroundColor: '#a5c8ff', // Celeste claro
+              barThickness: 8
+            },
+            {
+              label: 'Goles ENG',
+              data: DATA_ENG.goles,
+              backgroundColor: '#b6171e', // Rojo oscuro
+              barThickness: 8
+            },
+            {
+              label: 'xG ENG',
+              data: DATA_ENG.xg,
+              backgroundColor: '#ffb3ac', // Rojo claro
+              barThickness: 8
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c' }
+            },
+            y: {
+              grid: { color: '#e8e8e8' },
+              ticks: { font: { family: 'Inter', size: 10 }, color: '#414752' },
+              min: 0
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                font: { family: 'Inter', size: 10, weight: '600' },
+                color: '#1a1c1c',
+                boxWidth: 8
+              }
+            },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              titleFont: { family: 'Inter', size: 12, weight: '700' },
+              bodyFont: { family: 'Inter', size: 12 },
+              cornerRadius: 0,
+              callbacks: {
+                label: function (context) {
+                  const idx = context.dataIndex;
+                  const label = context.dataset.label;
+                  const val = context.parsed.y;
+                  if (label.includes('ARG')) {
+                    return `${label}: ${val.toFixed(2)} (vs ${MATCH_METADATA.argRivals[idx]})`;
+                  } else {
+                    return `${label}: ${val.toFixed(2)} (vs ${MATCH_METADATA.engRivals[idx]})`;
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // --- 2. GRÁFICO DE POSESIÓN ---
+      const ctxPos = document.getElementById('posesionChart').getContext('2d');
+      posesionChart = new Chart(ctxPos, {
+        type: 'line',
+        data: {
+          labels: MATCH_METADATA.labels,
+          datasets: [
+            {
+              label: 'Posesión Argentina (%)',
+              data: DATA_ARG.posesion,
+              borderColor: '#0059a4',
+              backgroundColor: 'rgba(0, 89, 164, 0.08)',
+              fill: true,
+              tension: 0.25,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#0059a4',
+              pointRadius: 4
+            },
+            {
+              label: 'Posesión Inglaterra (%)',
+              data: DATA_ENG.posesion,
+              borderColor: '#b6171e',
+              backgroundColor: 'rgba(182, 23, 30, 0.08)',
+              fill: true,
+              tension: 0.25,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#b6171e',
+              pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752', callback: val => val + '%' },
+              suggestedMin: 20,
+              suggestedMax: 80
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              callbacks: {
+                label: function (context) {
+                  const idx = context.dataIndex;
+                  const val = context.parsed.y;
+                  if (context.datasetIndex === 0) {
+                    return `ARG: ${val}% (vs ${MATCH_METADATA.argRivals[idx]})`;
+                  } else {
+                    return `ENG: ${val}% (vs ${MATCH_METADATA.engRivals[idx]})`;
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // --- 3. GRÁFICO DE REMATES ---
+      const ctxRem = document.getElementById('rematesChart').getContext('2d');
+      rematesChart = new Chart(ctxRem, {
+        type: 'line',
+        data: {
+          labels: MATCH_METADATA.labels,
+          datasets: [
+            {
+              label: 'Remates Argentina',
+              data: DATA_ARG.remates,
+              borderColor: '#0059a4',
+              backgroundColor: 'rgba(0, 89, 164, 0.08)',
+              fill: true,
+              tension: 0.25,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#0059a4',
+              pointRadius: 4
+            },
+            {
+              label: 'Remates Inglaterra',
+              data: DATA_ENG.remates,
+              borderColor: '#b6171e',
+              backgroundColor: 'rgba(182, 23, 30, 0.08)',
+              fill: true,
+              tension: 0.25,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#b6171e',
+              pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' },
+              suggestedMin: 0,
+              suggestedMax: 25
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              callbacks: {
+                label: function (context) {
+                  const idx = context.dataIndex;
+                  const val = context.parsed.y;
+                  if (context.datasetIndex === 0) {
+                    return `ARG: ${val} remates (vs ${MATCH_METADATA.argRivals[idx]})`;
+                  } else {
+                    return `ENG: ${val} remates (vs ${MATCH_METADATA.engRivals[idx]})`;
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // --- 4. GRÁFICO DE LÍNEAS DE RUPTURA ---
+      const ctxRup = document.getElementById('rupturasChart').getContext('2d');
+      rupturasChart = new Chart(ctxRup, {
+        type: 'line',
+        data: {
+          labels: MATCH_METADATA.labels,
+          datasets: [
+            {
+              label: 'Rupturas Argentina',
+              data: DATA_ARG.rupturas,
+              borderColor: '#0059a4',
+              backgroundColor: 'rgba(0, 89, 164, 0.08)',
+              fill: true,
+              tension: 0.25,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#0059a4',
+              pointRadius: 4
+            },
+            {
+              label: 'Rupturas Inglaterra',
+              data: DATA_ENG.rupturas,
+              borderColor: '#b6171e',
+              backgroundColor: 'rgba(182, 23, 30, 0.08)',
+              fill: true,
+              tension: 0.25,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#b6171e',
+              pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' },
+              suggestedMin: 40,
+              suggestedMax: 160
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              callbacks: {
+                label: function (context) {
+                  const idx = context.dataIndex;
+                  const val = context.parsed.y;
+                  if (context.datasetIndex === 0) {
+                    return `ARG: ${val} rupturas (vs ${MATCH_METADATA.argRivals[idx]})`;
+                  } else {
+                    return `ENG: ${val} rupturas (vs ${MATCH_METADATA.engRivals[idx]})`;
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

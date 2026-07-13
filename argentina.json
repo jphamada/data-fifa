@@ -1,0 +1,62 @@
+[
+  {
+    "fase": "Fase de Grupos - Fecha 1",
+    "fecha": "2026-06-16",
+    "rival": "Argelia",
+    "goles": 3,
+    "xg": 1.58,
+    "posesion_porcentaje": 44.6,
+    "remates_totales": 10,
+    "lineas_ruptura_completadas": 102
+  },
+  {
+    "fase": "Fase de Grupos - Fecha 2",
+    "fecha": "2026-06-22",
+    "rival": "Austria",
+    "goles": 2,
+    "xg": 2.45,
+    "posesion_porcentaje": 48.2,
+    "remates_totales": 12,
+    "lineas_ruptura_completadas": 87
+  },
+  {
+    "fase": "Fase de Grupos - Fecha 3",
+    "fecha": "2026-06-27",
+    "rival": "Jordania",
+    "goles": 3,
+    "xg": 2.52,
+    "posesion_porcentaje": 67.6,
+    "remates_totales": 13,
+    "lineas_ruptura_completadas": 130
+  },
+  {
+    "fase": "Dieciseisavos de final",
+    "fecha": "2026-07-03",
+    "rival": "Cabo Verde",
+    "goles": 3,
+    "xg": 2.73,
+    "posesion_porcentaje": 59.2,
+    "remates_totales": 22,
+    "lineas_ruptura_completadas": 152
+  },
+  {
+    "fase": "Octavos de final",
+    "fecha": "2026-07-07",
+    "rival": "Egipto",
+    "goles": 3,
+    "xg": 2.63,
+    "posesion_porcentaje": 57.1,
+    "remates_totales": 19,
+    "lineas_ruptura_completadas": 129
+  },
+  {
+    "fase": "Cuartos de final",
+    "fecha": "2026-07-11",
+    "rival": "Suiza",
+    "goles": 3,
+    "xg": 1.99,
+    "posesion_porcentaje": 54.7,
+    "remates_totales": 22,
+    "lineas_ruptura_completadas": 98
+  }
+]
