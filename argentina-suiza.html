@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rendimiento Selección Argentina - Dashboard Interactivo</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+        rel="stylesheet">
+
+    <style type="text/css">
+        /* Estilos basados en design.md */
+        :root {
+            --color-primary: #0059a4;
+            --color-primary-dark: #004785;
+            --color-secondary: #b6171e;
+            --color-bg: #f9f9f9;
+            --color-surface: #ffffff;
+            --color-border: #e0e0e0;
+            --color-text-main: #1a1c1c;
+            --color-text-muted: #414752;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+        }
+
+        .font-serif {
+            font-family: 'Source Serif 4', serif;
+        }
+
+        .font-sans {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Forzado estricto de bordes a 90 grados (Sharp 0) */
+        .sharp-ui {
+            border-radius: 0px !important;
+        }
+
+        /* Quitar sombras para estética plana editorial */
+        .no-shadow {
+            box-shadow: none !important;
+        }
+
+        /* Foco personalizado según design.md */
+        .focus-border-primary:focus {
+            outline: none;
+            border-color: var(--color-primary) !important;
+            border-bottom-width: 2px;
+        }
+
+        /* Animación sutil de pulso para indicador Live */
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .pulse-indicator {
+            animation: pulse-dot 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="p-0 m-0 min-h-screen flex flex-col antialiased">
+
+    <!-- CABECERA EDITORIAL (Masthead) -->
+    <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-0">
+        <div class="max-w-[1280px] mx-auto flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-bold tracking-widest text-[#b6171e] flex items-center gap-2">
+                    <span class="inline-block w-2.5 h-2.5 bg-[#b6171e] pulse-indicator sharp-ui"></span>
+                    ANÁLISIS ESTADÍSTICO DEPORTIVO
+                </span>
+                <span class="text-xs font-semibold text-[#414752] tracking-wider uppercase font-sans">
+                    Fecha 2026-07-13
+                </span>
+            </div>
+
+            <div class="border-t border-[#e2e2e2] pt-4 mt-1">
+                <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
+                    Rendimiento individual detallado en el partido de octavos de final
+                </h1>
+            </div>
+
+            <div
+                class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-2 text-xs text-[#414752]">
+                <div class="flex items-center gap-4">
+                    <span><strong>PARTIDO:</strong> Argentina vs Suiza</span>
+                    <span class="text-[#e0e0e0]">|</span>
+                    <span><strong>FECHA DEL ENCUENTRO:</strong> 11 de Julio, 2026</span>
+                </div>
+                <div>
+                    <span
+                        class="bg-[#eeeeee] text-[#1a1c1c] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
+                        ARGENTINA
+                    </span>
+                </div>
+            </div>
+
+
+
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-6">
+
+        <!-- SECTOR SELECTOR (Mobile-First / optimizado para una mano) -->
+        <section class="bg-white border border-[#e0e0e0] p-4 sharp-ui">
+            <label for="player-select" class="block text-xs font-bold tracking-widest text-[#414752] uppercase mb-2">
+                Seleccionar Jugador de la Selección
+            </label>
+            <div class="relative">
+                <select id="player-select"
+                    class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-4 py-3.5 sharp-ui text-base font-sans text-[#1a1c1c] focus-border-primary appearance-none cursor-pointer">
+                    <!-- Se llena dinámicamente -->
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#1a1c1c]">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIVISION DE COLUMNADO: 1 col en Mobile, 2 cols en Desktop -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- COLUMNA IZQUIERDA: Tarjeta de Jugador y KPIs (5 Cols en Desktop) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+
+                <!-- CARD INFO JUGADOR HERO -->
+                <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex items-center gap-6">
+                    <!-- Avatar minimalista con Dorsal (Círculo es la única excepción a esquinas de 90° en design.md) -->
+                    <div
+                        class="w-20 h-20 rounded-full bg-[#0059a4] text-white flex items-center justify-center border-2 border-white outline outline-1 outline-[#0059a4] shrink-0">
+                        <span id="player-avatar-dorsal" class="text-3xl font-bold tracking-tight font-sans">--</span>
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <span id="player-position-badge"
+                            class="bg-[#eeeeee] text-[#1a1c1c] px-2 py-0.5 text-[10px] font-bold tracking-wider sharp-ui uppercase font-sans">
+                            POSICION
+                        </span>
+                        <h2 id="player-fullname"
+                            class="font-serif text-2xl font-bold text-[#1a1c1c] mt-2 truncate leading-tight">
+                            Nombre de Jugador
+                        </h2>
+                        <p class="text-xs text-[#414752] font-sans mt-0.5">Selección Nacional de Argentina</p>
+                    </div>
+                </div>
+
+                <!-- TARJETAS DE MÉTRICAS RÁPIDAS (KPIs) -->
+                <div class="flex flex-col gap-4">
+                    <h3
+                        class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e2e2e2] pb-2 font-sans">
+                        Métricas de Rendimiento (KPIs)
+                    </h3>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- KPI 1: Efectividad de Pases -->
+                        <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+                            <span
+                                class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Eficacia
+                                Pases</span>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-pases" class="text-3xl font-bold font-sans text-[#0059a4]">--</span>
+                                <span class="text-sm font-semibold text-[#414752] font-sans">%</span>
+                            </div>
+                            <p class="text-[10px] text-[#414752] mt-1">Efectividad general</p>
+                        </div>
+
+                        <!-- KPI 2: Rupturas de Línea -->
+                        <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+                            <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Líneas
+                                Rotas</span>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-rupturas" class="text-3xl font-bold font-sans text-[#1a1c1c]">--</span>
+                            </div>
+                            <p class="text-[10px] text-[#414752] mt-1">Pases que rompen línea</p>
+                        </div>
+
+                        <!-- KPI 3: Recuperaciones -->
+                        <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+                            <span
+                                class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Recuperaciones</span>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-recuperaciones"
+                                    class="text-3xl font-bold font-sans text-[#1a1c1c]">--</span>
+                            </div>
+                            <p class="text-[10px] text-[#414752] mt-1">Recuperación de balón</p>
+                        </div>
+
+                        <!-- KPI 4: Ofertas de Pase Recibidas -->
+                        <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+                            <span
+                                class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Ofertas
+                                Recibidas</span>
+                            <div class="mt-2 flex items-baseline gap-1">
+                                <span id="kpi-ofertas" class="text-3xl font-bold font-sans text-[#1a1c1c]">--</span>
+                            </div>
+                            <p class="text-[10px] text-[#414752] mt-1">Opciones de pase ofrecidas</p>
+                        </div>
+                    </div>
+
+                    <!-- KPI 5: Distancia Recorrida (Full-width en su fila) -->
+                    <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex items-center justify-between">
+                        <div>
+                            <span
+                                class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Distancia
+                                Recorrida</span>
+                            <p class="text-[10px] text-[#414752] mt-0.5">Total cubierta en el encuentro</p>
+                        </div>
+                        <div class="flex items-baseline gap-1">
+                            <span id="kpi-distancia" class="text-3xl font-bold font-sans text-[#0059a4]">--</span>
+                            <span class="text-sm font-semibold text-[#414752] font-sans">km</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLUMNA DERECHA: Visualización y Gráfico (7 Cols en Desktop) -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+
+                <!-- SECTOR VISUALIZACIÓN GRÁFICA -->
+                <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#e2e2e2] pb-4 gap-3">
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Gráfico de Rendimiento Comparado
+                            </h3>
+                            <p class="text-xs text-[#414752] font-sans">Valores normalizados sobre el máximo del equipo
+                            </p>
+                        </div>
+
+                        <!-- Selector de tipo de gráfico interactivo -->
+                        <div
+                            class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none shrink-0 self-start sm:self-auto">
+                            <button id="btn-chart-radar"
+                                class="px-3 py-1.5 text-xs font-bold tracking-wider sharp-ui transition-colors duration-150 cursor-pointer bg-[#0059a4] text-white">
+                                RADAR
+                            </button>
+                            <button id="btn-chart-bar"
+                                class="px-3 py-1.5 text-xs font-bold tracking-wider sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
+                                BARRAS
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas del Gráfico -->
+                    <div
+                        class="relative w-full aspect-square sm:aspect-video flex items-center justify-center p-2 min-h-[300px] max-h-[380px]">
+                        <canvas id="metricsChart" class="w-full h-full"></canvas>
+                    </div>
+                </div>
+
+                <!-- TABLA COMPARATIVA DE LÍDERES DE EQUIPO (Journalistic/Information Density) -->
+                <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Líderes de Rendimiento en el Partido
+                        </h3>
+                        <p class="text-xs text-[#414752] font-sans">Jugadores con la marca más alta por categoría</p>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
+                                    <th class="py-2.5 font-sans">Métrica</th>
+                                    <th class="py-2.5 font-sans">Líder</th>
+                                    <th class="py-2.5 text-right font-sans">Marca Máxima</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaders-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+                                <!-- Llenado dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer
+        class="w-full bg-white border-t border-[#e0e0e0] py-6 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 La Crónica Deportiva. Datos oficiales de la Selección Argentina (Partido vs Suiza).</p>
+            <p class="text-[#0059a4] font-bold">Hecho con Estilo Chronicle &bull; Mobile-First &bull; Carga Instantánea
+            </p>
+        </div>
+    </footer>
+
+    <!-- DATA & LOGIC -->
+    <script>
+        // DATASET COMPLETO EMBEBIDO DIRECTAMENTE
+        const ARGENTINA_SUIZA_DATA = {
+            "equipo": "Argentina",
+            "partido": "Argentina vs Suiza",
+            "fecha": "11 July 2026",
+            "jugadores": [
+                {
+                    "dorsal": 23,
+                    "nombre": "Emiliano MARTINEZ",
+                    "posicion": "GK",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 64,
+                        "rupturas_linea_completadas": 10,
+                        "recuperaciones_posesion": 8,
+                        "ofertas_pase_recibidas": 5,
+                        "distancia_total_metros": 6455.4
+                    }
+                },
+                {
+                    "dorsal": 3,
+                    "nombre": "Nicolas TAGLIAFICO",
+                    "posicion": "DF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 84,
+                        "rupturas_linea_completadas": 3,
+                        "recuperaciones_posesion": 0,
+                        "ofertas_pase_recibidas": 4,
+                        "distancia_total_metros": 7520.8
+                    }
+                },
+                {
+                    "dorsal": 5,
+                    "nombre": "Leandro PAREDES",
+                    "posicion": "MF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 94,
+                        "rupturas_linea_completadas": 18,
+                        "recuperaciones_posesion": 5,
+                        "ofertas_pase_recibidas": 20,
+                        "distancia_total_metros": 11256.5
+                    }
+                },
+                {
+                    "dorsal": 6,
+                    "nombre": "Lisandro MARTINEZ",
+                    "posicion": "DF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 87,
+                        "rupturas_linea_completadas": 12,
+                        "recuperaciones_posesion": 7,
+                        "ofertas_pase_recibidas": 3,
+                        "distancia_total_metros": 11939.2
+                    }
+                },
+                {
+                    "dorsal": 7,
+                    "nombre": "Rodrigo DE PAUL",
+                    "posicion": "MF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 91,
+                        "rupturas_linea_completadas": 5,
+                        "recuperaciones_posesion": 2,
+                        "ofertas_pase_recibidas": 23,
+                        "distancia_total_metros": 8659.4
+                    }
+                },
+                {
+                    "dorsal": 9,
+                    "nombre": "Julian ALVAREZ",
+                    "posicion": "FW",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 89,
+                        "rupturas_linea_completadas": 6,
+                        "recuperaciones_posesion": 1,
+                        "ofertas_pase_recibidas": 13,
+                        "distancia_total_metros": 13653.3
+                    }
+                },
+                {
+                    "dorsal": 10,
+                    "nombre": "Lionel MESSI",
+                    "posicion": "FW",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 83,
+                        "rupturas_linea_completadas": 12,
+                        "recuperaciones_posesion": 3,
+                        "ofertas_pase_recibidas": 26,
+                        "distancia_total_metros": 10269.4
+                    }
+                },
+                {
+                    "dorsal": 13,
+                    "nombre": "Cristian ROMERO",
+                    "posicion": "DF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 95,
+                        "rupturas_linea_completadas": 9,
+                        "recuperaciones_posesion": 5,
+                        "ofertas_pase_recibidas": 11,
+                        "distancia_total_metros": 9294.5
+                    }
+                },
+                {
+                    "dorsal": 20,
+                    "nombre": "Alexis MAC ALLISTER",
+                    "posicion": "MF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 94,
+                        "rupturas_linea_completadas": 5,
+                        "recuperaciones_posesion": 6,
+                        "ofertas_pase_recibidas": 17,
+                        "distancia_total_metros": 14236.5
+                    }
+                },
+                {
+                    "dorsal": 24,
+                    "nombre": "Enzo FERNANDEZ",
+                    "posicion": "MF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 94,
+                        "rupturas_linea_completadas": 6,
+                        "recuperaciones_posesion": 0,
+                        "ofertas_pase_recibidas": 14,
+                        "distancia_total_metros": 11162.1
+                    }
+                },
+                {
+                    "dorsal": 26,
+                    "nombre": "Nahuel MOLINA",
+                    "posicion": "DF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 82,
+                        "rupturas_linea_completadas": 6,
+                        "recuperaciones_posesion": 4,
+                        "ofertas_pase_recibidas": 15,
+                        "distancia_total_metros": 8538.2
+                    }
+                },
+                {
+                    "dorsal": 4,
+                    "nombre": "Gonzalo MONTIEL",
+                    "posicion": "DF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 77,
+                        "rupturas_linea_completadas": 1,
+                        "recuperaciones_posesion": 3,
+                        "ofertas_pase_recibidas": 1,
+                        "distancia_total_metros": 5492.5
+                    }
+                },
+                {
+                    "dorsal": 15,
+                    "nombre": "Nico GONZALEZ",
+                    "posicion": "MF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 87,
+                        "rupturas_linea_completadas": 0,
+                        "recuperaciones_posesion": 4,
+                        "ofertas_pase_recibidas": 2,
+                        "distancia_total_metros": 5830.9
+                    }
+                },
+                {
+                    "dorsal": 16,
+                    "nombre": "Thiago ALMADA",
+                    "posicion": "FW",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 93,
+                        "rupturas_linea_completadas": 5,
+                        "recuperaciones_posesion": 0,
+                        "ofertas_pase_recibidas": 9,
+                        "distancia_total_metros": 4018.2
+                    }
+                },
+                {
+                    "dorsal": 19,
+                    "nombre": "Nicolas OTAMENDI",
+                    "posicion": "DF",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 86,
+                        "rupturas_linea_completadas": 1,
+                        "recuperaciones_posesion": 0,
+                        "ofertas_pase_recibidas": 1,
+                        "distancia_total_metros": 1897.2
+                    }
+                },
+                {
+                    "dorsal": 21,
+                    "nombre": "Jose Manuel LOPEZ",
+                    "posicion": "FW",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 100,
+                        "rupturas_linea_completadas": 0,
+                        "recuperaciones_posesion": 0,
+                        "ofertas_pase_recibidas": 0,
+                        "distancia_total_metros": 1615.5
+                    }
+                },
+                {
+                    "dorsal": 22,
+                    "nombre": "Lautaro MARTINEZ",
+                    "posicion": "FW",
+                    "metricas": {
+                        "efectividad_pases_porcentaje": 86,
+                        "rupturas_linea_completadas": 0,
+                        "recuperaciones_posesion": 1,
+                        "ofertas_pase_recibidas": 5,
+                        "distancia_total_metros": 4906.7
+                    }
+                }
+            ]
+        };
+
+        // MAPEO DE POSICIONES
+        const POSICIONES_MAP = {
+            "GK": "Arquero",
+            "DF": "Defensor",
+            "MF": "Mediocampista",
+            "FW": "Delantero"
+        };
+
+        // VARIABLES DE CONTROL
+        let currentChartType = 'radar'; // 'radar' o 'bar'
+        let currentSelectedPlayer = null;
+        let chartInstance = null;
+        let maxStats = {};
+        let squadLeaders = {};
+
+        // INICIALIZACIÓN
+        window.addEventListener('DOMContentLoaded', () => {
+            calculateSquadMaxStats();
+            populatePlayerSelector();
+            renderLeadersTable();
+
+            // Escuchar cambios de jugador
+            const playerSelect = document.getElementById('player-select');
+            playerSelect.addEventListener('change', (e) => {
+                const dorsal = parseInt(e.target.value);
+                selectPlayer(dorsal);
+            });
+
+            // Escuchar alternancia de gráficos
+            const btnRadar = document.getElementById('btn-chart-radar');
+            const btnBar = document.getElementById('btn-chart-bar');
+
+            btnRadar.addEventListener('click', () => {
+                setChartType('radar', btnRadar, btnBar);
+            });
+
+            btnBar.addEventListener('click', () => {
+                setChartType('bar', btnBar, btnRadar);
+            });
+
+            // Cargar primer jugador por defecto (Lionel Messi dorsal 10, o el primero del JSON si no está)
+            const defaultPlayer = ARGENTINA_SUIZA_DATA.jugadores.find(p => p.dorsal === 10) || ARGENTINA_SUIZA_DATA.jugadores[0];
+            if (defaultPlayer) {
+                playerSelect.value = defaultPlayer.dorsal;
+                selectPlayer(defaultPlayer.dorsal);
+            }
+        });
+
+        // CÁLCULO DE MÁXIMOS PARA NORMALIZAR Y HALLAR LÍDERES
+        function calculateSquadMaxStats() {
+            const players = ARGENTINA_SUIZA_DATA.jugadores;
+
+            maxStats = {
+                efectividad_pases_porcentaje: Math.max(...players.map(p => p.metricas.efectividad_pases_porcentaje)),
+                rupturas_linea_completadas: Math.max(...players.map(p => p.metricas.rupturas_linea_completadas)),
+                recuperaciones_posesion: Math.max(...players.map(p => p.metricas.recuperaciones_posesion)),
+                ofertas_pase_recibidas: Math.max(...players.map(p => p.metricas.ofertas_pase_recibidas)),
+                distancia_total_metros: Math.max(...players.map(p => p.metricas.distancia_total_metros))
+            };
+
+            // Hallar líderes por categoría
+            squadLeaders = {
+                efectividad_pases_porcentaje: findLeaderForMetric('efectividad_pases_porcentaje', '%'),
+                rupturas_linea_completadas: findLeaderForMetric('rupturas_linea_completadas', ' veces'),
+                recuperaciones_posesion: findLeaderForMetric('recuperaciones_posesion', ' balones'),
+                ofertas_pase_recibidas: findLeaderForMetric('ofertas_pase_recibidas', ' veces'),
+                distancia_total_metros: findLeaderForMetric('distancia_total_metros', ' km', val => (val / 1000).toFixed(2))
+            };
+        }
+
+        function findLeaderForMetric(metricKey, unit, formatFn = val => val) {
+            const players = ARGENTINA_SUIZA_DATA.jugadores;
+            let leader = players[0];
+
+            for (let i = 1; i < players.length; i++) {
+                if (players[i].metricas[metricKey] > leader.metricas[metricKey]) {
+                    leader = players[i];
+                }
+            }
+            return {
+                nombre: leader.nombre,
+                dorsal: leader.dorsal,
+                valorFormateado: `${formatFn(leader.metricas[metricKey])}${unit}`
+            };
+        }
+
+        // LLENADO DEL MENU SELECTOR (AGRUPADO POR POSICIÓN)
+        function populatePlayerSelector() {
+            const select = document.getElementById('player-select');
+            const players = ARGENTINA_SUIZA_DATA.jugadores;
+
+            // Agrupar por posición
+            const positions = { GK: [], DF: [], MF: [], FW: [] };
+            players.forEach(p => {
+                if (positions[p.posicion]) {
+                    positions[p.posicion].push(p);
+                }
+            });
+
+            // Orden de visualización: Delanteros, Mediocampistas, Defensas, Arquero
+            const order = ['FW', 'MF', 'DF', 'GK'];
+
+            order.forEach(posCode => {
+                const list = positions[posCode];
+                if (list && list.length > 0) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = (POSICIONES_MAP[posCode] || posCode).toUpperCase();
+
+                    // Ordenar alfabéticamente dentro de la categoría
+                    list.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+                    list.forEach(p => {
+                        const option = document.createElement('option');
+                        option.value = p.dorsal;
+                        option.textContent = `#${p.dorsal} - ${p.nombre}`;
+                        optgroup.appendChild(option);
+                    });
+
+                    select.appendChild(optgroup);
+                }
+            });
+        }
+
+        // SELECCIÓN DE UN JUGADOR
+        function selectPlayer(dorsal) {
+            currentSelectedPlayer = ARGENTINA_SUIZA_DATA.jugadores.find(p => p.dorsal === dorsal);
+            if (!currentSelectedPlayer) return;
+
+            // Actualizar Avatar e Info General
+            document.getElementById('player-avatar-dorsal').textContent = currentSelectedPlayer.dorsal;
+            document.getElementById('player-fullname').textContent = currentSelectedPlayer.nombre;
+            document.getElementById('player-position-badge').textContent = POSICIONES_MAP[currentSelectedPlayer.posicion] || currentSelectedPlayer.posicion;
+
+            // Actualizar Tarjetas KPI
+            document.getElementById('kpi-pases').textContent = currentSelectedPlayer.metricas.efectividad_pases_porcentaje;
+            document.getElementById('kpi-rupturas').textContent = currentSelectedPlayer.metricas.rupturas_linea_completadas;
+            document.getElementById('kpi-recuperaciones').textContent = currentSelectedPlayer.metricas.recuperaciones_posesion;
+            document.getElementById('kpi-ofertas').textContent = currentSelectedPlayer.metricas.ofertas_pase_recibidas;
+
+            const km = (currentSelectedPlayer.metricas.distancia_total_metros / 1000).toFixed(2);
+            document.getElementById('kpi-distancia').textContent = km;
+
+            // Actualizar Gráfico
+            renderChart();
+        }
+
+        // ALTERNANCIA DE BOTONES Y TIPO DE GRÁFICO
+        function setChartType(type, activeBtn, inactiveBtn) {
+            if (currentChartType === type) return;
+            currentChartType = type;
+
+            // Actualizar clases de botones
+            activeBtn.classList.remove('bg-transparent', 'text-[#1a1c1c]', 'hover:bg-[#e2e2e2]');
+            activeBtn.classList.add('bg-[#0059a4]', 'text-white');
+
+            inactiveBtn.classList.remove('bg-[#0059a4]', 'text-white');
+            inactiveBtn.classList.add('bg-transparent', 'text-[#1a1c1c]', 'hover:bg-[#e2e2e2]');
+
+            // Redibujar gráfico
+            renderChart();
+        }
+
+        // NORMALIZACIÓN
+        function getNormalizedValue(value, max) {
+            return max > 0 ? Math.round((value / max) * 100) : 0;
+        }
+
+        // OBTENER VALOR REAL PARA EL TOOLTIP SEGÚN ÍNDICE
+        function getRawValueLabel(index, player) {
+            const metricas = player.metricas;
+            switch (index) {
+                case 0:
+                    return `${metricas.efectividad_pases_porcentaje}%`;
+                case 1:
+                    return `${metricas.rupturas_linea_completadas} pases`;
+                case 2:
+                    return `${metricas.recuperaciones_posesion} balones`;
+                case 3:
+                    return `${metricas.ofertas_pase_recibidas} ofertas`;
+                case 4:
+                    return `${(metricas.distancia_total_metros / 1000).toFixed(2)} km`;
+                default:
+                    return '';
+            }
+        }
+
+        // RENDERIZADO DEL GRÁFICO (Chart.js)
+        function renderChart() {
+            if (!currentSelectedPlayer) return;
+
+            const ctx = document.getElementById('metricsChart').getContext('2d');
+
+            // Destruir instancia previa si existe para evitar superposición
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Preparar datos normalizados para graficar
+            const dataNorm = [
+                getNormalizedValue(currentSelectedPlayer.metricas.efectividad_pases_porcentaje, maxStats.efectividad_pases_porcentaje),
+                getNormalizedValue(currentSelectedPlayer.metricas.rupturas_linea_completadas, maxStats.rupturas_linea_completadas),
+                getNormalizedValue(currentSelectedPlayer.metricas.recuperaciones_posesion, maxStats.recuperaciones_posesion),
+                getNormalizedValue(currentSelectedPlayer.metricas.ofertas_pase_recibidas, maxStats.ofertas_pase_recibidas),
+                getNormalizedValue(currentSelectedPlayer.metricas.distancia_total_metros, maxStats.distancia_total_metros)
+            ];
+
+            const labels = [
+                'Eficacia Pases',
+                'Rupturas Línea',
+                'Recuperaciones',
+                'Ofertas Pase',
+                'Distancia'
+            ];
+
+            const datasetLabel = `Rendimiento de ${currentSelectedPlayer.nombre.split(' ')[1] || currentSelectedPlayer.nombre}`;
+
+            if (currentChartType === 'radar') {
+                chartInstance = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: datasetLabel,
+                            data: dataNorm,
+                            backgroundColor: 'rgba(0, 89, 164, 0.15)',
+                            borderColor: '#0059a4',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#0059a4',
+                            pointBorderColor: '#ffffff',
+                            pointHoverBackgroundColor: '#ffffff',
+                            pointHoverBorderColor: '#0059a4',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    color: '#e2e2e2'
+                                },
+                                grid: {
+                                    color: '#e8e8e8'
+                                },
+                                pointLabels: {
+                                    font: {
+                                        family: 'Inter',
+                                        size: 11,
+                                        weight: '600'
+                                    },
+                                    color: '#1a1c1c'
+                                },
+                                ticks: {
+                                    display: false,
+                                    maxTicksLimit: 5
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: '#1a1c1c',
+                                titleFont: { family: 'Inter', size: 12, weight: '700' },
+                                bodyFont: { family: 'Inter', size: 12 },
+                                cornerRadius: 0,
+                                callbacks: {
+                                    label: function (context) {
+                                        const rawVal = getRawValueLabel(context.dataIndex, currentSelectedPlayer);
+                                        return `Marca: ${rawVal} (${context.formattedValue}% del máx.)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Horizontal Bar Chart
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: datasetLabel,
+                            data: dataNorm,
+                            backgroundColor: '#0059a4',
+                            hoverBackgroundColor: '#004785',
+                            borderWidth: 0,
+                            barThickness: 16
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: '#e8e8e8',
+                                    drawTicks: false
+                                },
+                                ticks: {
+                                    font: { family: 'Inter', size: 10 },
+                                    color: '#414752',
+                                    callback: function (value) {
+                                        return value + '%';
+                                    }
+                                },
+                                min: 0,
+                                max: 100
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: { family: 'Inter', size: 11, weight: '600' },
+                                    color: '#1a1c1c'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: '#1a1c1c',
+                                titleFont: { family: 'Inter', size: 12, weight: '700' },
+                                bodyFont: { family: 'Inter', size: 12 },
+                                cornerRadius: 0,
+                                callbacks: {
+                                    label: function (context) {
+                                        const rawVal = getRawValueLabel(context.dataIndex, currentSelectedPlayer);
+                                        return `Marca: ${rawVal} (${context.formattedValue}% del máx.)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // RENDERIZADO DE TABLA DE LÍDERES
+        function renderLeadersTable() {
+            const tbody = document.getElementById('leaders-tbody');
+            tbody.innerHTML = '';
+
+            const categories = [
+                { name: 'Efectividad Pases', key: 'efectividad_pases_porcentaje' },
+                { name: 'Rupturas de Línea', key: 'rupturas_linea_completadas' },
+                { name: 'Recuperaciones Posesión', key: 'recuperaciones_posesion' },
+                { name: 'Ofertas Pase Recibidas', key: 'ofertas_pase_recibidas' },
+                { name: 'Distancia Recorrida', key: 'distancia_total_metros' }
+            ];
+
+            categories.forEach(cat => {
+                const leader = squadLeaders[cat.key];
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-[#f9f9f9] transition-colors duration-100';
+
+                tr.innerHTML = `
+          <td class="py-3 font-medium text-[#414752] font-sans">${cat.name}</td>
+          <td class="py-3 font-bold font-sans">
+            <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#eeeeee] text-[#1a1c1c] text-[10px] mr-2">
+              ${leader.dorsal}
+            </span>
+            ${leader.nombre}
+          </td>
+          <td class="py-3 text-right font-bold text-[#0059a4] font-sans">${leader.valorFormateado}</td>
+        `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+
+</html>
