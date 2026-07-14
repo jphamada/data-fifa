@@ -287,8 +287,8 @@
               <th class="py-3 font-sans">Local</th>
               <th class="py-3 text-center font-sans">Score</th>
               <th class="py-3 text-right font-sans">Visitante</th>
-              <th class="py-3 text-center font-sans">Resultado</th>
-              <th class="py-3 font-sans">Competición</th>
+              <th class="py-3 text-center font-sans hidden sm:table-cell">Resultado</th>
+              <th class="py-3 font-sans hidden md:table-cell">Competición</th>
               <th class="py-3 font-sans hidden md:table-cell">Fase</th>
               <th class="py-3 font-sans hidden lg:table-cell">Estadio</th>
             </tr>
@@ -313,9 +313,9 @@
   <script>
     // DATASET ORIGINAL EMBEBIDO
     const ESPANA_FRANCIA_DATA = [
-      { "fecha": "05 jun 2025", "local": "España", "visitante": "Francia", "goles_local": 5, "goles_visitante": 4, "competicion": "UEFA Nations League 2024/25", "fase": "Finals", "estadio": "Mercedes-Benz Arena" },
+      { "fecha": "05 jun 2025", "local": "España", "visitante": "Francia", "goles_local": 5, "goles_visitante": 4, "competicion": "UEFA Nations League 2024/25", "fase": "Final", "estadio": "Mercedes-Benz Arena" },
       { "fecha": "09 jul 2024", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 1, "competicion": "UEFA EURO 2024", "fase": "Fase final", "estadio": "Allianz Arena" },
-      { "fecha": "10 oct 2021", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA Nations League 2020/21", "fase": "Finals", "estadio": "Stadio Giuseppe Meazza" },
+      { "fecha": "10 oct 2021", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA Nations League 2020/21", "fase": "Final", "estadio": "Stadio Giuseppe Meazza" },
       { "fecha": "28 mar 2017", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 2, "competicion": "Amistoso 2017", "fase": "-", "estadio": "Stade de France" },
       { "fecha": "04 sep 2014", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 2014", "fase": "-", "estadio": "Stade de France" },
       { "fecha": "26 mar 2013", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 1, "competicion": "Fase preliminar de la Copa Mundial de la FIFA 2014 - Europa", "fase": "Ronda uno", "estadio": "Stade de France" },
@@ -326,11 +326,11 @@
       { "fecha": "27 jun 2006", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 3, "competicion": "Copa Mundial de la FIFA Alemania 2006", "fase": "Octavos de final", "estadio": "HDI-Arena" },
       { "fecha": "27 mar 2001", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 2001", "fase": "-", "estadio": "Camp Nou" },
       { "fecha": "25 jun 2000", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA EURO 2000", "fase": "Segunda fase", "estadio": "Jan Breydel Stadium" },
-      { "fecha": "28 ene 1998", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1998", "fase": "A-Matches", "estadio": "Stade de France" },
+      { "fecha": "28 ene 1998", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1998", "fase": "Amistoso", "estadio": "Stade de France" },
       { "fecha": "15 jun 1996", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "UEFA EURO 1996", "fase": "Partidos de grupo", "estadio": "Elland Road" },
       { "fecha": "12 oct 1991", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA EURO 1992 Prel. Comp.", "fase": "Partidos de grupo", "estadio": "Estadio Benito Villamarín" },
       { "fecha": "20 feb 1991", "local": "Francia", "visitante": "España", "goles_local": 3, "goles_visitante": 1, "competicion": "UEFA EURO 1992 Prel. Comp.", "fase": "Partidos de grupo", "estadio": "Parque de los Príncipes" },
-      { "fecha": "23 mar 1988", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 1988", "fase": "A-Matches", "estadio": "Cavée Verte" },
+      { "fecha": "23 mar 1988", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 1988", "fase": "Amistoso", "estadio": "Cavée Verte" },
       { "fecha": "27 jun 1984", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 0, "competicion": "UEFA EURO 1984", "fase": "Ronda final", "estadio": "PARIS" },
       { "fecha": "05 oct 1983", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Amistoso 1983", "fase": "-", "estadio": "PARIS" },
       { "fecha": "18 feb 1981", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1981", "fase": "-", "estadio": "MADRID" },
@@ -344,7 +344,7 @@
       { "fecha": "13 mar 1958", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 2, "competicion": "Amistoso 1958", "fase": "-", "estadio": "PARIS" },
       { "fecha": "17 mar 1955", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "Amistoso 1955", "fase": "-", "estadio": "MADRID" },
       { "fecha": "19 jun 1949", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 5, "competicion": "Amistoso 1949", "fase": "-", "estadio": "COLOMBES" },
-      { "fecha": "15 mar 1942", "local": "España", "visitante": "Francia", "goles_local": 4, "goles_visitante": 0, "competicion": "Amistoso 1942", "fase": "-", "estadio": "SEVILLE" },
+      { "fecha": "15 mar 1942", "local": "España", "visitante": "Francia", "goles_local": 4, "goles_visitante": 0, "competicion": "Amistoso 1942", "fase": "-", "estadio": "SEVILLA" },
       { "fecha": "24 ene 1935", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "Amistoso 1935", "fase": "-", "estadio": "MADRID" },
       { "fecha": "23 abr 1933", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1933", "fase": "-", "estadio": "COLOMBES" },
       { "fecha": "14 abr 1929", "local": "España", "visitante": "Francia", "goles_local": 8, "goles_visitante": 1, "competicion": "Amistoso 1929", "fase": "-", "estadio": "ZARAGOZA" },
@@ -519,8 +519,8 @@
           <td class="py-3 font-sans"><span class="${localStyle}">${m.local}</span></td>
           <td class="py-3 font-sans text-center font-bold text-sm bg-[#fafafa] border-l border-r border-[#e0e0e0] w-20">${m.goles_local} - ${m.goles_visitante}</td>
           <td class="py-3 font-sans text-right"><span class="${visitStyle}">${m.visitante}</span></td>
-          <td class="py-3 font-sans text-center">${badge}</td>
-          <td class="py-3 font-sans text-xs text-[#414752]">${m.competicion}</td>
+          <td class="py-3 font-sans text-center hidden sm:table-cell">${badge}</td>
+          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${m.competicion}</td>
           <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${m.fase !== '-' ? m.fase : 'Amistoso'}</td>
           <td class="py-3 font-sans text-xs text-[#414752] hidden lg:table-cell">${m.estadio}</td>
         `;
@@ -734,31 +734,31 @@
           type: 'bar',
           data: {
             labels: ['Partidos Oficiales', 'Partidos Amistosos'],
-              datasets: [
-                {
-                  label: 'Victorias España',
-                  data: [offSpain, friSpain],
-                  backgroundColor: '#b6171e',
-                  barThickness: 25
-                },
-                {
-                  label: 'Empates',
-                  data: [offDraw, friDraw],
-                  backgroundColor: '#727172',
-                  barThickness: 25
-                },
-                {
-                  label: 'Victorias Francia',
-                  data: [offFrance, friFrance],
-                  backgroundColor: '#0059a4',
-                  barThickness: 25
-                }
-              ]
+            datasets: [
+              {
+                label: 'Victorias España',
+                data: [offSpain, friSpain],
+                backgroundColor: '#b6171e',
+                barThickness: 25
+              },
+              {
+                label: 'Empates',
+                data: [offDraw, friDraw],
+                backgroundColor: '#727172',
+                barThickness: 25
+              },
+              {
+                label: 'Victorias Francia',
+                data: [offFrance, friFrance],
+                backgroundColor: '#0059a4',
+                barThickness: 25
+              }
+            ]
           },
           options: {
             responsive: true,
-              maintainAspectRatio: false,
-                scales: {
+            maintainAspectRatio: false,
+            scales: {
               x: {
                 grid: { display: false },
                 ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
@@ -772,12 +772,12 @@
             plugins: {
               legend: {
                 position: 'top',
-                  labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
+                labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
               },
               tooltip: {
                 backgroundColor: '#1a1c1c',
-                  cornerRadius: 0,
-                    titleFont: { family: 'Inter', size: 12, weight: '700' },
+                cornerRadius: 0,
+                titleFont: { family: 'Inter', size: 12, weight: '700' },
                 bodyFont: { family: 'Inter', size: 12 }
               }
             }
