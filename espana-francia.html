@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>España vs Francia - Historial de Encuentros - Dashboard Interactivo</title>
+  <title>España vs Francia - Historial de encuentros</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -22,9 +22,11 @@
   <style type="text/css">
     /* Estilos basados en design.md */
     :root {
-      --color-spain: #b6171e; /* Rojo España */
+      --color-spain: #b6171e;
+      /* Rojo España */
       --color-spain-light: #ffdad6;
-      --color-france: #0059a4; /* Azul Francia */
+      --color-france: #0059a4;
+      /* Azul Francia */
       --color-france-light: #d4e3ff;
       --color-bg: #f9f9f9;
       --color-surface: #ffffff;
@@ -59,9 +61,12 @@
 
     /* Animación sutil de pulso para indicador Live */
     @keyframes pulse-dot {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 1;
       }
+
       50% {
         opacity: 0.4;
       }
@@ -91,62 +96,34 @@
           HISTORIAL CARA A CARA
         </span>
         <span class="text-xs font-semibold text-[#414752] tracking-wider uppercase font-sans">
-          Fecha 2026-07-14
+
         </span>
       </div>
 
       <div class="border-t border-[#e2e2e2] pt-4 mt-1">
         <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
-          España vs Francia: Balance Histórico Completo
+          España vs Francia: balance histórico completo
         </h1>
       </div>
 
       <div
         class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-2 text-xs text-[#414752]">
         <div class="flex items-center gap-4">
-          <span><strong>REPORTE:</strong> Head-to-Head Histórico</span>
+          <span><strong>ENCUENTROS REGISTRADOS:</strong> 38 Partidoso</span>
           <span class="text-[#e0e0e0]">|</span>
-          <span><strong>ENCUENTROS REGISTRADOS:</strong> 38 Partidos</span>
+          <span><strong> </strong> </span>
         </div>
         <div class="flex gap-2">
-          <span
-            class="bg-[#ffdad6] text-[#b6171e] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
+          <span class="bg-[#ffdad6] text-[#b6171e] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
             ESPAÑA
           </span>
-          <span
-            class="bg-[#d4e3ff] text-[#0059a4] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
+          <span class="bg-[#d4e3ff] text-[#0059a4] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
             FRANCIA
           </span>
         </div>
       </div>
 
-      <!-- NAVEGACIÓN ENTRE PÁGINAS -->
-      <nav class="flex flex-wrap border-t border-[#e0e0e0] mt-4 text-xs font-bold font-sans">
-        <a href="index.html"
-          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
-          Inicio
-        </a>
-        <a href="argentina-suiza.html"
-          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
-          Métricas Jugadores (ARG)
-        </a>
-        <a href="argentina.html"
-          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
-          Evolución Argentina
-        </a>
-        <a href="inglaterra.html"
-          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
-          Evolución Inglaterra
-        </a>
-        <a href="comparacion.html"
-          class="py-3.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#0059a4] hover:border-[#e0e0e0] uppercase tracking-wider transition-colors duration-150">
-          Cara a Cara (ARG vs ING)
-        </a>
-        <a href="espana-francia.html"
-          class="py-3.5 px-4 border-b-2 border-[#b6171e] text-[#b6171e] uppercase tracking-wider transition-colors duration-150">
-          España vs Francia
-        </a>
-      </nav>
+
     </div>
   </header>
 
@@ -155,7 +132,7 @@
 
     <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos Dinámicos) -->
     <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-      
+
       <!-- Partidos -->
       <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between col-span-2 lg:col-span-1">
         <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Partidos Jugados</span>
@@ -213,7 +190,8 @@
 
         <!-- PANEL DE CONTROL / FILTROS -->
         <section class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
-          <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
+          <h3
+            class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
             Filtros del Historial
           </h3>
 
@@ -265,22 +243,31 @@
 
         <!-- APUNTES EDITORIALES (Chronicle Insights) -->
         <section class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
-          <h3 class="text-xs font-bold tracking-widest text-[#b6171e] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
+          <h3
+            class="text-xs font-bold tracking-widest text-[#b6171e] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
             Apuntes de la Redacción
           </h3>
 
           <div class="text-xs space-y-4 font-sans leading-relaxed text-[#414752]">
             <div>
-              <h4 class="font-bold text-[#1a1c1c] uppercase tracking-wider text-[10px] mb-1">Doble Realidad Histórica</h4>
-              <p>Aunque España lidera el historial general con 18 victorias, **Francia ha dominado en torneos oficiales**, logrando 6 victorias oficiales frente a las 4 de España y 2 empates.</p>
+              <h4 class="font-bold text-[#1a1c1c] uppercase tracking-wider text-[10px] mb-1">Doble realidad histórica
+              </h4>
+              <p>Aunque España lidera el historial general con 18 victorias, <b>Francia dominó en torneos
+                  oficiales</b>, logrando 6 victorias oficiales frente a las 4 de España y 2 empates.</p>
             </div>
             <div class="border-t border-[#eeeeee] pt-3">
-              <h4 class="font-bold text-[#1a1c1c] uppercase tracking-wider text-[10px] mb-1">El Encuentro Más Reciente</h4>
-              <p>El partido disputado el **5 de junio de 2025** por la UEFA Nations League rompió récords históricos de goleo en su enfrentamiento, culminando con un vibrante **5-4** a favor de España en Stuttgart.</p>
+              <h4 class="font-bold text-[#1a1c1c] uppercase tracking-wider text-[10px] mb-1">El Encuentro más reciente
+              </h4>
+              <p>El partido disputado el <b>5 de junio de 2025</b> por la UEFA Nations League rompió récords históricos
+                de
+                goleo en su enfrentamiento, culminando con un 5-4 a favor de España en Stuttgart.</p>
             </div>
             <div class="border-t border-[#eeeeee] pt-3">
-              <h4 class="font-bold text-[#1a1c1c] uppercase tracking-wider text-[10px] mb-1">Máxima Goleada Registrada</h4>
-              <p>Ocurrió el **14 de abril de 1929** en Zaragoza. La selección española dirigida en aquella época vapuleó a los franceses con un contundente **8-1**.</p>
+              <h4 class="font-bold text-[#1a1c1c] uppercase tracking-wider text-[10px] mb-1">Máxima Goleada Registrada
+              </h4>
+              <p>Ocurrió el <b>14 de abril de 1929</b> en Zaragoza. La selección española dirigida en aquella época
+                vapuleó
+                a los franceses con un contundente 8-1.</p>
             </div>
           </div>
         </section>
@@ -293,12 +280,13 @@
         <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#e2e2e2] pb-4 gap-3">
             <div>
-              <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Visualización Táctica de Datos</h3>
+              <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Visualización táctica de datos</h3>
               <p class="text-xs text-[#414752] font-sans">Balance comparado e histórico entre ambas escuadras.</p>
             </div>
 
             <!-- Selector de Pestañas de Gráfico -->
-            <div class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none shrink-0 self-start sm:self-auto text-[10px] font-bold tracking-wider font-sans">
+            <div
+              class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none shrink-0 self-start sm:self-auto text-[10px] font-bold tracking-wider font-sans">
               <button id="btn-tab-timeline" onclick="switchTab('timeline')"
                 class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-[#b6171e] text-white">
                 RECIENTES
@@ -315,7 +303,8 @@
           </div>
 
           <!-- Canvas del Gráfico -->
-          <div class="relative w-full aspect-square sm:aspect-video flex items-center justify-center p-2 min-h-[300px] max-h-[380px]">
+          <div
+            class="relative w-full aspect-square sm:aspect-video flex items-center justify-center p-2 min-h-[300px] max-h-[380px]">
             <canvas id="historicalChart" class="w-full h-full"></canvas>
           </div>
         </div>
@@ -328,10 +317,11 @@
     <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e0e0e0] pb-4">
         <div>
-          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Historial Completo de Encuentros</h3>
+          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Historial completo de encuentros</h3>
           <p class="text-xs text-[#414752] font-sans">Registro cronológico de los duelos directos España vs Francia.</p>
         </div>
-        <span class="text-xs font-mono text-[#414752] bg-[#f3f3f3] border border-[#e0e0e0] px-2.5 py-1 sharp-ui self-start sm:self-auto">
+        <span
+          class="text-xs font-mono text-[#414752] bg-[#f3f3f3] border border-[#e0e0e0] px-2.5 py-1 sharp-ui self-start sm:self-auto">
           Mostrando: <strong id="table-count">-</strong> encuentros
         </span>
       </div>
@@ -360,11 +350,9 @@
   </main>
 
   <!-- PIE DE PÁGINA -->
-  <footer
-    class="w-full bg-white border-t border-[#e0e0e0] py-6 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
+  <footer class="w-full bg-white border-t border-[#e0e0e0] py-6 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
     <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <p>&copy; 2026 La Crónica Deportiva. Datos estadísticos del historial España - Francia.</p>
-      <p class="text-[#b6171e] font-bold">Estilo Chronicle &bull; Mobile-First &bull; Estructura Editorial Plana</p>
+
     </div>
   </footer>
 
@@ -372,44 +360,44 @@
   <script>
     // DATASET ORIGINAL EMBEBIDO
     const ESPANA_FRANCIA_DATA = [
-      {"fecha": "05 jun 2025", "local": "España", "visitante": "Francia", "goles_local": 5, "goles_visitante": 4, "competicion": "UEFA Nations League 2024/25", "fase": "Finals", "estadio": "Mercedes-Benz Arena"},
-      {"fecha": "09 jul 2024", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 1, "competicion": "UEFA EURO 2024", "fase": "Fase final", "estadio": "Allianz Arena"},
-      {"fecha": "10 oct 2021", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA Nations League 2020/21", "fase": "Finals", "estadio": "Stadio Giuseppe Meazza"},
-      {"fecha": "28 mar 2017", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 2, "competicion": "Friendly 2017", "fase": "-", "estadio": "Stade de France"},
-      {"fecha": "04 sep 2014", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 2014", "fase": "-", "estadio": "Stade de France"},
-      {"fecha": "26 mar 2013", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 1, "competicion": "Fase preliminar de la Copa Mundial de la FIFA 2014 - Europa", "fase": "Ronda uno", "estadio": "Stade de France"},
-      {"fecha": "16 oct 2012", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 1, "competicion": "Fase preliminar de la Copa Mundial de la FIFA 2014 - Europa", "fase": "Ronda uno", "estadio": "Vicente Calderón"},
-      {"fecha": "23 jun 2012", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "UEFA EURO 2012", "fase": "Segunda fase", "estadio": "Donbass Arena"},
-      {"fecha": "03 mar 2010", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 2, "competicion": "Friendly 2010", "fase": "-", "estadio": "Stade de France"},
-      {"fecha": "06 feb 2008", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 2008", "fase": "-", "estadio": "Estadio La Rosaleda"},
-      {"fecha": "27 jun 2006", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 3, "competicion": "Copa Mundial de la FIFA Alemania 2006", "fase": "Octavos de final", "estadio": "HDI-Arena"},
-      {"fecha": "27 mar 2001", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 1, "competicion": "Friendly 2001", "fase": "-", "estadio": "Camp Nou"},
-      {"fecha": "25 jun 2000", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA EURO 2000", "fase": "Segunda fase", "estadio": "Jan Breydel Stadium"},
-      {"fecha": "28 ene 1998", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1998", "fase": "A-Matches", "estadio": "Stade de France"},
-      {"fecha": "15 jun 1996", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "UEFA EURO 1996", "fase": "Partidos de grupo", "estadio": "Elland Road"},
-      {"fecha": "12 oct 1991", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA EURO 1992 Prel. Comp.", "fase": "Partidos de grupo", "estadio": "Estadio Benito Villamarín"},
-      {"fecha": "20 feb 1991", "local": "Francia", "visitante": "España", "goles_local": 3, "goles_visitante": 1, "competicion": "UEFA EURO 1992 Prel. Comp.", "fase": "Partidos de grupo", "estadio": "Parque de los Príncipes"},
-      {"fecha": "23 mar 1988", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 1, "competicion": "Friendly 1988", "fase": "A-Matches", "estadio": "Cavée Verte"},
-      {"fecha": "27 jun 1984", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 0, "competicion": "UEFA EURO 1984", "fase": "Ronda final", "estadio": "PARIS"},
-      {"fecha": "05 oct 1983", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Friendly 1983", "fase": "-", "estadio": "PARIS"},
-      {"fecha": "18 feb 1981", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1981", "fase": "-", "estadio": "MADRID"},
-      {"fecha": "08 nov 1978", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1978", "fase": "-", "estadio": "PARIS"},
-      {"fecha": "17 mar 1971", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 2, "competicion": "Friendly 1971", "fase": "-", "estadio": "VALENCIA"},
-      {"fecha": "17 oct 1968", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 3, "competicion": "Friendly 1968", "fase": "-", "estadio": "LYON"},
-      {"fecha": "09 ene 1963", "local": "España", "visitante": "Francia", "goles_local": 0, "goles_visitante": 0, "competicion": "Friendly 1963", "fase": "-", "estadio": "BARCELONA"},
-      {"fecha": "10 dic 1961", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Friendly 1961", "fase": "-", "estadio": "COLOMBES"},
-      {"fecha": "02 abr 1961", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "Friendly 1961", "fase": "-", "estadio": "MADRID"},
-      {"fecha": "17 dic 1959", "local": "Francia", "visitante": "España", "goles_local": 4, "goles_visitante": 3, "competicion": "Friendly 1959", "fase": "-", "estadio": "PARIS"},
-      {"fecha": "13 mar 1958", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 2, "competicion": "Friendly 1958", "fase": "-", "estadio": "PARIS"},
-      {"fecha": "17 mar 1955", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "Friendly 1955", "fase": "-", "estadio": "MADRID"},
-      {"fecha": "19 jun 1949", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 5, "competicion": "Friendly 1949", "fase": "-", "estadio": "COLOMBES"},
-      {"fecha": "15 mar 1942", "local": "España", "visitante": "Francia", "goles_local": 4, "goles_visitante": 0, "competicion": "Friendly 1942", "fase": "-", "estadio": "SEVILLE"},
-      {"fecha": "24 ene 1935", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "Friendly 1935", "fase": "-", "estadio": "MADRID"},
-      {"fecha": "23 abr 1933", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1933", "fase": "-", "estadio": "COLOMBES"},
-      {"fecha": "14 abr 1929", "local": "España", "visitante": "Francia", "goles_local": 8, "goles_visitante": 1, "competicion": "Friendly 1929", "fase": "-", "estadio": "ZARAGOZA"},
-      {"fecha": "22 may 1927", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 4, "competicion": "Friendly 1927", "fase": "-", "estadio": "COLOMBES"},
-      {"fecha": "28 ene 1923", "local": "España", "visitante": "Francia", "goles_local": 3, "goles_visitante": 0, "competicion": "Friendly 1923", "fase": "-", "estadio": "SAN SEBASTIAN"},
-      {"fecha": "30 abr 1922", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 4, "competicion": "Friendly 1922", "fase": "-", "estadio": "BORDEAUX"}
+      { "fecha": "05 jun 2025", "local": "España", "visitante": "Francia", "goles_local": 5, "goles_visitante": 4, "competicion": "UEFA Nations League 2024/25", "fase": "Finals", "estadio": "Mercedes-Benz Arena" },
+      { "fecha": "09 jul 2024", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 1, "competicion": "UEFA EURO 2024", "fase": "Fase final", "estadio": "Allianz Arena" },
+      { "fecha": "10 oct 2021", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA Nations League 2020/21", "fase": "Finals", "estadio": "Stadio Giuseppe Meazza" },
+      { "fecha": "28 mar 2017", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 2, "competicion": "Friendly 2017", "fase": "-", "estadio": "Stade de France" },
+      { "fecha": "04 sep 2014", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 2014", "fase": "-", "estadio": "Stade de France" },
+      { "fecha": "26 mar 2013", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 1, "competicion": "Fase preliminar de la Copa Mundial de la FIFA 2014 - Europa", "fase": "Ronda uno", "estadio": "Stade de France" },
+      { "fecha": "16 oct 2012", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 1, "competicion": "Fase preliminar de la Copa Mundial de la FIFA 2014 - Europa", "fase": "Ronda uno", "estadio": "Vicente Calderón" },
+      { "fecha": "23 jun 2012", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "UEFA EURO 2012", "fase": "Segunda fase", "estadio": "Donbass Arena" },
+      { "fecha": "03 mar 2010", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 2, "competicion": "Friendly 2010", "fase": "-", "estadio": "Stade de France" },
+      { "fecha": "06 feb 2008", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 2008", "fase": "-", "estadio": "Estadio La Rosaleda" },
+      { "fecha": "27 jun 2006", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 3, "competicion": "Copa Mundial de la FIFA Alemania 2006", "fase": "Octavos de final", "estadio": "HDI-Arena" },
+      { "fecha": "27 mar 2001", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 1, "competicion": "Friendly 2001", "fase": "-", "estadio": "Camp Nou" },
+      { "fecha": "25 jun 2000", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA EURO 2000", "fase": "Segunda fase", "estadio": "Jan Breydel Stadium" },
+      { "fecha": "28 ene 1998", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1998", "fase": "A-Matches", "estadio": "Stade de France" },
+      { "fecha": "15 jun 1996", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "UEFA EURO 1996", "fase": "Partidos de grupo", "estadio": "Elland Road" },
+      { "fecha": "12 oct 1991", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "UEFA EURO 1992 Prel. Comp.", "fase": "Partidos de grupo", "estadio": "Estadio Benito Villamarín" },
+      { "fecha": "20 feb 1991", "local": "Francia", "visitante": "España", "goles_local": 3, "goles_visitante": 1, "competicion": "UEFA EURO 1992 Prel. Comp.", "fase": "Partidos de grupo", "estadio": "Parque de los Príncipes" },
+      { "fecha": "23 mar 1988", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 1, "competicion": "Friendly 1988", "fase": "A-Matches", "estadio": "Cavée Verte" },
+      { "fecha": "27 jun 1984", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 0, "competicion": "UEFA EURO 1984", "fase": "Ronda final", "estadio": "PARIS" },
+      { "fecha": "05 oct 1983", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Friendly 1983", "fase": "-", "estadio": "PARIS" },
+      { "fecha": "18 feb 1981", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1981", "fase": "-", "estadio": "MADRID" },
+      { "fecha": "08 nov 1978", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1978", "fase": "-", "estadio": "PARIS" },
+      { "fecha": "17 mar 1971", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 2, "competicion": "Friendly 1971", "fase": "-", "estadio": "VALENCIA" },
+      { "fecha": "17 oct 1968", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 3, "competicion": "Friendly 1968", "fase": "-", "estadio": "LYON" },
+      { "fecha": "09 ene 1963", "local": "España", "visitante": "Francia", "goles_local": 0, "goles_visitante": 0, "competicion": "Friendly 1963", "fase": "-", "estadio": "BARCELONA" },
+      { "fecha": "10 dic 1961", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Friendly 1961", "fase": "-", "estadio": "COLOMBES" },
+      { "fecha": "02 abr 1961", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "Friendly 1961", "fase": "-", "estadio": "MADRID" },
+      { "fecha": "17 dic 1959", "local": "Francia", "visitante": "España", "goles_local": 4, "goles_visitante": 3, "competicion": "Friendly 1959", "fase": "-", "estadio": "PARIS" },
+      { "fecha": "13 mar 1958", "local": "Francia", "visitante": "España", "goles_local": 2, "goles_visitante": 2, "competicion": "Friendly 1958", "fase": "-", "estadio": "PARIS" },
+      { "fecha": "17 mar 1955", "local": "España", "visitante": "Francia", "goles_local": 1, "goles_visitante": 2, "competicion": "Friendly 1955", "fase": "-", "estadio": "MADRID" },
+      { "fecha": "19 jun 1949", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 5, "competicion": "Friendly 1949", "fase": "-", "estadio": "COLOMBES" },
+      { "fecha": "15 mar 1942", "local": "España", "visitante": "Francia", "goles_local": 4, "goles_visitante": 0, "competicion": "Friendly 1942", "fase": "-", "estadio": "SEVILLE" },
+      { "fecha": "24 ene 1935", "local": "España", "visitante": "Francia", "goles_local": 2, "goles_visitante": 0, "competicion": "Friendly 1935", "fase": "-", "estadio": "MADRID" },
+      { "fecha": "23 abr 1933", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Friendly 1933", "fase": "-", "estadio": "COLOMBES" },
+      { "fecha": "14 abr 1929", "local": "España", "visitante": "Francia", "goles_local": 8, "goles_visitante": 1, "competicion": "Friendly 1929", "fase": "-", "estadio": "ZARAGOZA" },
+      { "fecha": "22 may 1927", "local": "Francia", "visitante": "España", "goles_local": 1, "goles_visitante": 4, "competicion": "Friendly 1927", "fase": "-", "estadio": "COLOMBES" },
+      { "fecha": "28 ene 1923", "local": "España", "visitante": "Francia", "goles_local": 3, "goles_visitante": 0, "competicion": "Friendly 1923", "fase": "-", "estadio": "SAN SEBASTIAN" },
+      { "fecha": "30 abr 1922", "local": "Francia", "visitante": "España", "goles_local": 0, "goles_visitante": 4, "competicion": "Friendly 1922", "fase": "-", "estadio": "BORDEAUX" }
     ];
 
     // VARIABLES DE CONTROL
@@ -435,11 +423,11 @@
 
       const filtered = ESPANA_FRANCIA_DATA.filter(m => {
         // Filtro por búsqueda de texto (estadio o competición o fecha)
-        const textMatch = !query || 
-                          m.estadio.toLowerCase().includes(query) || 
-                          m.competicion.toLowerCase().includes(query) ||
-                          m.fecha.toLowerCase().includes(query) ||
-                          (m.fase && m.fase.toLowerCase().includes(query));
+        const textMatch = !query ||
+          m.estadio.toLowerCase().includes(query) ||
+          m.competicion.toLowerCase().includes(query) ||
+          m.fecha.toLowerCase().includes(query) ||
+          (m.fase && m.fase.toLowerCase().includes(query));
 
         // Filtro por tipo de competición
         let compMatch = true;
@@ -622,7 +610,7 @@
         // Mostrar evolución de goles en los últimos 15 encuentros (ordenados de más antiguo a más reciente)
         const recentMatches = [...matches].slice(0, 15).reverse();
         const labels = recentMatches.map(m => m.fecha);
-        
+
         const goalsSpain = recentMatches.map(m => {
           return m.local === 'España' ? m.goles_local : m.goles_visitante;
         });
@@ -688,7 +676,7 @@
                 titleFont: { family: 'Inter', size: 11, weight: '700' },
                 bodyFont: { family: 'Inter', size: 11 },
                 callbacks: {
-                  footer: function(tooltipItems) {
+                  footer: function (tooltipItems) {
                     const matchIndex = tooltipItems[0].dataIndex;
                     const m = recentMatches[matchIndex];
                     return `${m.competicion}\nEstadio: ${m.estadio}`;
