@@ -200,7 +200,7 @@
               <option value="amistoso">Partidos Amistosos</option>
               <option value="euro">UEFA EURO (Eurocopa)</option>
               <option value="nations">UEFA Nations League</option>
-              <option value="worldcup">Copa Mundial de la FIFA</option>
+              <option value="worldcup">Copa Mundial de la FIFA + Eliminatorias</option>
             </select>
           </div>
 
@@ -765,31 +765,31 @@
           type: 'bar',
           data: {
             labels: ['Partidos Oficiales', 'Partidos Amistosos'],
-            datasets: [
-              {
-                label: 'Victorias España',
-                data: [offSpain, friSpain],
-                backgroundColor: '#b6171e',
-                barThickness: 25
-              },
-              {
-                label: 'Empates',
-                data: [offDraw, friDraw],
-                backgroundColor: '#727172',
-                barThickness: 25
-              },
-              {
-                label: 'Victorias Francia',
-                data: [offFrance, friFrance],
-                backgroundColor: '#0059a4',
-                barThickness: 25
-              }
-            ]
+              datasets: [
+                {
+                  label: 'Victorias España',
+                  data: [offSpain, friSpain],
+                  backgroundColor: '#b6171e',
+                  barThickness: 25
+                },
+                {
+                  label: 'Empates',
+                  data: [offDraw, friDraw],
+                  backgroundColor: '#727172',
+                  barThickness: 25
+                },
+                {
+                  label: 'Victorias Francia',
+                  data: [offFrance, friFrance],
+                  backgroundColor: '#0059a4',
+                  barThickness: 25
+                }
+              ]
           },
           options: {
             responsive: true,
-            maintainAspectRatio: false,
-            scales: {
+              maintainAspectRatio: false,
+                scales: {
               x: {
                 grid: { display: false },
                 ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
@@ -803,12 +803,12 @@
             plugins: {
               legend: {
                 position: 'top',
-                labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
+                  labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
               },
               tooltip: {
                 backgroundColor: '#1a1c1c',
-                cornerRadius: 0,
-                titleFont: { family: 'Inter', size: 12, weight: '700' },
+                  cornerRadius: 0,
+                    titleFont: { family: 'Inter', size: 12, weight: '700' },
                 bodyFont: { family: 'Inter', size: 12 }
               }
             }
