@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Semifinal Mundial 2026: Argentina vs Inglaterra - Dashboard Táctico</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+    rel="stylesheet">
+
+  <style type="text/css">
+    /* Estilos basados en design.md */
+    :root {
+      --color-argentina: #0059a4;
+      --color-argentina-celeste: #43a1d5;
+      --color-argentina-light: #e6f3fa;
+      --color-england: #b6171e;
+      --color-england-light: #ffdad6;
+      --color-bg: #f9f9f9;
+      --color-surface: #ffffff;
+      --color-border: #e2e2e2;
+      --color-text-main: #1a1c1c;
+      --color-text-muted: #414752;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+    }
+
+    .font-serif {
+      font-family: 'Source Serif 4', serif;
+    }
+
+    .font-sans {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Forzado estricto de bordes a 90 grados (Sharp 0) */
+    .sharp-ui {
+      border-radius: 0px !important;
+    }
+
+    /* Quitar sombras para estética plana editorial */
+    .no-shadow {
+      box-shadow: none !important;
+    }
+
+    /* Animación sutil de pulso para indicador Live */
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .pulse-indicator {
+      animation: pulse-dot 2s infinite;
+    }
+
+    /* Foco personalizado según design.md */
+    .focus-border-primary:focus {
+      outline: none;
+      border-color: var(--color-argentina) !important;
+      border-bottom-width: 2px;
+    }
+
+    /* Toggles custom transition */
+    .transition-custom {
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="p-0 m-0 min-h-screen flex flex-col antialiased">
+
+  <!-- CABECERA EDITORIAL (Masthead) -->
+  <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-6">
+    <div class="max-w-[1280px] mx-auto flex flex-col gap-4">
+
+      <!-- Navegación y Tag de Sección -->
+      <div class="flex items-center justify-between text-xs">
+        <span class="font-bold tracking-widest text-[#b6171e] flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 bg-[#b6171e] pulse-indicator sharp-ui"></span>
+          COPA MUNDIAL DE LA FIFA 2026
+        </span>
+
+      </div>
+
+      <!-- Título Principal -->
+      <div class="border-t border-[#e2e2e2] pt-4 mt-1">
+        <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
+          Resumen del partido Argentina - Inglaterra
+        </h1>
+
+      </div>
+
+      <!-- Ficha Técnica Rápida -->
+      <div
+        class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-4 text-xs text-[#414752]">
+        <div class="flex items-center gap-6">
+          <span><strong>PARTIDO:</strong> Semifinal (Partido 102)</span>
+          <span class="text-[#e0e0e0]">|</span>
+          <span><strong>SEDE:</strong> Atlanta Stadium</span>
+          <span class="text-[#e0e0e0]">|</span>
+          <span><strong>FECHA:</strong> 15 de Julio, 2026</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="bg-[#e6f3fa] text-[#0059a4] font-bold px-2 py-0.5 sharp-ui uppercase text-[10px]">ARGENTINA</span>
+          <span class="text-[#414752] font-bold text-xs">vs</span>
+          <span
+            class="bg-[#ffdad6] text-[#b6171e] font-bold px-2 py-0.5 sharp-ui uppercase text-[10px]">INGLATERRA</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- SECTOR SELECTOR DE AISLAMIENTO (Fijo en desktop / Sticky) -->
+  <section class="w-full bg-[#f3f3f3] border-b border-[#e0e0e0] sticky top-0 z-40 px-4 md:px-8 py-3">
+    <div class="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span class="text-xs font-bold text-[#1a1c1c] tracking-wider uppercase font-sans">
+        Filtro de Análisis Colectivo:
+      </span>
+      <div
+        class="inline-flex border border-[#e0e0e0] p-0.5 bg-white sharp-ui w-full sm:w-auto text-xs font-bold tracking-wider font-sans">
+        <button id="btn-filter-both" onclick="setTeamFilter('both')"
+          class="flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-[#1a1c1c] text-white">
+          AMBOS EQUIPOS
+        </button>
+        <button id="btn-filter-arg" onclick="setTeamFilter('arg')"
+          class="flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#f3f3f3]">
+          ARGENTINA (AZUL)
+        </button>
+        <button id="btn-filter-eng" onclick="setTeamFilter('eng')"
+          class="flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#f3f3f3]">
+          INGLATERRA (ROJO)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-8">
+
+    <!-- SECCIÓN DE MARCADOR Y GOLES -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+      <!-- Equipo Local (Inglaterra) -->
+      <div class="text-center md:text-left flex flex-col items-center md:items-start transition-custom"
+        id="scorecard-eng">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-[#1a1c1c] mt-1">Inglaterra</h2>
+        <ul class="text-xs text-[#414752] mt-3 space-y-1 font-sans">
+          <li class="flex items-center gap-1.5 justify-center md:justify-start">
+            <span class="inline-block w-2.5 h-2.5 bg-[#b6171e] sharp-ui"></span>
+            54' Anthony Gordon (GOL)
+          </li>
+        </ul>
+      </div>
+
+      <!-- Marcador Central -->
+      <div class="text-center border-y md:border-y-0 md:border-x border-[#e2e2e2] py-4 md:py-2">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase">RESULTADO FINAL</span>
+        <div class="text-5xl font-bold font-serif tracking-widest text-[#1a1c1c] my-1">
+          1 - 2
+        </div>
+        <span class="text-xs text-[#b6171e] font-bold bg-[#ffdad6] px-3 py-1 sharp-ui tracking-wide">
+          ARGENTINA CLASIFICADO
+        </span>
+      </div>
+
+      <!-- Equipo Visitante (Argentina) -->
+      <div class="text-center md:text-right flex flex-col items-center md:items-end transition-custom"
+        id="scorecard-arg">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-[#1a1c1c] mt-1">Argentina</h2>
+        <ul class="text-xs text-[#414752] mt-3 space-y-1 font-sans">
+          <li class="flex items-center gap-1.5 justify-center md:justify-end">
+            84' Enzo Fernández (GOL)
+            <span class="inline-block w-2.5 h-2.5 bg-[#0059a4] sharp-ui"></span>
+          </li>
+          <li class="flex items-center gap-1.5 justify-center md:justify-end">
+            90+1' Lautaro Martínez (GOL)
+            <span class="inline-block w-2.5 h-2.5 bg-[#43a1d5] sharp-ui"></span>
+          </li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos con Barras de Distribución) -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-5">
+      <div class="border-b border-[#e0e0e0] pb-2 flex justify-between items-center">
+        <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase font-sans">Métricas del Encuentro</h3>
+        <span class="text-[10px] text-[#414752] font-semibold">PORCENTAJE DE DISTRIBUCIÓN</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="kpis-grid">
+
+        <!-- KPI 1: Posesión -->
+        <div class="flex flex-col justify-between p-3 border border-[#eeeeee] sharp-ui transition-custom"
+          id="kpi-card-possession">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Posesión</span>
+            <span class="text-[#0059a4]" id="val-possession-arg">56.5%</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold" id="val-possession-eng">35.2%</span>
+            <span class="text-[10px] text-[#59595a]">En Disputa: 8.2%</span>
+            <span class="text-[#0059a4] text-2xl font-bold">56.5%</span>
+          </div>
+          <!-- Barra de Progreso Doble -->
+          <div class="w-full h-2 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 35.2%"></div>
+            <div class="bg-[#727172]" style="width: 8.2%"></div>
+            <div class="bg-[#0059a4]" style="width: 56.5%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 2: xG -->
+        <div class="flex flex-col justify-between p-3 border border-[#eeeeee] sharp-ui transition-custom"
+          id="kpi-card-xg">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Goles Esperados (xG)</span>
+            <span class="text-[#0059a4]" id="val-xg-arg">1.47</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold" id="val-xg-eng">0.46</span>
+            <span class="text-[10px] text-[#414752]">Relación de Peligro</span>
+            <span class="text-[#0059a4] text-2xl font-bold">1.47</span>
+          </div>
+          <!-- Barra Proporcional xG -->
+          <div class="w-full h-2 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 24%"></div>
+            <div class="bg-[#0059a4]" style="width: 76%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 3: Remates -->
+        <div class="flex flex-col justify-between p-3 border border-[#eeeeee] sharp-ui transition-custom"
+          id="kpi-card-shots">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Remates (Al Arco)</span>
+            <span class="text-[#0059a4]" id="val-shots-arg">15 (5)</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold" id="val-shots-eng">5 (2)</span>
+            <span class="text-[10px] text-[#414752]">Efectividad al arco</span>
+            <span class="text-[#0059a4] text-2xl font-bold">15 (5)</span>
+          </div>
+          <!-- Barra Proporcional Remates -->
+          <div class="w-full h-2 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 25%"></div>
+            <div class="bg-[#0059a4]" style="width: 75%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 4: Pases Completados -->
+        <div class="flex flex-col justify-between p-3 border border-[#eeeeee] sharp-ui transition-custom"
+          id="kpi-card-passes">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Pases (Efectividad)</span>
+            <span class="text-[#0059a4]" id="val-passes-arg">549 / 610 (90%)</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold" id="val-passes-eng">293 / 353 (83%)</span>
+            <span class="text-[10px] text-[#414752]">Volumen de pases</span>
+            <span class="text-[#0059a4] text-2xl font-bold">549 / 610</span>
+          </div>
+          <!-- Barra Proporcional Pases Completados -->
+          <div class="w-full h-2 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 35%"></div>
+            <div class="bg-[#0059a4]" style="width: 65%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 5: Rupturas de Línea -->
+        <div class="flex flex-col justify-between p-3 border border-[#eeeeee] sharp-ui transition-custom"
+          id="kpi-card-breaks">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Líneas Rotas</span>
+            <span class="text-[#0059a4]" id="val-breaks-arg">115</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold" id="val-breaks-eng">74</span>
+            <span class="text-[10px] text-[#414752]">Verticalidad ofensiva</span>
+            <span class="text-[#0059a4] text-2xl font-bold">115</span>
+          </div>
+          <!-- Barra Proporcional Líneas de Ruptura -->
+          <div class="w-full h-2 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 39%"></div>
+            <div class="bg-[#0059a4]" style="width: 61%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 6: Recepciones en Zona de Peligro -->
+        <div class="flex flex-col justify-between p-3 border border-[#eeeeee] sharp-ui transition-custom"
+          id="kpi-card-receptions">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Recepciones Último Tercio</span>
+            <span class="text-[#0059a4]" id="val-receptions-arg">230</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold" id="val-receptions-eng">87</span>
+            <span class="text-[10px] text-[#414752]">Presencia en área rival</span>
+            <span class="text-[#0059a4] text-2xl font-bold">230</span>
+          </div>
+          <!-- Barra Proporcional Recepciones -->
+          <div class="w-full h-2 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 27%"></div>
+            <div class="bg-[#0059a4]" style="width: 73%"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE GRÁFICOS PRINCIPALES -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- GRÁFICO 1: EVOLUCIÓN DEL xG ACUMULADO (8 Columnas) -->
+      <div
+        class="lg:col-span-8 bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col justify-between min-h-[400px]">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Evolución Dinámica: Goles Esperados (xG) Acumulados
+          </h3>
+          <p class="text-xs text-[#414752] font-sans">Evolución minuto a minuto. Los hitos marcan los tiros clave y los
+            goles de la remontada.</p>
+        </div>
+
+        <div class="relative w-full flex-grow my-4 aspect-video min-h-[300px] max-h-[350px]">
+          <canvas id="cumulativeXgChart"></canvas>
+        </div>
+
+        <div class="text-[10px] text-[#414752] border-t border-[#eeeeee] pt-3 flex justify-between">
+          <span>* xG calculado en base a la ubicación y tipo de definición oficial de FIFA.</span>
+          <span>15' (Inicio) &rarr; 90+6' (Fin)</span>
+        </div>
+      </div>
+
+      <!-- GRÁFICO 2: FASES TÁCTICAS (4 Columnas) -->
+      <div
+        class="lg:col-span-4 bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col justify-between min-h-[400px]">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Fases de Posesión e Intensidad</h3>
+          <p class="text-xs text-[#414752] font-sans">Comparativa de distribución del tiempo de juego táctico.</p>
+        </div>
+
+        <div class="relative w-full flex-grow my-4 flex items-center justify-center min-h-[260px] max-h-[300px]">
+          <canvas id="phasesChart"></canvas>
+        </div>
+
+        <div class="text-[10px] text-[#414752] border-t border-[#eeeeee] pt-3 text-center font-semibold">
+          Estructura de la ocupación territorial del balón
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PUNTOS TÁCTICOS DESTACADOS -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Tarjeta Destacado 1 -->
+      <div class="bg-white border-t-2 border-[#b6171e] border-x border-b border-[#e0e0e0] p-5 sharp-ui">
+        <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">INGLATERRA</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1 leading-snug">El colapso del bloque defensivo bajo
+        </h4>
+        <p class="text-xs text-[#414752] font-sans mt-3 leading-relaxed">
+          Inglaterra se puso en ventaja a los 54' con un gran gol de Anthony Gordon, pero a partir de allí replegó sus
+          líneas en exceso. El reporte oficial revela que defendieron en <strong>bloque bajo un 42% del tiempo</strong>
+          sin balón. Con solo 5 remates totales en el partido y 6% de presión alta, entregaron la posesión y el terreno
+          a la albiceleste, facilitando el asedio de los minutos finales.
+        </p>
+      </div>
+
+      <!-- Tarjeta Destacado 2 -->
+      <div class="bg-white border-t-2 border-[#0059a4] border-x border-b border-[#e0e0e0] p-5 sharp-ui">
+        <span class="text-[10px] font-bold text-[#0059a4] tracking-wider uppercase font-sans">ARGENTINA</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1 leading-snug">Ocupación total del último tercio</h4>
+        <p class="text-xs text-[#414752] font-sans mt-3 leading-relaxed">
+          La persistencia de Argentina se traduce en datos abrumadores: <strong>230 recepciones en el último
+            tercio</strong> (frente a 87 de Inglaterra) y <strong>115 pases de ruptura completados</strong>. Lograron
+          mantener el 30% de sus posesiones en la zona activa de ataque, desgastando la defensa inglesa con un 90% de
+          precisión en pases colectivos.
+        </p>
+      </div>
+
+      <!-- Tarjeta Destacado 3 -->
+      <div
+        class="bg-white border-t-2 border-[#43a1d5] border-x border-b border-[#e0e0e0] p-5 sharp-ui md:col-span-2 lg:col-span-1">
+        <span class="text-[10px] font-bold text-[#43a1d5] tracking-wider uppercase font-sans">JUGADORES CLAVE</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1 leading-snug">Enzo dicta la pauta, Lautaro castiga
+        </h4>
+        <p class="text-xs text-[#414752] font-sans mt-3 leading-relaxed">
+          Enzo Fernández completó un partido estelar: completó <strong>19 pases de ruptura</strong> (el registro más
+          alto del cotejo) y marcó el agónico empate a los 84'. Por su parte, la entrada de Lautaro Martínez a los 81'
+          fue determinante, necesitando apenas 10 minutos para anotar de cabeza el gol de la clasificación histórica a
+          los 91', superando la resistencia de Guehi y Stones.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- REGISTRO CRONOLÓGICO DE REMATES (Tabla Filtrable) -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e0e0e0] pb-4">
+        <div>
+          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Dinámica de Tiro: Historial Completo de Remates</h3>
+          <p class="text-xs text-[#414752] font-sans">Listado cronológico de los 20 remates registrados en el reporte
+            oficial.</p>
+        </div>
+
+        <!-- Controles de la Tabla -->
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="shot-filter" class="text-xs font-bold text-[#414752] uppercase font-sans">Filtro:</label>
+          <select id="shot-filter" onchange="applyShotFilter()"
+            class="bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-1.5 sharp-ui text-xs font-sans font-semibold text-[#1a1c1c] focus-border-primary cursor-pointer">
+            <option value="all">Todos los Remates (20)</option>
+            <option value="goals">Solo Goles (3)</option>
+            <option value="arg">Solo Argentina (15)</option>
+            <option value="eng">Solo Inglaterra (5)</option>
+            <option value="head">Solo Cabezazos (4)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabla Responsive -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
+              <th class="py-3 font-sans w-16">Minuto</th>
+              <th class="py-3 font-sans w-24">Equipo</th>
+              <th class="py-3 font-sans">Jugador</th>
+              <th class="py-3 font-sans">Resultado del Remate</th>
+              <th class="py-3 font-sans hidden sm:table-cell">Parte del Cuerpo</th>
+              <th class="py-3 font-sans hidden md:table-cell">Origen</th>
+              <th class="py-3 font-sans text-right w-16">xG</th>
+            </tr>
+          </thead>
+          <tbody id="shots-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+            <!-- Se llena dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="w-full bg-white border-t border-[#e0e0e0] py-8 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <span>La Crónica Deportiva - Análisis Semifinal © 2026</span>
+      <span class="text-[#0059a4] font-bold">Métricas oficiales basadas en FIFA Post Match Summary Reports
+        (PMSR-M102)</span>
+    </div>
+  </footer>
+
+  <!-- DATA & LOGIC -->
+  <script>
+    // DATASET DE REMATES (Páginas 15 y 17)
+    const SHOTS_DATA = [
+      { min: 32, team: "ENG", player: "John Stones", outcome: "Desviado (Off Target)", body: "Cabeza", type: "Tiro Libre", xg: 0.08 },
+      { min: 37, team: "ARG", player: "Lionel Messi", outcome: "Desviado Bloqueado (Deflected)", body: "Pie Izquierdo", type: "Progresión de Balón", xg: 0.05 },
+      { min: 37, team: "ARG", player: "Enzo Fernández", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Balón Suelto", xg: 0.06 },
+      { min: 46, team: "ARG", player: "Julián Álvarez", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Balón Suelto", xg: 0.12 },
+      { min: 46, team: "ARG", player: "Julián Álvarez", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Progresión de Balón", xg: 0.08 },
+      { min: 53, team: "ARG", player: "Leandro Paredes", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Pase", xg: 0.04 },
+      { min: 54, team: "ENG", player: "Anthony Gordon", outcome: "GOL (On Target - Goal)", body: "Pie Derecho", type: "Centro", xg: 0.22 },
+      { min: 60, team: "ARG", player: "Enzo Fernández", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Pase", xg: 0.05 },
+      { min: 65, team: "ENG", player: "Declan Rice", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Pase", xg: 0.05 },
+      { min: 65, team: "ENG", player: "Harry Kane", outcome: "Bloqueado (Incomplete - Blocked)", body: "Pie Derecho", type: "Pase", xg: 0.06 },
+      { min: 68, team: "ARG", player: "Nico González", outcome: "Parado (On Target - Saved)", body: "Cabeza", type: "Centro", xg: 0.10 },
+      { min: 75, team: "ARG", player: "Alexis Mac Allister", outcome: "Desviado (Off Target)", body: "Cabeza", type: "Centro", xg: 0.08 },
+      { min: 75, team: "ARG", player: "Julián Álvarez", outcome: "Incompleto (Error en Control)", body: "Pie Izquierdo", type: "Otro", xg: 0.02 },
+      { min: 75, team: "ARG", player: "Alexis Mac Allister", outcome: "Parado (On Target - Saved)", body: "Cabeza", type: "Centro", xg: 0.12 },
+      { min: 78, team: "ENG", player: "Morgan Rogers", outcome: "Bloqueado (Incomplete - Blocked)", body: "Pie Derecho", type: "Balón Suelto", xg: 0.05 },
+      { min: 83, team: "ARG", player: "Rodrigo De Paul", outcome: "Bloqueado (Incomplete - Blocked)", body: "Pie Derecho", type: "Pase", xg: 0.04 },
+      { min: 84, team: "ARG", player: "Enzo Fernández", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Pase", xg: 0.09 },
+      { min: 84, team: "ARG", player: "Enzo Fernández", outcome: "GOL (On Target - Goal)", body: "Pie Derecho", type: "Pase", xg: 0.35 },
+      { min: 91, team: "ARG", player: "Alexis Mac Allister", outcome: "Desviado Bloqueado (Deflected)", body: "Pie Derecho", type: "Pase", xg: 0.04 },
+      { min: 91, team: "ARG", player: "Lautaro Martínez", outcome: "GOL (On Target - Goal)", body: "Cabeza", type: "Centro", xg: 0.27 }
+    ];
+
+    // VARIABLES GLOBALES DE LOS GRÁFICOS
+    let activeTeamFilter = 'both';
+    let cumulativeXgChartInstance = null;
+    let phasesChartInstance = null;
+
+    // INICIALIZACIÓN
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCumulativeXgChart();
+      renderPhasesChart();
+      applyShotFilter();
+    });
+
+    // SISTEMA DE FILTRADO DE EQUIPO (AISLAMIENTO DE SELECCIÓN)
+    function setTeamFilter(team) {
+      activeTeamFilter = team;
+
+      const btnBoth = document.getElementById('btn-filter-both');
+      const btnArg = document.getElementById('btn-filter-arg');
+      const btnEng = document.getElementById('btn-filter-eng');
+
+      // Restablecer estilos de botones
+      [btnBoth, btnArg, btnEng].forEach(btn => {
+        btn.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#f3f3f3]";
+      });
+
+      // Estilo activo
+      if (team === 'both') {
+        btnBoth.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-[#1a1c1c] text-white";
+        // Mostrar todos en scorecard
+        document.getElementById('scorecard-eng').style.opacity = '1';
+        document.getElementById('scorecard-arg').style.opacity = '1';
+      } else if (team === 'arg') {
+        btnArg.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-[#0059a4] text-white";
+        // Atenuar Inglaterra en scorecard
+        document.getElementById('scorecard-eng').style.opacity = '0.35';
+        document.getElementById('scorecard-arg').style.opacity = '1';
+      } else if (team === 'eng') {
+        btnEng.className = "flex-grow sm:flex-grow-0 px-4 py-2 sharp-ui transition-custom cursor-pointer bg-[#b6171e] text-white";
+        // Atenuar Argentina en scorecard
+        document.getElementById('scorecard-eng').style.opacity = '1';
+        document.getElementById('scorecard-arg').style.opacity = '0.35';
+      }
+
+      // Actualizar visibilidad en Gráfico de xG Acumulado
+      if (cumulativeXgChartInstance) {
+        if (team === 'both') {
+          cumulativeXgChartInstance.setDatasetVisibility(0, true);
+          cumulativeXgChartInstance.setDatasetVisibility(1, true);
+        } else if (team === 'arg') {
+          cumulativeXgChartInstance.setDatasetVisibility(0, true);
+          cumulativeXgChartInstance.setDatasetVisibility(1, false);
+        } else if (team === 'eng') {
+          cumulativeXgChartInstance.setDatasetVisibility(0, false);
+          cumulativeXgChartInstance.setDatasetVisibility(1, true);
+        }
+        cumulativeXgChartInstance.update();
+      }
+
+      // Actualizar visibilidad en Gráfico de Fases Tácticas
+      if (phasesChartInstance) {
+        if (team === 'both') {
+          phasesChartInstance.setDatasetVisibility(0, true);
+          phasesChartInstance.setDatasetVisibility(1, true);
+        } else if (team === 'arg') {
+          phasesChartInstance.setDatasetVisibility(0, true);
+          phasesChartInstance.setDatasetVisibility(1, false);
+        } else if (team === 'eng') {
+          phasesChartInstance.setDatasetVisibility(0, false);
+          phasesChartInstance.setDatasetVisibility(1, true);
+        }
+        phasesChartInstance.update();
+      }
+
+      // Actualizar Tarjetas KPI de la rejilla
+      const cards = ['possession', 'xg', 'shots', 'passes', 'breaks', 'receptions'];
+      cards.forEach(cardId => {
+        const el = document.getElementById(`kpi-card-${cardId}`);
+        if (team === 'both') {
+          el.style.opacity = '1';
+          el.style.borderColor = '#e2e2e2';
+        } else if (team === 'arg') {
+          el.style.opacity = '1';
+          el.style.borderColor = '#0059a4';
+        } else if (team === 'eng') {
+          el.style.opacity = '1';
+          el.style.borderColor = '#b6171e';
+        }
+      });
+    }
+
+    // GRÁFICO 1: EVOLUCIÓN xG ACUMULADO
+    function renderCumulativeXgChart() {
+      const ctx = document.getElementById('cumulativeXgChart').getContext('2d');
+
+      // Mapeo minutajes (eje X)
+      const minutes = [0, 32, 37, 46, 53, 54, 60, 65, 68, 75, 78, 83, 84, 91, 95];
+
+      // xG Acumulado Argentina
+      const xgArgentina = [0.00, 0.00, 0.11, 0.31, 0.35, 0.35, 0.40, 0.40, 0.50, 0.72, 0.72, 0.76, 1.20, 1.47, 1.47];
+
+      // xG Acumulado Inglaterra
+      const xgEngland = [0.00, 0.08, 0.08, 0.08, 0.08, 0.30, 0.30, 0.41, 0.41, 0.41, 0.46, 0.46, 0.46, 0.46, 0.46];
+
+      cumulativeXgChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: minutes.map(m => `Min ${m}`),
+          datasets: [
+            {
+              label: 'Argentina (xG Acumulado)',
+              data: xgArgentina,
+              borderColor: '#0059a4',
+              backgroundColor: 'rgba(0, 89, 164, 0.05)',
+              borderWidth: 3,
+              pointBackgroundColor: '#0059a4',
+              pointBorderColor: '#fff',
+              pointRadius: 4,
+              pointHoverRadius: 7,
+              fill: true,
+              tension: 0.1
+            },
+            {
+              label: 'Inglaterra (xG Acumulado)',
+              data: xgEngland,
+              borderColor: '#b6171e',
+              backgroundColor: 'rgba(182, 23, 30, 0.05)',
+              borderWidth: 3,
+              pointBackgroundColor: '#b6171e',
+              pointBorderColor: '#fff',
+              pointRadius: 4,
+              pointHoverRadius: 7,
+              fill: true,
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' },
+              suggestedMin: 0,
+              suggestedMax: 1.6
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 12 }
+            },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              titleFont: { family: 'Inter', size: 11, weight: '700' },
+              bodyFont: { family: 'Inter', size: 11 },
+              callbacks: {
+                footer: function (tooltipItems) {
+                  const label = tooltipItems[0].label;
+                  if (label === 'Min 54') return 'GOL de Gordon (ENG) - xG: 0.22';
+                  if (label === 'Min 84') return 'GOL de Enzo Fernández (ARG) - xG: 0.35';
+                  if (label === 'Min 91') return 'GOL de Lautaro Martínez (ARG) - xG: 0.27';
+                  return null;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // GRÁFICO 2: FASES TÁCTICAS
+    function renderPhasesChart() {
+      const ctx = document.getElementById('phasesChart').getContext('2d');
+
+      phasesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Fases Iniciales', 'Último Tercio', 'Contraataques', 'Bloque Bajo (Def)', 'Presión Alta'],
+          datasets: [
+            {
+              label: 'Argentina',
+              data: [66, 30, 10, 25, 16], // En %
+              backgroundColor: '#0059a4',
+              barThickness: 15
+            },
+            {
+              label: 'Inglaterra',
+              data: [49, 13, 18, 42, 13], // En %
+              backgroundColor: '#b6171e',
+              barThickness: 15
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y', // Barra horizontal para legibilidad
+          scales: {
+            x: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752', callback: val => val + '%' },
+              max: 80
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9, weight: '600' }, color: '#1a1c1c' }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              titleFont: { family: 'Inter', size: 11, weight: '700' },
+              bodyFont: { family: 'Inter', size: 11 }
+            }
+          }
+        }
+      });
+    }
+
+    // FILTRADO DE LA TABLA DE REMATES
+    function applyShotFilter() {
+      const filter = document.getElementById('shot-filter').value;
+      const tbody = document.getElementById('shots-tbody');
+      tbody.innerHTML = '';
+
+      const filtered = SHOTS_DATA.filter(shot => {
+        if (filter === 'goals') return shot.outcome.includes('GOL');
+        if (filter === 'arg') return shot.team === 'ARG';
+        if (filter === 'eng') return shot.team === 'ENG';
+        if (filter === 'head') return shot.body === 'Cabeza';
+        return true;
+      });
+
+      filtered.forEach(shot => {
+        const teamBadge = shot.team === 'ARG'
+          ? `<span class="bg-[#e6f3fa] text-[#0059a4] text-[9px] font-bold px-1.5 py-0.5 sharp-ui tracking-wider font-sans">ARG</span>`
+          : `<span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-1.5 py-0.5 sharp-ui tracking-wider font-sans">ENG</span>`;
+
+        let outcomeStyle = 'text-[#414752]';
+        if (shot.outcome.includes('GOL')) {
+          outcomeStyle = shot.team === 'ARG' ? 'text-[#0059a4] font-bold' : 'text-[#b6171e] font-bold';
+        } else if (shot.outcome.includes('Parado')) {
+          outcomeStyle = 'text-[#1a1c1c] font-semibold';
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-[#f5f5f5] transition-colors duration-100 border-b border-[#eeeeee]';
+        tr.innerHTML = `
+          <td class="py-3 font-semibold font-mono text-center sm:text-left">${shot.min}'</td>
+          <td class="py-3 font-sans">${teamBadge}</td>
+          <td class="py-3 font-sans font-bold">${shot.player}</td>
+          <td class="py-3 font-sans ${outcomeStyle}">${shot.outcome}</td>
+          <td class="py-3 font-sans hidden sm:table-cell">${shot.body}</td>
+          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${shot.type}</td>
+          <td class="py-3 font-mono text-right font-bold w-16">${shot.xg.toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
+</body>
+
+</html>
