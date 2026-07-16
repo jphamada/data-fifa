@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Argentina vs España - Historial de encuentros</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+    rel="stylesheet">
+
+  <style type="text/css">
+    /* Estilos basados en design.md */
+    :root {
+      --color-argentina: #43a1d5;
+      /* Celeste Argentina */
+      --color-argentina-light: #e6f3fa;
+      --color-spain: #b6171e;
+      /* Rojo España */
+      --color-spain-light: #ffdad6;
+      --color-bg: #f9f9f9;
+      --color-surface: #ffffff;
+      --color-border: #e0e0e0;
+      --color-text-main: #1a1c1c;
+      --color-text-muted: #414752;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+    }
+
+    .font-serif {
+      font-family: 'Source Serif 4', serif;
+    }
+
+    .font-sans {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Forzado estricto de bordes a 90 grados (Sharp 0) */
+    .sharp-ui {
+      border-radius: 0px !important;
+    }
+
+    /* Quitar sombras para estética plana editorial */
+    .no-shadow {
+      box-shadow: none !important;
+    }
+
+    /* Animación sutil de pulso para indicador Live */
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .pulse-indicator {
+      animation: pulse-dot 2s infinite;
+    }
+
+    /* Foco personalizado según design.md */
+    .focus-border-primary:focus {
+      outline: none;
+      border-color: var(--color-argentina) !important;
+      border-bottom-width: 2px;
+    }
+  </style>
+</head>
+
+<body class="p-0 m-0 min-h-screen flex flex-col antialiased">
+
+  <!-- CABECERA EDITORIAL (Masthead) -->
+  <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-0">
+    <div class="max-w-[1280px] mx-auto flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold tracking-widest text-[#43a1d5] flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 bg-[#43a1d5] pulse-indicator sharp-ui"></span>
+          HISTORIAL CARA A CARA
+        </span>
+        <span class="text-xs font-semibold text-[#414752] tracking-wider uppercase font-sans">
+          Fecha 2026-07-16
+        </span>
+      </div>
+
+      <div class="border-t border-[#e2e2e2] pt-4 mt-1">
+        <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
+          Argentina vs España: balance histórico
+        </h1>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-6">
+
+    <!-- BANNER DE ÚLTIMA HORA (Historial Reciente) -->
+    <div class="bg-white border-l-4 border-[#b6171e] border-y border-r border-[#e0e0e0] p-4 sharp-ui flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Último Encuentro</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1.5">Goleada en Madrid en el último cara a cara</h4>
+        <p class="text-xs text-[#414752] font-sans mt-0.5">El último enfrentamiento entre ambas selecciones se disputó en 2018 en el Wanda Metropolitano, saldándose con una contundente victoria de España por 6-1.</p>
+      </div>
+      <span class="text-xs font-bold font-mono text-[#b6171e] bg-[#ffdad6] px-3 py-1.5 sharp-ui self-start md:self-auto uppercase tracking-wider">
+        ÚLTIMO: ESP 6 - 1 ARG
+      </span>
+    </div>
+
+    <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos Dinámicos) -->
+    <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+
+      <!-- Partidos -->
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between col-span-2 lg:col-span-1">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Partidos Jugados</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span id="kpi-total" class="text-3xl font-bold font-sans text-[#1a1c1c]">-</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">Historial acumulado</p>
+      </div>
+
+      <!-- Victorias Argentina -->
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#43a1d5] tracking-wider uppercase font-sans">Victorias Argentina</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span id="kpi-wins-argentina" class="text-3xl font-bold font-sans text-[#43a1d5]">-</span>
+          <span id="kpi-winrate-argentina" class="text-xs font-semibold text-[#414752] font-sans">(-%)</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">"La Albiceleste" dominante</p>
+      </div>
+
+      <!-- Victorias España -->
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Victorias España</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span id="kpi-wins-spain" class="text-3xl font-bold font-sans text-[#b6171e]">-</span>
+          <span id="kpi-winrate-spain" class="text-xs font-semibold text-[#414752] font-sans">(-%)</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">"La Roja" al acecho</p>
+      </div>
+
+      <!-- Empates -->
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
+        <span class="text-[10px] font-bold text-[#59595a] tracking-wider uppercase font-sans">Empates</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span id="kpi-draws" class="text-3xl font-bold font-sans text-[#59595a]">-</span>
+        </div>
+        <p class="text-[10px] text-[#414752] mt-1">Tablas en el marcador</p>
+      </div>
+
+      <!-- Goles Totales -->
+      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between col-span-2 lg:col-span-1">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles Totales</span>
+        <div class="mt-2 flex items-baseline gap-1">
+          <span id="kpi-goals-total" class="text-2xl font-bold font-sans text-[#1a1c1c]">-</span>
+        </div>
+        <p id="kpi-goals-ratio" class="text-[10px] text-[#414752] mt-1">ARG - vs - ESP</p>
+      </div>
+
+    </section>
+
+    <!-- CUERPO CENTRAL: FILTROS + APUNTES (Izquierda, 4 cols) & GRÁFICO (Derecha, 8 cols) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- COLUMNA IZQUIERDA: FILTROS Y APUNTES DE PRENSA (4 Cols) -->
+      <div class="lg:col-span-4 flex flex-col gap-6">
+
+        <!-- PANEL DE CONTROL / FILTROS -->
+        <section class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
+          <h3
+            class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
+            Filtros del Historial
+          </h3>
+
+          <!-- Buscador por Texto -->
+          <div>
+            <label for="search-input" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
+              Buscar por Estadio / Año
+            </label>
+            <input type="text" id="search-input" placeholder="Ej: Wanda Metropolitano, 2010..."
+              class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-sm font-sans text-[#1a1c1c] focus-border-primary" />
+          </div>
+
+          <!-- Filtro de Competición -->
+          <div>
+            <label for="comp-select" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
+              Tipo de Competición
+            </label>
+            <select id="comp-select"
+              class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-sm font-sans text-[#1a1c1c] focus-border-primary appearance-none cursor-pointer">
+              <option value="all">Todas las Competiciones</option>
+              <option value="official">Partidos Oficiales</option>
+              <option value="amistoso">Partidos Amistosos</option>
+              <option value="worldcup">Copa Mundial de la FIFA</option>
+            </select>
+          </div>
+
+          <!-- Filtro de Ganador -->
+          <div>
+            <label for="winner-select" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
+              Resultado del Encuentro
+            </label>
+            <select id="winner-select"
+              class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-sm font-sans text-[#1a1c1c] focus-border-primary appearance-none cursor-pointer">
+              <option value="all">Cualquier Resultado</option>
+              <option value="argentina">Ganó Argentina</option>
+              <option value="spain">Ganó España</option>
+              <option value="draw">Empate</option>
+            </select>
+          </div>
+
+          <!-- Botón restablecer -->
+          <button id="btn-reset" onclick="resetFilters()"
+            class="w-full border border-[#e0e0e0] py-2 text-xs font-bold tracking-wider sharp-ui hover:bg-[#f3f3f3] transition-colors duration-150 cursor-pointer text-[#1a1c1c]">
+            LIMPIAR FILTROS
+          </button>
+        </section>
+
+      </div>
+
+      <!-- COLUMNA DERECHA: SECTOR GRÁFICO CON PESTAÑAS (8 Cols) -->
+      <div class="lg:col-span-8 flex flex-col gap-6">
+
+        <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#e2e2e2] pb-4 gap-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Visualización táctica de datos</h3>
+              <p class="text-xs text-[#414752] font-sans">Balance comparado e histórico entre ambas escuadras.</p>
+            </div>
+
+            <!-- Selector de Pestañas de Gráfico -->
+            <div
+              class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none shrink-0 self-start sm:self-auto text-[10px] font-bold tracking-wider font-sans">
+              <button id="btn-tab-timeline" onclick="switchTab('timeline')"
+                class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-[#43a1d5] text-white">
+                RECIENTES
+              </button>
+              <button id="btn-tab-balance" onclick="switchTab('balance')"
+                class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
+                BALANCE
+              </button>
+              <button id="btn-tab-type" onclick="switchTab('type')"
+                class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
+                OFICIAL VS AMISTOSO
+              </button>
+            </div>
+          </div>
+
+          <!-- Canvas del Gráfico -->
+          <div
+            class="relative w-full aspect-square sm:aspect-video flex items-center justify-center p-2 min-h-[300px] max-h-[380px]">
+            <canvas id="historicalChart" class="w-full h-full"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TABLA DE HISTORIAL COMPLETO DE ENCUENTROS -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e0e0e0] pb-4">
+        <div>
+          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Historial completo de encuentros</h3>
+          <p class="text-xs text-[#414752] font-sans">Registro cronológico de los duelos directos Argentina vs España.</p>
+        </div>
+        <span
+          class="text-xs font-mono text-[#414752] bg-[#f3f3f3] border border-[#e0e0e0] px-2.5 py-1 sharp-ui self-start sm:self-auto">
+          Mostrando: <strong id="table-count">-</strong> encuentros
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
+              <th class="py-3 font-sans">Fecha</th>
+              <th class="py-3 font-sans">Local</th>
+              <th class="py-3 text-center font-sans">Score</th>
+              <th class="py-3 text-right font-sans">Visitante</th>
+              <th class="py-3 text-center font-sans hidden sm:table-cell">Resultado</th>
+              <th class="py-3 font-sans hidden md:table-cell">Competición</th>
+              <th class="py-3 font-sans hidden md:table-cell">Fase</th>
+              <th class="py-3 font-sans hidden lg:table-cell">Estadio</th>
+            </tr>
+          </thead>
+          <tbody id="matches-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+            <!-- Se llena dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="w-full bg-white border-t border-[#e0e0e0] py-6 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <span>Historial Argentina vs España © 2026</span>
+      <span>Datos basados en encuentros oficiales y amistosos.</span>
+    </div>
+  </footer>
+
+  <!-- DATA & LOGIC -->
+  <script>
+    // DATASET ORIGINAL EMBEBIDO (En español)
+    const ARGENTINA_ESPANA_DATA = [
+      { "fecha": "27 mar 2018", "local": "España", "visitante": "Argentina", "goles_local": 6, "goles_visitante": 1, "competicion": "Amistoso 2018", "fase": "-", "estadio": "Wanda Metropolitano" },
+      { "fecha": "07 sep 2010", "local": "Argentina", "visitante": "España", "goles_local": 4, "goles_visitante": 1, "competicion": "Amistoso 2010", "fase": "-", "estadio": "Estadio Monumental" },
+      { "fecha": "14 nov 2009", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 2009", "fase": "-", "estadio": "Vicente Calderón" },
+      { "fecha": "11 oct 2006", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 2006", "fase": "-", "estadio": "Estadio Nueva Condomina" },
+      { "fecha": "17 nov 1999", "local": "España", "visitante": "Argentina", "goles_local": 0, "goles_visitante": 2, "competicion": "Amistoso 1999", "fase": "Amistoso", "estadio": "Estadio La Cartuja de Sevilla" },
+      { "fecha": "20 sep 1995", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 1995", "fase": "Amistoso", "estadio": "Vicente Calderón" },
+      { "fecha": "12 oct 1988", "local": "España", "visitante": "Argentina", "goles_local": 1, "goles_visitante": 1, "competicion": "Amistoso 1988", "fase": "Amistoso", "estadio": "Ramón Sánchez Pizjuán" },
+      { "fecha": "12 oct 1974", "local": "Argentina", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Amistoso 1974", "fase": "-", "estadio": "BUENOS AIRES" },
+      { "fecha": "11 oct 1972", "local": "España", "visitante": "Argentina", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1972", "fase": "-", "estadio": "MADRID" },
+      { "fecha": "13 jul 1966", "local": "Argentina", "visitante": "España", "goles_local": 2, "goles_visitante": 1, "competicion": "Copa Mundial de la FIFA Inglaterra 1966", "fase": "Partidos de grupo", "estadio": "Villa Park" },
+      { "fecha": "11 jun 1961", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 0, "competicion": "Amistoso 1961", "fase": "-", "estadio": "SEVILLE" },
+      { "fecha": "24 jul 1960", "local": "Argentina", "visitante": "España", "goles_local": 2, "goles_visitante": 0, "competicion": "Amistoso 1960", "fase": "-", "estadio": "BUENOS AIRES" },
+      { "fecha": "05 jul 1953", "local": "Argentina", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1953", "fase": "-", "estadio": "BUENOS AIRES" },
+      { "fecha": "07 dic 1952", "local": "España", "visitante": "Argentina", "goles_local": 0, "goles_visitante": 1, "competicion": "Amistoso 1952", "fase": "-", "estadio": "MADRID" }
+    ];
+
+    // VARIABLES DE CONTROL
+    let currentTab = 'timeline'; // 'timeline', 'balance', 'type'
+    let chartInstance = null;
+
+    // INICIALIZACIÓN
+    window.addEventListener('DOMContentLoaded', () => {
+      // Registrar controladores de eventos de filtro
+      document.getElementById('search-input').addEventListener('input', applyFilters);
+      document.getElementById('comp-select').addEventListener('change', applyFilters);
+      document.getElementById('winner-select').addEventListener('change', applyFilters);
+
+      // Ejecutar filtros iniciales para llenar la página
+      applyFilters();
+    });
+
+    // SISTEMA DE FILTRADO DINÁMICO
+    function applyFilters() {
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
+      const compFilter = document.getElementById('comp-select').value;
+      const winnerFilter = document.getElementById('winner-select').value;
+
+      const filtered = ARGENTINA_ESPANA_DATA.filter(m => {
+        // Filtro por búsqueda de texto (estadio o competición o fecha)
+        const textMatch = !query ||
+          m.estadio.toLowerCase().includes(query) ||
+          m.competicion.toLowerCase().includes(query) ||
+          m.fecha.toLowerCase().includes(query) ||
+          (m.fase && m.fase.toLowerCase().includes(query));
+
+        // Filtro por tipo de competición
+        let compMatch = true;
+        const compLower = m.competicion.toLowerCase();
+        if (compFilter === 'official') {
+          compMatch = !compLower.includes('friendly') && !compLower.includes('amistoso');
+        } else if (compFilter === 'amistoso') {
+          compMatch = compLower.includes('friendly') || compLower.includes('amistoso');
+        } else if (compFilter === 'worldcup') {
+          compMatch = compLower.includes('mundial') || compLower.includes('world cup') || compLower.includes('copa mundial') || compLower.includes('copa mundial de la fifa');
+        }
+
+        // Filtro por ganador del encuentro
+        let winnerMatch = true;
+        const argentinaWon = (m.local === 'Argentina' && m.goles_local > m.goles_visitante) || (m.visitante === 'Argentina' && m.goles_visitante > m.goles_local);
+        const spainWon = (m.local === 'España' && m.goles_local > m.goles_visitante) || (m.visitante === 'España' && m.goles_visitante > m.goles_local);
+        const draw = m.goles_local === m.goles_visitante;
+
+        if (winnerFilter === 'argentina') {
+          winnerMatch = argentinaWon;
+        } else if (winnerFilter === 'spain') {
+          winnerMatch = spainWon;
+        } else if (winnerFilter === 'draw') {
+          winnerMatch = draw;
+        }
+
+        return textMatch && compMatch && winnerMatch;
+      });
+
+      // Actualizar KPIs con los datos filtrados
+      updateKPIs(filtered);
+
+      // Actualizar Tabla
+      renderTable(filtered);
+
+      // Actualizar Gráfico
+      renderChart(filtered);
+    }
+
+    function resetFilters() {
+      document.getElementById('search-input').value = '';
+      document.getElementById('comp-select').value = 'all';
+      document.getElementById('winner-select').value = 'all';
+      applyFilters();
+    }
+
+    // ACTUALIZACIÓN DE KPIS
+    function updateKPIs(matches) {
+      const total = matches.length;
+      let argentinaWins = 0;
+      let spainWins = 0;
+      let draws = 0;
+      let argentinaGoals = 0;
+      let spainGoals = 0;
+
+      matches.forEach(m => {
+        const gl = m.goles_local;
+        const gv = m.goles_visitante;
+
+        if (m.local === 'Argentina') {
+          argentinaGoals += gl;
+          spainGoals += gv;
+          if (gl > gv) argentinaWins++;
+          else if (gl < gv) spainWins++;
+          else draws++;
+        } else {
+          spainGoals += gl;
+          argentinaGoals += gv;
+          if (gl > gv) spainWins++;
+          else if (gl < gv) argentinaWins++;
+          else draws++;
+        }
+      });
+
+      const totalGoals = argentinaGoals + spainGoals;
+
+      // Actualizar DOM
+      document.getElementById('kpi-total').textContent = total;
+      document.getElementById('kpi-wins-argentina').textContent = argentinaWins;
+      document.getElementById('kpi-wins-spain').textContent = spainWins;
+      document.getElementById('kpi-draws').textContent = draws;
+      document.getElementById('kpi-goals-total').textContent = totalGoals;
+
+      if (total > 0) {
+        document.getElementById('kpi-winrate-argentina').textContent = `(${Math.round((argentinaWins / total) * 100)}%)`;
+        document.getElementById('kpi-winrate-spain').textContent = `(${Math.round((spainWins / total) * 100)}%)`;
+        document.getElementById('kpi-goals-ratio').textContent = `${argentinaGoals} ARG - vs - ${spainGoals} ESP`;
+      } else {
+        document.getElementById('kpi-winrate-argentina').textContent = `(0%)`;
+        document.getElementById('kpi-winrate-spain').textContent = `(0%)`;
+        document.getElementById('kpi-goals-ratio').textContent = `0 ARG - vs - 0 ESP`;
+      }
+
+      document.getElementById('table-count').textContent = total;
+    }
+
+    // RENDERIZADO DE LA TABLA
+    function renderTable(matches) {
+      const tbody = document.getElementById('matches-tbody');
+      tbody.innerHTML = '';
+
+      if (matches.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="py-8 text-center text-xs text-[#414752] font-sans">
+              No se encontraron encuentros con los filtros seleccionados.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      matches.forEach(m => {
+        const argentinaWon = (m.local === 'Argentina' && m.goles_local > m.goles_visitante) || (m.visitante === 'Argentina' && m.goles_visitante > m.goles_local);
+        const spainWon = (m.local === 'España' && m.goles_local > m.goles_visitante) || (m.visitante === 'España' && m.goles_visitante > m.goles_local);
+
+        let badge = '';
+        if (argentinaWon) {
+          badge = `<span class="bg-[#e6f3fa] text-[#43a1d5] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Ganó ARG</span>`;
+        } else if (spainWon) {
+          badge = `<span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Ganó ESP</span>`;
+        } else {
+          badge = `<span class="bg-[#eeeeee] text-[#414752] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Empate</span>`;
+        }
+
+        const localStyle = m.local === 'Argentina' ? 'text-[#43a1d5] font-bold' : 'text-[#b6171e] font-bold';
+        const visitStyle = m.visitante === 'Argentina' ? 'text-[#43a1d5] font-bold' : 'text-[#b6171e] font-bold';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-[#f3f3f3] transition-colors duration-100 border-b border-[#eeeeee]';
+        tr.innerHTML = `
+          <td class="py-3 font-sans font-semibold">${m.fecha}</td>
+          <td class="py-3 font-sans"><span class="${localStyle}">${m.local}</span></td>
+          <td class="py-3 font-sans text-center font-bold text-sm bg-[#fafafa] border-l border-r border-[#e0e0e0] w-20">${m.goles_local} - ${m.goles_visitante}</td>
+          <td class="py-3 font-sans text-right"><span class="${visitStyle}">${m.visitante}</span></td>
+          <td class="py-3 font-sans text-center hidden sm:table-cell">${badge}</td>
+          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${m.competicion}</td>
+          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${m.fase !== '-' ? m.fase : 'Amistoso'}</td>
+          <td class="py-3 font-sans text-xs text-[#414752] hidden lg:table-cell">${m.estadio}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // CAMBIO DE PESTAÑA DEL GRÁFICO
+    function switchTab(tabId) {
+      if (currentTab === tabId) return;
+      currentTab = tabId;
+
+      const tabs = ['timeline', 'balance', 'type'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`btn-tab-${t}`);
+        if (t === tabId) {
+          btn.className = "px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-[#43a1d5] text-white";
+        } else {
+          btn.className = "px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]";
+        }
+      });
+
+      // Volver a aplicar filtros para redibujar el gráfico respectivo
+      applyFilters();
+    }
+
+    // RENDERIZADO DEL GRÁFICO
+    function renderChart(matches) {
+      const canvas = document.getElementById('historicalChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      if (matches.length === 0) {
+        return; // Sin datos
+      }
+
+      if (currentTab === 'timeline') {
+        // Mostrar evolución de goles en los últimos 15 encuentros (ordenados de más antiguo a más reciente)
+        const recentMatches = [...matches].slice(0, 15).reverse();
+        const labels = recentMatches.map(m => m.fecha);
+
+        const goalsArgentina = recentMatches.map(m => {
+          return m.local === 'Argentina' ? m.goles_local : m.goles_visitante;
+        });
+
+        const goalsSpain = recentMatches.map(m => {
+          return m.local === 'España' ? m.goles_local : m.goles_visitante;
+        });
+
+        chartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Goles Argentina',
+                data: goalsArgentina,
+                borderColor: '#43a1d5', // Celeste
+                backgroundColor: 'rgba(67, 161, 213, 0.05)',
+                fill: true,
+                tension: 0.25,
+                borderWidth: 2.5,
+                pointBackgroundColor: '#43a1d5',
+                pointRadius: 4,
+                pointHoverRadius: 6
+              },
+              {
+                label: 'Goles España',
+                data: goalsSpain,
+                borderColor: '#b6171e', // Rojo
+                backgroundColor: 'rgba(182, 23, 30, 0.05)',
+                fill: true,
+                tension: 0.25,
+                borderWidth: 2.5,
+                pointBackgroundColor: '#b6171e',
+                pointRadius: 4,
+                pointHoverRadius: 6
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+              },
+              y: {
+                grid: { color: '#eeeeee' },
+                ticks: { font: { family: 'Inter', size: 9 }, color: '#414752', stepSize: 1 },
+                suggestedMin: 0,
+                suggestedMax: 6
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
+              },
+              tooltip: {
+                backgroundColor: '#1a1c1c',
+                cornerRadius: 0,
+                titleFont: { family: 'Inter', size: 11, weight: '700' },
+                bodyFont: { family: 'Inter', size: 11 },
+                callbacks: {
+                  footer: function (tooltipItems) {
+                    const matchIndex = tooltipItems[0].dataIndex;
+                    const m = recentMatches[matchIndex];
+                    return `${m.competicion}\nEstadio: ${m.estadio}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+      } else if (currentTab === 'balance') {
+        // Mostrar balance global de victorias
+        let winsArgentina = 0;
+        let winsSpain = 0;
+        let draws = 0;
+
+        matches.forEach(m => {
+          const gl = m.goles_local;
+          const gv = m.goles_visitante;
+          if (m.local === 'Argentina') {
+            if (gl > gv) winsArgentina++;
+            else if (gl < gv) winsSpain++;
+            else draws++;
+          } else {
+            if (gl > gv) winsSpain++;
+            else if (gl < gv) winsArgentina++;
+            else draws++;
+          }
+        });
+
+        chartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Victorias Argentina', 'Empates', 'Victorias España'],
+            datasets: [{
+              data: [winsArgentina, draws, winsSpain],
+              backgroundColor: ['#43a1d5', '#727172', '#b6171e'],
+              hoverBackgroundColor: ['#2b82b3', '#59595a', '#930010'],
+              barThickness: 40
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
+              },
+              y: {
+                grid: { color: '#eeeeee' },
+                ticks: { font: { family: 'Inter', size: 10 }, color: '#414752', stepSize: 1 },
+                min: 0
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#1a1c1c',
+                cornerRadius: 0,
+                titleFont: { family: 'Inter', size: 12, weight: '700' },
+                bodyFont: { family: 'Inter', size: 12 }
+              }
+            }
+          }
+        });
+
+      } else if (currentTab === 'type') {
+        // Comparativa Oficiales vs Amistosos
+        let offArgentina = 0, offSpain = 0, offDraw = 0;
+        let friArgentina = 0, friSpain = 0, friDraw = 0;
+
+        matches.forEach(m => {
+          const gl = m.goles_local;
+          const gv = m.goles_visitante;
+          const isOfficial = !m.competicion.toLowerCase().includes('friendly') && !m.competicion.toLowerCase().includes('amistoso');
+
+          if (isOfficial) {
+            if (m.local === 'Argentina') {
+              if (gl > gv) offArgentina++;
+              else if (gl < gv) offSpain++;
+              else offDraw++;
+            } else {
+              if (gl > gv) offSpain++;
+              else if (gl < gv) offArgentina++;
+              else offDraw++;
+            }
+          } else {
+            if (m.local === 'Argentina') {
+              if (gl > gv) friArgentina++;
+              else if (gl < gv) friSpain++;
+              else friDraw++;
+            } else {
+              if (gl > gv) friSpain++;
+              else if (gl < gv) friArgentina++;
+              else friDraw++;
+            }
+          }
+        });
+
+        chartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Partidos Oficiales', 'Partidos Amistosos'],
+            datasets: [
+              {
+                label: 'Victorias Argentina',
+                data: [offArgentina, friArgentina],
+                backgroundColor: '#43a1d5',
+                barThickness: 25
+              },
+              {
+                label: 'Empates',
+                data: [offDraw, friDraw],
+                backgroundColor: '#727172',
+                barThickness: 25
+              },
+              {
+                label: 'Victorias España',
+                data: [offSpain, friSpain],
+                backgroundColor: '#b6171e',
+                barThickness: 25
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
+              },
+              y: {
+                grid: { color: '#eeeeee' },
+                ticks: { font: { family: 'Inter', size: 10 }, color: '#414752', stepSize: 1 },
+                min: 0
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
+              },
+              tooltip: {
+                backgroundColor: '#1a1c1c',
+                cornerRadius: 0,
+                titleFont: { family: 'Inter', size: 12, weight: '700' },
+                bodyFont: { family: 'Inter', size: 12 }
+              }
+            }
+          }
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>
