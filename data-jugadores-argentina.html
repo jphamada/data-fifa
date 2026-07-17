@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Análisis de Rendimiento Selección Argentina - Copa Mundial 2026</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+    rel="stylesheet">
+
+  <style type="text/css">
+    /* Estilos basados en design.md del Chronicle System */
+    :root {
+      --color-argentina: #43a1d5;
+      --color-argentina-light: #e6f3fa;
+      --color-bg: #f9f9f9;
+      --color-surface: #ffffff;
+      --color-border: #e0e0e0;
+      --color-text-main: #1a1c1c;
+      --color-text-muted: #414752;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+    }
+
+    .font-serif {
+      font-family: 'Source Serif 4', serif;
+    }
+
+    .font-sans {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Forzado estricto de bordes a 90 grados (Sharp 0) */
+    .sharp-ui {
+      border-radius: 0px !important;
+    }
+
+    /* Quitar sombras para estética plana editorial */
+    .no-shadow {
+      box-shadow: none !important;
+    }
+
+    /* Foco personalizado según design.md */
+    .focus-border-primary:focus {
+      outline: none;
+      border-color: var(--color-argentina) !important;
+      border-bottom-width: 2px;
+    }
+
+    /* Animación sutil de pulso para indicador Live */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .pulse-indicator {
+      animation: pulse-dot 2s infinite;
+    }
+
+    /* Ocultar barra de scroll en tablas pero permitir scroll horizontal */
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Estilo de fila activa/seleccionada */
+    .active-row {
+      background-color: var(--color-argentina-light) !important;
+    }
+  </style>
+</head>
+
+<body class="p-0 m-0 min-h-screen flex flex-col antialiased">
+
+  <!-- CABECERA EDITORIAL (Masthead) -->
+  <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-0">
+    <div class="max-w-[1280px] mx-auto flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold tracking-widest text-[#43a1d5] flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 bg-[#43a1d5] pulse-indicator sharp-ui"></span>
+          ANÁLISIS ESTADÍSTICO DE LA PLANTILLA
+        </span>
+        <span class="text-xs font-semibold text-[#414752] tracking-wider uppercase font-sans">
+          Copa Mundial FIFA 2026
+        </span>
+      </div>
+
+      <div class="border-t border-[#e2e2e2] pt-4 mt-1">
+        <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
+          Estadísticas acumuladas de la Selección Argentina
+        </h1>
+        <p class="font-serif text-base md:text-lg text-[#414752] mt-2 italic">
+          Análisis cuantitativo de rendimiento individual, posicionamiento táctico, métricas de distribución y despliegue físico.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 pb-4 mt-2 gap-2 text-xs text-[#414752]">
+        <div class="flex items-center gap-4">
+          <span><strong>EQUIPO:</strong> Argentina</span>
+          <span class="text-[#e0e0e0]">|</span>
+          <span><strong>JUGADORES ANALIZADOS:</strong> <span id="squad-count">0</span></span>
+        </div>
+        <div>
+          <span class="bg-[#eeeeee] text-[#1a1c1c] font-bold px-2.5 py-1 sharp-ui tracking-widest text-[10px]">
+            ALBICELESTE
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-6">
+
+    <!-- PANEL DE CONTROL Y FILTROS -->
+    <section class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
+      <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
+        Filtros de Búsqueda y Comparación
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <!-- Selección Múltiple de Jugadores -->
+        <div class="md:col-span-6 relative">
+          <label class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
+            Seleccionar Jugador(es)
+          </label>
+          <button type="button" id="dropdown-players-btn" onclick="togglePlayersDropdown(event)"
+            class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-xs font-sans text-[#1a1c1c] text-left flex justify-between items-center cursor-pointer select-none">
+            <span id="dropdown-selected-text">Seleccionar...</span>
+            <svg class="fill-current h-3 w-3 text-[#414752]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </button>
+          <div id="dropdown-players-list" class="hidden absolute left-0 right-0 mt-1 bg-white border border-[#e0e0e0] max-h-60 overflow-y-auto z-50 sharp-ui flex flex-col p-2 gap-1 shadow-md">
+            <!-- Rellenado dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Filtro por Posición -->
+        <div class="md:col-span-4">
+          <label for="filter-position" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
+            Posición
+          </label>
+          <select id="filter-position"
+            class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-xs font-sans text-[#1a1c1c] focus-border-primary cursor-pointer">
+            <option value="all">Todas las Posiciones</option>
+            <option value="FW">Delanteros (FW)</option>
+            <option value="MF">Mediocampistas (MF)</option>
+            <option value="DF">Defensas (DF)</option>
+            <option value="GK">Porteros (GK)</option>
+          </select>
+        </div>
+
+        <!-- Botón de Limpieza -->
+        <div class="md:col-span-2 flex items-end">
+          <button id="btn-reset"
+            class="w-full border border-[#e0e0e0] py-2 text-[10px] font-bold tracking-wider sharp-ui hover:bg-[#f3f3f3] transition-colors duration-150 cursor-pointer text-[#1a1c1c]">
+            LIMPIAR FILTROS
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMNADO PRINCIPAL: FICHA/COMPARACIÓN (Izquierda, 4 cols) & GRÁFICOS Y TABLAS (Derecha, 8 cols) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- COLUMNA IZQUIERDA: Tarjeta Detalle Individual / Comparativa (4 Cols) -->
+      <section class="lg:col-span-4 flex flex-col gap-6" id="panel-lateral">
+        <!-- RENDERIZADO DINÁMICO DESDE JS -->
+      </section>
+
+      <!-- COLUMNA DERECHA: Visualizaciones Gráficas e Historial de Métricas (8 Cols) -->
+      <div class="lg:col-span-8 flex flex-col gap-6">
+        
+        <!-- SECTOR VISUALIZACIÓN GRÁFICA -->
+        <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#e2e2e2] pb-4 gap-3">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-[#1a1c1c]" id="chart-title">Visualización de Rendimiento</h3>
+              <p class="text-xs text-[#414752] font-sans">Valores normalizados con respecto al máximo rendimiento de la plantilla.</p>
+            </div>
+
+            <!-- Selectores de Gráfico -->
+            <div class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none shrink-0 self-start sm:self-auto text-[10px] font-bold tracking-wider font-sans">
+              <button id="btn-chart-radar"
+                class="px-3 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-[#43a1d5] text-white">
+                RADAR
+              </button>
+              <button id="btn-chart-bar"
+                class="px-3 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
+                BARRAS
+              </button>
+            </div>
+          </div>
+
+          <!-- Canvas del Gráfico -->
+          <div class="relative w-full aspect-square sm:aspect-video flex items-center justify-center p-2 min-h-[300px] max-h-[380px]">
+            <canvas id="metricsChart" class="w-full h-full"></canvas>
+          </div>
+        </div>
+
+        <!-- TABLA PRINCIPAL MULTI-PESTAÑA -->
+        <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+          <div class="flex flex-col gap-3 border-b border-[#e0e0e0] pb-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Panel General de Estadísticas</h3>
+                <p class="text-xs text-[#414752] font-sans">Haz clic en un jugador para ver su ficha, o activa las casillas para comparar a varios.</p>
+              </div>
+              <span class="text-xs font-mono text-[#414752] bg-[#f3f3f3] border border-[#e0e0e0] px-2.5 py-1 sharp-ui self-start sm:self-auto">
+                Filtrados: <strong id="visible-count">0</strong> jugadores
+              </span>
+            </div>
+
+            <!-- Navegación de Pestañas (Scroll horizontal en mobile) -->
+            <div class="flex border-b border-[#e2e2e2] overflow-x-auto scrollbar-none text-xs font-bold tracking-wider font-sans whitespace-nowrap mt-2">
+              <button onclick="switchTab('generales')" id="tab-generales" class="py-2.5 px-4 border-b-2 border-[#43a1d5] text-[#1a1c1c] cursor-pointer">
+                DATOS GENERALES
+              </button>
+              <button onclick="switchTab('ataque')" id="tab-ataque" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                ATAQUE
+              </button>
+              <button onclick="switchTab('distribucion')" id="tab-distribucion" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                DISTRIBUCIÓN
+              </button>
+              <button onclick="switchTab('defensa')" id="tab-defensa" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                DEFENSA
+              </button>
+              <button onclick="switchTab('disciplina')" id="tab-disciplina" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                DISCIPLINA
+              </button>
+              <button onclick="switchTab('movimiento')" id="tab-movimiento" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                MOVIMIENTO
+              </button>
+              <button onclick="switchTab('fisico')" id="tab-fisico" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                FÍSICO
+              </button>
+              <button onclick="switchTab('porteria')" id="tab-porteria" class="py-2.5 px-4 border-b-2 border-transparent text-[#414752] hover:text-[#1a1c1c] cursor-pointer">
+                PORTERÍA
+              </button>
+            </div>
+          </div>
+
+          <!-- Contenedor de la Tabla -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead id="table-head">
+                <!-- Se dibuja dinámicamente -->
+              </thead>
+              <tbody id="table-body" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+                <!-- Se dibuja dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- PIE DE PÁGINA EDITORIAL -->
+  <footer class="w-full bg-[#1a1c1c] text-[#f1f1f1] px-4 md:px-8 py-8 mt-12 border-t border-[#dadada] sharp-ui">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+      <div class="flex flex-col gap-1 text-center md:text-left">
+        <h4 class="font-serif font-bold text-sm tracking-wide text-white">La Crónica Deportiva</h4>
+        <p class="text-[#717783]">Portal de análisis estadístico deportivo y visualizaciones de rendimiento interactivo.</p>
+      </div>
+      <p class="text-[#717783] text-center md:text-right">
+        &copy; 2026 La Crónica Deportiva. Datos estadísticos oficiales de la plantilla argentina.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // DATA INJECTED BY BUILDER
+    const PLAYERS_DATA = [{"Player": "Lionel Messi", "Position": "FW", "Datos generales_Rank": 1, "Goals": 8, "Assists": 4, "Minutes Played": 712, "Attacking_Rank": 2, "Attempts On Target": 19, "Attempts At Goal": 34, "Attempts At Goal Conv Rate (%)": 24, "Attempts Inside Penalty Area": 16, "Attempts Outside Penalty Area": 18, "Headed Attempts at Goal": 0, "xG": 6.16, "xG Efficiency": "1.3x", "Corners": 34, "Distribution_Rank": 37, "Passes": 332, "Passing Accuracy (%)": 79, "Crosses": 41, "Crossing Accuracy (%)": 41, "Defensive Linebreaks Attempted": 32, "Defensive Linebreaks Acc (%)": 63, "Switches of Play Attempted": 5, "Switches of Play Acc (%)": 80, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 24, "Defensive Pressures Applied": 147, "Defensive Pressures Directly Applied": 20, "Discipline_Rank": 373, "Fouls Against": 2, "Fouls For": 16, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 5, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 39, "Offers To Receive": 224, "Offers In Behind": 53, "Offers In Between": 109, "Offers In Front": 62, "Offers Inside Team Shape": 142, "Offers Outside Team Shape": 82, "Receptions In Behind": 5, "Receptions Between Midfield And Defensive Line": 135, "Receptions Under Pressure": 179, "Player Involvements": 818, "Physical_Rank": 580, "Average Speed (km/h)": 4.56, "High Speed Running": 449, "Sprints": 176, "Total Distance (m)": 54273.81}, {"Player": "Lautaro Martinez", "Position": "FW", "Datos generales_Rank": 14, "Goals": 3, "Assists": 1, "Minutes Played": 368, "Attacking_Rank": 36, "Attempts On Target": 4, "Attempts At Goal": 10, "Attempts At Goal Conv Rate (%)": 30, "Attempts Inside Penalty Area": 9, "Attempts Outside Penalty Area": 1, "Headed Attempts at Goal": 2, "xG": 2.17, "xG Efficiency": "1.38x", "Corners": 0, "Distribution_Rank": 494, "Passes": 71, "Passing Accuracy (%)": 85, "Crosses": 2, "Crossing Accuracy (%)": 50, "Defensive Linebreaks Attempted": 2, "Defensive Linebreaks Acc (%)": 50, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 26, "Defensive Pressures Applied": 181, "Defensive Pressures Directly Applied": 19, "Discipline_Rank": 23, "Fouls Against": 8, "Fouls For": 5, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 2, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 73, "Offers To Receive": 178, "Offers In Behind": 95, "Offers In Between": 70, "Offers In Front": 13, "Offers Inside Team Shape": 131, "Offers Outside Team Shape": 47, "Receptions In Behind": 4, "Receptions Between Midfield And Defensive Line": 58, "Receptions Under Pressure": 60, "Player Involvements": 185, "Physical_Rank": 288, "Average Speed (km/h)": 6.08, "High Speed Running": 369, "Sprints": 151, "Total Distance (m)": 37720.93}, {"Player": "Enzo Fernandez", "Position": "MF", "Datos generales_Rank": 56, "Goals": 2, "Assists": 0, "Minutes Played": 658, "Attacking_Rank": 163, "Attempts On Target": 4, "Attempts At Goal": 12, "Attempts At Goal Conv Rate (%)": 17, "Attempts Inside Penalty Area": 4, "Attempts Outside Penalty Area": 8, "Headed Attempts at Goal": 2, "xG": 0.9, "xG Efficiency": "2.22x", "Corners": 0, "Distribution_Rank": 5, "Passes": 483, "Passing Accuracy (%)": 93, "Crosses": 5, "Crossing Accuracy (%)": 40, "Defensive Linebreaks Attempted": 20, "Defensive Linebreaks Acc (%)": 75, "Switches of Play Attempted": 8, "Switches of Play Acc (%)": 88, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 43, "Defensive Pressures Applied": 149, "Defensive Pressures Directly Applied": 24, "Discipline_Rank": 11, "Fouls Against": 9, "Fouls For": 5, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 5, "Offers To Receive": 351, "Offers In Behind": 50, "Offers In Between": 123, "Offers In Front": 178, "Offers Inside Team Shape": 211, "Offers Outside Team Shape": 140, "Receptions In Behind": 4, "Receptions Between Midfield And Defensive Line": 78, "Receptions Under Pressure": 140, "Player Involvements": 1041, "Physical_Rank": 419, "Average Speed (km/h)": 5.57, "High Speed Running": 881, "Sprints": 294, "Total Distance (m)": 71419.8}, {"Player": "Lisandro Martinez", "Position": "DF", "Datos generales_Rank": 87, "Goals": 1, "Assists": 1, "Minutes Played": 664, "Attacking_Rank": 36, "Attempts On Target": 2, "Attempts At Goal": 4, "Attempts At Goal Conv Rate (%)": 25, "Attempts Inside Penalty Area": 2, "Attempts Outside Penalty Area": 2, "Headed Attempts at Goal": 0, "xG": 0.2, "xG Efficiency": "5.09x", "Corners": 0, "Distribution_Rank": 17, "Passes": 424, "Passing Accuracy (%)": 95, "Crosses": 3, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 9, "Defensive Linebreaks Acc (%)": 67, "Switches of Play Attempted": 1, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 8, "Defensive Pressures Applied": 26, "Defensive Pressures Directly Applied": 10, "Discipline_Rank": 68, "Fouls Against": 6, "Fouls For": 4, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 456, "Offers To Receive": 52, "Offers In Behind": 2, "Offers In Between": 1, "Offers In Front": 49, "Offers Inside Team Shape": 18, "Offers Outside Team Shape": 34, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 3, "Receptions Under Pressure": 68, "Player Involvements": 880, "Physical_Rank": 594, "Average Speed (km/h)": 4.49, "High Speed Running": 437, "Sprints": 154, "Total Distance (m)": 57920.58}, {"Player": "Alexis Mac Allister", "Position": "MF", "Datos generales_Rank": 88, "Goals": 1, "Assists": 1, "Minutes Played": 728, "Attacking_Rank": 36, "Attempts On Target": 4, "Attempts At Goal": 13, "Attempts At Goal Conv Rate (%)": 8, "Attempts Inside Penalty Area": 10, "Attempts Outside Penalty Area": 3, "Headed Attempts at Goal": 9, "xG": 1.92, "xG Efficiency": "0.52x", "Corners": 0, "Distribution_Rank": 20, "Passes": 400, "Passing Accuracy (%)": 92, "Crosses": 1, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 2, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 3, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 20, "Defensive Pressures Applied": 181, "Defensive Pressures Directly Applied": 32, "Discipline_Rank": 68, "Fouls Against": 6, "Fouls For": 10, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 37, "Offers To Receive": 233, "Offers In Behind": 47, "Offers In Between": 73, "Offers In Front": 113, "Offers Inside Team Shape": 175, "Offers Outside Team Shape": 58, "Receptions In Behind": 3, "Receptions Between Midfield And Defensive Line": 52, "Receptions Under Pressure": 182, "Player Involvements": 864, "Physical_Rank": 244, "Average Speed (km/h)": 6.21, "High Speed Running": 843, "Sprints": 218, "Total Distance (m)": 75574.07}, {"Player": "Giovani Lo Celso", "Position": "MF", "Datos generales_Rank": 96, "Goals": 1, "Assists": 0, "Minutes Played": 64, "Attacking_Rank": 163, "Attempts On Target": 1, "Attempts At Goal": 1, "Attempts At Goal Conv Rate (%)": 100, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 1, "Headed Attempts at Goal": 0, "xG": 0.15, "xG Efficiency": "6.61x", "Corners": 1, "Distribution_Rank": 590, "Passes": 51, "Passing Accuracy (%)": 92, "Crosses": 1, "Crossing Accuracy (%)": 100, "Defensive Linebreaks Attempted": 0, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 8, "Defensive Pressures Applied": 23, "Defensive Pressures Directly Applied": 6, "Discipline_Rank": 536, "Fouls Against": 1, "Fouls For": 1, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 499, "Offers To Receive": 46, "Offers In Behind": 4, "Offers In Between": 22, "Offers In Front": 20, "Offers Inside Team Shape": 31, "Offers Outside Team Shape": 15, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 7, "Receptions Under Pressure": 27, "Player Involvements": 108, "Physical_Rank": 1019, "Average Speed (km/h)": 1, "High Speed Running": 123, "Sprints": 23, "Total Distance (m)": 7525.5}, {"Player": "Julian Alvarez", "Position": "FW", "Datos generales_Rank": 172, "Goals": 1, "Assists": 0, "Minutes Played": 576, "Attacking_Rank": 163, "Attempts On Target": 5, "Attempts At Goal": 11, "Attempts At Goal Conv Rate (%)": 9, "Attempts Inside Penalty Area": 7, "Attempts Outside Penalty Area": 4, "Headed Attempts at Goal": 0, "xG": 1.39, "xG Efficiency": "0.72x", "Corners": 0, "Distribution_Rank": 143, "Passes": 198, "Passing Accuracy (%)": 86, "Crosses": 1, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 2, "Defensive Linebreaks Acc (%)": 50, "Switches of Play Attempted": 4, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 33, "Defensive Pressures Applied": 215, "Defensive Pressures Directly Applied": 31, "Discipline_Rank": 23, "Fouls Against": 8, "Fouls For": 3, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 2, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 19, "Offers To Receive": 279, "Offers In Behind": 104, "Offers In Between": 106, "Offers In Front": 69, "Offers Inside Team Shape": 173, "Offers Outside Team Shape": 106, "Receptions In Behind": 3, "Receptions Between Midfield And Defensive Line": 102, "Receptions Under Pressure": 109, "Player Involvements": 449, "Physical_Rank": 237, "Average Speed (km/h)": 6.22, "High Speed Running": 669, "Sprints": 284, "Total Distance (m)": 59379.47}, {"Player": "Cristian Romero", "Position": "DF", "Datos generales_Rank": 173, "Goals": 1, "Assists": 0, "Minutes Played": 612, "Attacking_Rank": 163, "Attempts On Target": 2, "Attempts At Goal": 3, "Attempts At Goal Conv Rate (%)": 33, "Attempts Inside Penalty Area": 3, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 3, "xG": 0.41, "xG Efficiency": "2.45x", "Corners": 0, "Distribution_Rank": 22, "Passes": 389, "Passing Accuracy (%)": 97, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 1, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 9, "Defensive Pressures Applied": 42, "Defensive Pressures Directly Applied": 19, "Discipline_Rank": 11, "Fouls Against": 9, "Fouls For": 3, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 586, "Offers To Receive": 34, "Offers In Behind": 6, "Offers In Between": 2, "Offers In Front": 26, "Offers Inside Team Shape": 23, "Offers Outside Team Shape": 11, "Receptions In Behind": 1, "Receptions Between Midfield And Defensive Line": 4, "Receptions Under Pressure": 70, "Player Involvements": 822, "Physical_Rank": 626, "Average Speed (km/h)": 4.27, "High Speed Running": 337, "Sprints": 93, "Total Distance (m)": 50779.65}, {"Player": "Jose Manuel Lopez", "Position": "FW", "Datos generales_Rank": 192, "Goals": 0, "Assists": 1, "Minutes Played": 28, "Attacking_Rank": 36, "Attempts On Target": 0, "Attempts At Goal": 1, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 1, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0.04, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 996, "Passes": 2, "Passing Accuracy (%)": 100, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 1, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 2, "Defensive Pressures Applied": 9, "Defensive Pressures Directly Applied": 3, "Discipline_Rank": 536, "Fouls Against": 1, "Fouls For": 0, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 840, "Offers To Receive": 12, "Offers In Behind": 12, "Offers In Between": 0, "Offers In Front": 0, "Offers Inside Team Shape": 9, "Offers Outside Team Shape": 3, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 5, "Receptions Under Pressure": 5, "Player Involvements": 8, "Physical_Rank": 897, "Average Speed (km/h)": 1.87, "High Speed Running": 43, "Sprints": 17, "Total Distance (m)": 3081.24}, {"Player": "Gonzalo Montiel", "Position": "DF", "Datos generales_Rank": 211, "Goals": 0, "Assists": 1, "Minutes Played": 180, "Attacking_Rank": 36, "Attempts On Target": 0, "Attempts At Goal": 1, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 1, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0.15, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 449, "Passes": 81, "Passing Accuracy (%)": 85, "Crosses": 5, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 0, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 3, "Defensive Pressures Applied": 13, "Defensive Pressures Directly Applied": 6, "Discipline_Rank": 258, "Fouls Against": 3, "Fouls For": 0, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 374, "Offers To Receive": 65, "Offers In Behind": 35, "Offers In Between": 20, "Offers In Front": 10, "Offers Inside Team Shape": 19, "Offers Outside Team Shape": 46, "Receptions In Behind": 5, "Receptions Between Midfield And Defensive Line": 20, "Receptions Under Pressure": 31, "Player Involvements": 171, "Physical_Rank": 550, "Average Speed (km/h)": 4.76, "High Speed Running": 265, "Sprints": 76, "Total Distance (m)": 19824.93}, {"Player": "Nico Gonzalez", "Position": "MF", "Datos generales_Rank": 231, "Goals": 0, "Assists": 1, "Minutes Played": 275, "Attacking_Rank": 36, "Attempts On Target": 1, "Attempts At Goal": 7, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 7, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 4, "xG": 0.48, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 363, "Passes": 103, "Passing Accuracy (%)": 83, "Crosses": 9, "Crossing Accuracy (%)": 44, "Defensive Linebreaks Attempted": 8, "Defensive Linebreaks Acc (%)": 63, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 8, "Defensive Pressures Applied": 48, "Defensive Pressures Directly Applied": 6, "Discipline_Rank": 172, "Fouls Against": 4, "Fouls For": 2, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 283, "Offers To Receive": 87, "Offers In Behind": 70, "Offers In Between": 13, "Offers In Front": 4, "Offers Inside Team Shape": 49, "Offers Outside Team Shape": 38, "Receptions In Behind": 23, "Receptions Between Midfield And Defensive Line": 58, "Receptions Under Pressure": 52, "Player Involvements": 253, "Physical_Rank": 493, "Average Speed (km/h)": 5.14, "High Speed Running": 269, "Sprints": 119, "Total Distance (m)": 27504.67}, {"Player": "Facundo Medina", "Position": "DF", "Datos generales_Rank": 233, "Goals": 0, "Assists": 1, "Minutes Played": 283, "Attacking_Rank": 36, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 241, "Passes": 139, "Passing Accuracy (%)": 94, "Crosses": 4, "Crossing Accuracy (%)": 50, "Defensive Linebreaks Attempted": 1, "Defensive Linebreaks Acc (%)": 100, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 12, "Defensive Pressures Applied": 58, "Defensive Pressures Directly Applied": 14, "Discipline_Rank": 258, "Fouls Against": 3, "Fouls For": 2, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 176, "Offers To Receive": 124, "Offers In Behind": 41, "Offers In Between": 33, "Offers In Front": 50, "Offers Inside Team Shape": 25, "Offers Outside Team Shape": 99, "Receptions In Behind": 5, "Receptions Between Midfield And Defensive Line": 19, "Receptions Under Pressure": 41, "Player Involvements": 281, "Physical_Rank": 710, "Average Speed (km/h)": 3.4, "High Speed Running": 330, "Sprints": 104, "Total Distance (m)": 29270.89}, {"Player": "Rodrigo De Paul", "Position": "MF", "Datos generales_Rank": 263, "Goals": 0, "Assists": 1, "Minutes Played": 466, "Attacking_Rank": 36, "Attempts On Target": 1, "Attempts At Goal": 2, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 2, "Headed Attempts at Goal": 0, "xG": 0.06, "xG Efficiency": "0x", "Corners": 1, "Distribution_Rank": 45, "Passes": 298, "Passing Accuracy (%)": 92, "Crosses": 12, "Crossing Accuracy (%)": 42, "Defensive Linebreaks Attempted": 9, "Defensive Linebreaks Acc (%)": 67, "Switches of Play Attempted": 1, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 8, "Defensive Pressures Applied": 134, "Defensive Pressures Directly Applied": 16, "Discipline_Rank": 373, "Fouls Against": 2, "Fouls For": 4, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 16, "Offers To Receive": 304, "Offers In Behind": 30, "Offers In Between": 148, "Offers In Front": 126, "Offers Inside Team Shape": 130, "Offers Outside Team Shape": 174, "Receptions In Behind": 3, "Receptions Between Midfield And Defensive Line": 37, "Receptions Under Pressure": 97, "Player Involvements": 653, "Physical_Rank": 476, "Average Speed (km/h)": 5.22, "High Speed Running": 471, "Sprints": 233, "Total Distance (m)": 46670.21}, {"Player": "Geronimo Rulli", "Position": "GK", "Datos generales_Rank": 276, "Goals": 0, "Assists": 0, "Minutes Played": 0, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 1020, "Passes": 0, "Passing Accuracy (%)": 0, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 0, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 0, "Defensive Pressures Applied": 0, "Defensive Pressures Directly Applied": 0, "Discipline_Rank": 746, "Fouls Against": 0, "Fouls For": 0, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": 57, "Goalkeeper Saves": 0, "GK Actions Inside Penalty Area": 0, "GK Actions Outside Penalty Area": 0, "Movement_Rank": 1017, "Offers To Receive": 0, "Offers In Behind": 0, "Offers In Between": 0, "Offers In Front": 0, "Offers Inside Team Shape": 0, "Offers Outside Team Shape": 0, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 0, "Receptions Under Pressure": 0, "Player Involvements": 0, "Physical_Rank": 1036, "Average Speed (km/h)": 0, "High Speed Running": 0, "Sprints": 0, "Total Distance (m)": 0}, {"Player": "Valentin Barco", "Position": "MF", "Datos generales_Rank": 602, "Goals": 0, "Assists": 0, "Minutes Played": 24, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 791, "Passes": 20, "Passing Accuracy (%)": 85, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 1, "Defensive Linebreaks Acc (%)": 100, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 0, "Defensive Pressures Applied": 7, "Defensive Pressures Directly Applied": 2, "Discipline_Rank": 746, "Fouls Against": 0, "Fouls For": 1, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 738, "Offers To Receive": 19, "Offers In Behind": 4, "Offers In Between": 14, "Offers In Front": 1, "Offers Inside Team Shape": 9, "Offers Outside Team Shape": 10, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 14, "Receptions Under Pressure": 8, "Player Involvements": 41, "Physical_Rank": 1022, "Average Speed (km/h)": 0.98, "High Speed Running": 41, "Sprints": 14, "Total Distance (m)": 2814.61}, {"Player": "Nico Paz", "Position": "FW", "Datos generales_Rank": 765, "Goals": 0, "Assists": 0, "Minutes Played": 81, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 1, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 1, "Headed Attempts at Goal": 0, "xG": 0.08, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 564, "Passes": 56, "Passing Accuracy (%)": 96, "Crosses": 1, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 2, "Defensive Linebreaks Acc (%)": 100, "Switches of Play Attempted": 2, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 7, "Defensive Pressures Applied": 44, "Defensive Pressures Directly Applied": 6, "Discipline_Rank": 373, "Fouls Against": 2, "Fouls For": 1, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 343, "Offers To Receive": 73, "Offers In Behind": 7, "Offers In Between": 47, "Offers In Front": 19, "Offers Inside Team Shape": 50, "Offers Outside Team Shape": 23, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 12, "Receptions Under Pressure": 51, "Player Involvements": 125, "Physical_Rank": 887, "Average Speed (km/h)": 1.99, "High Speed Running": 110, "Sprints": 39, "Total Distance (m)": 9189.47}, {"Player": "Exequiel Palacios", "Position": "MF", "Datos generales_Rank": 814, "Goals": 0, "Assists": 0, "Minutes Played": 100, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 400, "Passes": 94, "Passing Accuracy (%)": 95, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 0, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 1, "Defensive Pressures Applied": 5, "Defensive Pressures Directly Applied": 1, "Discipline_Rank": 536, "Fouls Against": 1, "Fouls For": 1, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 752, "Offers To Receive": 18, "Offers In Behind": 3, "Offers In Between": 4, "Offers In Front": 11, "Offers Inside Team Shape": 7, "Offers Outside Team Shape": 11, "Receptions In Behind": 1, "Receptions Between Midfield And Defensive Line": 4, "Receptions Under Pressure": 21, "Player Involvements": 190, "Physical_Rank": 1027, "Average Speed (km/h)": 0.86, "High Speed Running": 113, "Sprints": 37, "Total Distance (m)": 10029.01}, {"Player": "Marcos Senesi", "Position": "DF", "Datos generales_Rank": 814, "Goals": 0, "Assists": 0, "Minutes Played": 100, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 2, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 2, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 1, "xG": 0.84, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 483, "Passes": 73, "Passing Accuracy (%)": 96, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 1, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 0, "Defensive Pressures Applied": 3, "Defensive Pressures Directly Applied": 2, "Discipline_Rank": 746, "Fouls Against": 0, "Fouls For": 2, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 840, "Offers To Receive": 12, "Offers In Behind": 0, "Offers In Between": 1, "Offers In Front": 11, "Offers Inside Team Shape": 2, "Offers Outside Team Shape": 10, "Receptions In Behind": 1, "Receptions Between Midfield And Defensive Line": 1, "Receptions Under Pressure": 7, "Player Involvements": 155, "Physical_Rank": 1029, "Average Speed (km/h)": 0.8, "High Speed Running": 86, "Sprints": 25, "Total Distance (m)": 9406.52}, {"Player": "Giuliano Simeone", "Position": "FW", "Datos generales_Rank": 908, "Goals": 0, "Assists": 0, "Minutes Played": 150, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 514, "Passes": 67, "Passing Accuracy (%)": 90, "Crosses": 4, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 3, "Defensive Linebreaks Acc (%)": 100, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 6, "Defensive Pressures Applied": 37, "Defensive Pressures Directly Applied": 9, "Discipline_Rank": 68, "Fouls Against": 6, "Fouls For": 1, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 377, "Offers To Receive": 64, "Offers In Behind": 29, "Offers In Between": 27, "Offers In Front": 8, "Offers Inside Team Shape": 17, "Offers Outside Team Shape": 47, "Receptions In Behind": 2, "Receptions Between Midfield And Defensive Line": 42, "Receptions Under Pressure": 37, "Player Involvements": 153, "Physical_Rank": 906, "Average Speed (km/h)": 1.82, "High Speed Running": 191, "Sprints": 81, "Total Distance (m)": 15979.48}, {"Player": "Nicolas Otamendi", "Position": "DF", "Datos generales_Rank": 1008, "Goals": 0, "Assists": 0, "Minutes Played": 211, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 1, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 1, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 1, "xG": 0.07, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 195, "Passes": 163, "Passing Accuracy (%)": 96, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 1, "Defensive Linebreaks Acc (%)": 100, "Switches of Play Attempted": 1, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 2, "Defensive Pressures Applied": 13, "Defensive Pressures Directly Applied": 8, "Discipline_Rank": 258, "Fouls Against": 3, "Fouls For": 0, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 633, "Offers To Receive": 29, "Offers In Behind": 2, "Offers In Between": 0, "Offers In Front": 27, "Offers Inside Team Shape": 10, "Offers Outside Team Shape": 19, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 2, "Receptions Under Pressure": 16, "Player Involvements": 331, "Physical_Rank": 518, "Average Speed (km/h)": 4.97, "High Speed Running": 240, "Sprints": 61, "Total Distance (m)": 20600.15}, {"Player": "Thiago Almada", "Position": "FW", "Datos generales_Rank": 1068, "Goals": 0, "Assists": 0, "Minutes Played": 267, "Attacking_Rank": 163, "Attempts On Target": 2, "Attempts At Goal": 5, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 2, "Attempts Outside Penalty Area": 3, "Headed Attempts at Goal": 0, "xG": 0.25, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 182, "Passes": 170, "Passing Accuracy (%)": 91, "Crosses": 1, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 2, "Defensive Linebreaks Acc (%)": 50, "Switches of Play Attempted": 2, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 26, "Defensive Pressures Applied": 70, "Defensive Pressures Directly Applied": 11, "Discipline_Rank": 373, "Fouls Against": 2, "Fouls For": 2, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 2, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 88, "Offers To Receive": 170, "Offers In Behind": 41, "Offers In Between": 85, "Offers In Front": 44, "Offers Inside Team Shape": 122, "Offers Outside Team Shape": 48, "Receptions In Behind": 1, "Receptions Between Midfield And Defensive Line": 52, "Receptions Under Pressure": 89, "Player Involvements": 368, "Physical_Rank": 509, "Average Speed (km/h)": 5.03, "High Speed Running": 362, "Sprints": 137, "Total Distance (m)": 31810.05}, {"Player": "Nicolas Tagliafico", "Position": "DF", "Datos generales_Rank": 1207, "Goals": 0, "Assists": 0, "Minutes Played": 403, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 173, "Passes": 177, "Passing Accuracy (%)": 89, "Crosses": 4, "Crossing Accuracy (%)": 25, "Defensive Linebreaks Attempted": 7, "Defensive Linebreaks Acc (%)": 43, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 9, "Defensive Pressures Applied": 62, "Defensive Pressures Directly Applied": 11, "Discipline_Rank": 172, "Fouls Against": 4, "Fouls For": 13, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 2, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 196, "Offers To Receive": 114, "Offers In Behind": 52, "Offers In Between": 30, "Offers In Front": 32, "Offers Inside Team Shape": 28, "Offers Outside Team Shape": 86, "Receptions In Behind": 6, "Receptions Between Midfield And Defensive Line": 43, "Receptions Under Pressure": 31, "Player Involvements": 361, "Physical_Rank": 478, "Average Speed (km/h)": 5.2, "High Speed Running": 433, "Sprints": 155, "Total Distance (m)": 39975.6}, {"Player": "Leandro Paredes", "Position": "MF", "Datos generales_Rank": 1253, "Goals": 0, "Assists": 0, "Minutes Played": 466, "Attacking_Rank": 163, "Attempts On Target": 1, "Attempts At Goal": 4, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 4, "Headed Attempts at Goal": 0, "xG": 0.07, "xG Efficiency": "0x", "Corners": 1, "Distribution_Rank": 4, "Passes": 521, "Passing Accuracy (%)": 95, "Crosses": 2, "Crossing Accuracy (%)": 50, "Defensive Linebreaks Attempted": 5, "Defensive Linebreaks Acc (%)": 60, "Switches of Play Attempted": 6, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 15, "Defensive Pressures Applied": 42, "Defensive Pressures Directly Applied": 14, "Discipline_Rank": 109, "Fouls Against": 5, "Fouls For": 2, "Yellow Cards": 1, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 44, "Offers To Receive": 212, "Offers In Behind": 1, "Offers In Between": 29, "Offers In Front": 182, "Offers Inside Team Shape": 143, "Offers Outside Team Shape": 69, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 7, "Receptions Under Pressure": 48, "Player Involvements": 1067, "Physical_Rank": 467, "Average Speed (km/h)": 5.27, "High Speed Running": 468, "Sprints": 117, "Total Distance (m)": 45691.97}, {"Player": "Nahuel Molina", "Position": "DF", "Datos generales_Rank": 1266, "Goals": 0, "Assists": 0, "Minutes Played": 513, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 1, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 1, "Headed Attempts at Goal": 0, "xG": 0.02, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 83, "Passes": 249, "Passing Accuracy (%)": 86, "Crosses": 6, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 5, "Defensive Linebreaks Acc (%)": 40, "Switches of Play Attempted": 1, "Switches of Play Acc (%)": 100, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 27, "Defensive Pressures Applied": 100, "Defensive Pressures Directly Applied": 22, "Discipline_Rank": 258, "Fouls Against": 3, "Fouls For": 0, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 1, "Goalkeeping_Rank": null, "Goalkeeper Saves": null, "GK Actions Inside Penalty Area": null, "GK Actions Outside Penalty Area": null, "Movement_Rank": 38, "Offers To Receive": 226, "Offers In Behind": 81, "Offers In Between": 85, "Offers In Front": 60, "Offers Inside Team Shape": 46, "Offers Outside Team Shape": 180, "Receptions In Behind": 6, "Receptions Between Midfield And Defensive Line": 43, "Receptions Under Pressure": 94, "Player Involvements": 517, "Physical_Rank": 502, "Average Speed (km/h)": 5.08, "High Speed Running": 521, "Sprints": 230, "Total Distance (m)": 50504.69}, {"Player": "Emiliano Martinez", "Position": "GK", "Datos generales_Rank": 1301, "Goals": 0, "Assists": 0, "Minutes Played": 794, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 119, "Passes": 211, "Passing Accuracy (%)": 76, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 8, "Defensive Linebreaks Acc (%)": 25, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 0, "Defensive Pressures Applied": 0, "Defensive Pressures Directly Applied": 0, "Discipline_Rank": 746, "Fouls Against": 0, "Fouls For": 1, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": 32, "Goalkeeper Saves": 9, "GK Actions Inside Penalty Area": 87, "GK Actions Outside Penalty Area": 73, "Movement_Rank": 508, "Offers To Receive": 45, "Offers In Behind": 0, "Offers In Between": 0, "Offers In Front": 45, "Offers Inside Team Shape": 26, "Offers Outside Team Shape": 19, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 0, "Receptions Under Pressure": 2, "Player Involvements": 403, "Physical_Rank": 799, "Average Speed (km/h)": 2.73, "High Speed Running": 68, "Sprints": 16, "Total Distance (m)": 36144.11}, {"Player": "Juan Musso", "Position": "GK", "Datos generales_Rank": null, "Goals": null, "Assists": null, "Minutes Played": null, "Attacking_Rank": 163, "Attempts On Target": 0, "Attempts At Goal": 0, "Attempts At Goal Conv Rate (%)": 0, "Attempts Inside Penalty Area": 0, "Attempts Outside Penalty Area": 0, "Headed Attempts at Goal": 0, "xG": 0, "xG Efficiency": "0x", "Corners": 0, "Distribution_Rank": 1020, "Passes": 0, "Passing Accuracy (%)": 0, "Crosses": 0, "Crossing Accuracy (%)": 0, "Defensive Linebreaks Attempted": 0, "Defensive Linebreaks Acc (%)": 0, "Switches of Play Attempted": 0, "Switches of Play Acc (%)": 0, "Defending_Rank": 14, "Own Goals": 0, "Forced Turnovers": 0, "Defensive Pressures Applied": 0, "Defensive Pressures Directly Applied": 0, "Discipline_Rank": 746, "Fouls Against": 0, "Fouls For": 0, "Yellow Cards": 0, "Red Cards": 0, "Indirect Red Cards": 0, "Offsides": 0, "Goalkeeping_Rank": 57, "Goalkeeper Saves": 0, "GK Actions Inside Penalty Area": 0, "GK Actions Outside Penalty Area": 0, "Movement_Rank": 1017, "Offers To Receive": 0, "Offers In Behind": 0, "Offers In Between": 0, "Offers In Front": 0, "Offers Inside Team Shape": 0, "Offers Outside Team Shape": 0, "Receptions In Behind": 0, "Receptions Between Midfield And Defensive Line": 0, "Receptions Under Pressure": 0, "Player Involvements": 0, "Physical_Rank": 1036, "Average Speed (km/h)": 0, "High Speed Running": 0, "Sprints": 0, "Total Distance (m)": 0}];
+
+    // MAPAS DE POSICIONES
+    const POSICIONES_MAP = {
+      'FW': 'Delantero',
+      'MF': 'Mediocampista',
+      'DF': 'Defensa',
+      'GK': 'Arquero'
+    };
+
+    // DEFINICIÓN DE ESTRUCTURA DE TABS Y SUS COLUMNAS
+    const TABS_COLUMNS = {
+      generales: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Position', name: 'Posición', type: 'string' },
+        { key: 'Datos generales_Rank', name: 'Rank Gral.', type: 'number' },
+        { key: 'Goals', name: 'Goles', type: 'number' },
+        { key: 'Assists', name: 'Asistencias', type: 'number' },
+        { key: 'Minutes Played', name: 'Minutos', type: 'number' }
+      ],
+      ataque: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Attacking_Rank', name: 'Rank Ataque', type: 'number' },
+        { key: 'Attempts At Goal', name: 'Remates Totales', type: 'number' },
+        { key: 'Attempts On Target', name: 'Remates Arco', type: 'number' },
+        { key: 'Attempts Inside Penalty Area', name: 'Rem. Área Int.', type: 'number' },
+        { key: 'Attempts Outside Penalty Area', name: 'Rem. Área Ext.', type: 'number' },
+        { key: 'Headed Attempts at Goal', name: 'Cabeza', type: 'number' },
+        { key: 'Attempts At Goal Conv Rate (%)', name: 'Eficacia Conv. %', type: 'number' },
+        { key: 'xG', name: 'xG (Esp.)', type: 'number' },
+        { key: 'xG Efficiency', name: 'Efic. xG', type: 'string' },
+        { key: 'Corners', name: 'Tiros de Esquina', type: 'number' }
+      ],
+      distribucion: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Distribution_Rank', name: 'Rank Dist.', type: 'number' },
+        { key: 'Passes', name: 'Pases Totales', type: 'number' },
+        { key: 'Passing Accuracy (%)', name: 'Prec. Pases %', type: 'number' },
+        { key: 'Crosses', name: 'Centros', type: 'number' },
+        { key: 'Crossing Accuracy (%)', name: 'Prec. Centros %', type: 'number' },
+        { key: 'Defensive Linebreaks Attempted', name: 'Rupturas Int.', type: 'number' },
+        { key: 'Defensive Linebreaks Acc (%)', name: 'Prec. Rupturas %', type: 'number' },
+        { key: 'Switches of Play Attempted', name: 'Cambios Orient.', type: 'number' },
+        { key: 'Switches of Play Acc (%)', name: 'Prec. Cambios %', type: 'number' }
+      ],
+      defensa: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Defending_Rank', name: 'Rank Def.', type: 'number' },
+        { key: 'Own Goals', name: 'Goles Propia', type: 'number' },
+        { key: 'Forced Turnovers', name: 'Recup. Forzadas', type: 'number' },
+        { key: 'Defensive Pressures Applied', name: 'Presiones', type: 'number' },
+        { key: 'Defensive Pressures Directly Applied', name: 'Pres. Directas', type: 'number' }
+      ],
+      disciplina: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Discipline_Rank', name: 'Rank Disc.', type: 'number' },
+        { key: 'Fouls Against', name: 'Faltas Comet.', type: 'number' },
+        { key: 'Fouls For', name: 'Faltas Recib.', type: 'number' },
+        { key: 'Yellow Cards', name: 'T. Amarillas', type: 'number' },
+        { key: 'Red Cards', name: 'T. Rojas', type: 'number' },
+        { key: 'Indirect Red Cards', name: 'Doble Amarilla', type: 'number' },
+        { key: 'Offsides', name: 'Fueras de Juego', type: 'number' }
+      ],
+      movimiento: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Movement_Rank', name: 'Rank Mov.', type: 'number' },
+        { key: 'Offers To Receive', name: 'Ofrecimientos', type: 'number' },
+        { key: 'Offers In Behind', name: 'Desmarques Rupt.', type: 'number' },
+        { key: 'Offers In Between', name: 'Desmarques Apoyo', type: 'number' },
+        { key: 'Offers In Front', name: 'Ofrec. en Apoyo', type: 'number' },
+        { key: 'Offers Inside Team Shape', name: 'Dentro Estruct.', type: 'number' },
+        { key: 'Offers Outside Team Shape', name: 'Fuera Estruct.', type: 'number' },
+        { key: 'Receptions In Behind', name: 'Recep. Ruptura', type: 'number' },
+        { key: 'Receptions Between Midfield And Defensive Line', name: 'Recep. Entre Líneas', type: 'number' },
+        { key: 'Receptions Under Pressure', name: 'Recep. Presión', type: 'number' },
+        { key: 'Player Involvements', name: 'Interv. Totales', type: 'number' }
+      ],
+      fisico: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Physical_Rank', name: 'Rank Físico', type: 'number' },
+        { key: 'Average Speed (km/h)', name: 'Velocidad Prom.', type: 'number' },
+        { key: 'High Speed Running', name: 'Carrera Alta Vel.', type: 'number' },
+        { key: 'Sprints', name: 'Sprints', type: 'number' },
+        { key: 'Total Distance (m)', name: 'Dist. Total (m)', type: 'number' }
+      ],
+      porteria: [
+        { key: 'Player', name: 'Jugador', type: 'string' },
+        { key: 'Goalkeeping_Rank', name: 'Rank Portero', type: 'number' },
+        { key: 'Goalkeeper Saves', name: 'Atajadas', type: 'number' },
+        { key: 'GK Actions Inside Penalty Area', name: 'Acciones Área Int.', type: 'number' },
+        { key: 'GK Actions Outside Penalty Area', name: 'Acciones Área Ext.', type: 'number' }
+      ]
+    };
+
+    // VARIABLES DE ESTADO LOCAL
+    let activeTab = 'generales';
+    let sortColumn = 'Datos generales_Rank';
+    let sortAscending = true;
+    let selectedPlayerNames = ['Lionel Messi']; // Jugadores seleccionados
+    let focusedPlayerName = 'Lionel Messi'; // El jugador que está en vista detallada (si no hay comparación)
+    let currentChartType = 'radar';
+    let chartInstance = null;
+
+    let filters = {
+      position: 'all'
+    };
+
+    // CÁLCULO DE MÁXIMOS ESTADÍSTICOS DE LA PLANTILLA PARA NORMALIZAR
+    let squadMaxStats = {};
+
+    function calculateMaxStats() {
+      // Para cada columna numérica, calculamos el máximo
+      const sample = PLAYERS_DATA[0];
+      for (let key in sample) {
+        if (key === 'Player' || key === 'Position' || key.includes('Rank') || key === 'xG Efficiency') continue;
+        
+        const vals = PLAYERS_DATA.map(p => {
+          if (p[key] === null || p[key] === undefined) return 0;
+          return Number(p[key]);
+        });
+        squadMaxStats[key] = Math.max(...vals, 1); // evitar división por cero
+      }
+    }
+
+    // AL CARGAR LA PÁGINA
+    window.addEventListener('DOMContentLoaded', () => {
+      calculateMaxStats();
+      document.getElementById('squad-count').textContent = PLAYERS_DATA.length;
+
+      // Eventos de Filtros
+      document.getElementById('filter-position').addEventListener('change', (e) => {
+        filters.position = e.target.value;
+        renderAll();
+      });
+
+      document.getElementById('btn-reset').addEventListener('click', () => {
+        document.getElementById('filter-position').value = 'all';
+        filters = { position: 'all' };
+        selectedPlayerNames = ['Lionel Messi'];
+        focusedPlayerName = 'Lionel Messi';
+        renderAll();
+      });
+
+      // Alternancia de gráficos
+      const btnRadar = document.getElementById('btn-chart-radar');
+      const btnBar = document.getElementById('btn-chart-bar');
+
+      btnRadar.addEventListener('click', () => {
+        setChartType('radar', btnRadar, btnBar);
+      });
+
+      btnBar.addEventListener('click', () => {
+        setChartType('bar', btnBar, btnRadar);
+      });
+
+      // Evento para cerrar dropdown al hacer clic fuera
+      window.addEventListener('click', (e) => {
+        const list = document.getElementById('dropdown-players-list');
+        const btn = document.getElementById('dropdown-players-btn');
+        if (list && !list.classList.contains('hidden') && btn && !btn.contains(e.target) && !list.contains(e.target)) {
+          list.classList.add('hidden');
+        }
+      });
+
+      renderAll();
+    });
+
+    // SET TIPO DE GRÁFICO
+    function setChartType(type, activeBtn, inactiveBtn) {
+      if (currentChartType === type) return;
+      currentChartType = type;
+
+      activeBtn.classList.remove('bg-transparent', 'text-[#1a1c1c]', 'hover:bg-[#e2e2e2]');
+      activeBtn.classList.add('bg-[#43a1d5]', 'text-white');
+
+      inactiveBtn.classList.remove('bg-[#43a1d5]', 'text-white');
+      inactiveBtn.classList.add('bg-transparent', 'text-[#1a1c1c]', 'hover:bg-[#e2e2e2]');
+
+      updateChart();
+    }
+
+    // NAVEGACIÓN ENTRE PESTAÑAS DE LA TABLA
+    function switchTab(tabKey) {
+      // Remover clase activa de pestañas anteriores
+      for (let key in TABS_COLUMNS) {
+        const btn = document.getElementById(`tab-${key}`);
+        if (btn) {
+          btn.classList.remove('border-[#43a1d5]', 'text-[#1a1c1c]');
+          btn.classList.add('border-transparent', 'text-[#414752]', 'hover:text-[#1a1c1c]');
+        }
+      }
+
+      // Activar la nueva pestaña
+      activeTab = tabKey;
+      const activeBtn = document.getElementById(`tab-${tabKey}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-transparent', 'text-[#414752]', 'hover:text-[#1a1c1c]');
+        activeBtn.classList.add('border-[#43a1d5]', 'text-[#1a1c1c]');
+      }
+
+      // Cambiar la columna de ordenación por defecto si la actual no pertenece al tab
+      const cols = TABS_COLUMNS[activeTab];
+      const hasCol = cols.some(c => c.key === sortColumn);
+      if (!hasCol) {
+        // Buscar un rank o usar la primera columna numérica
+        const rankCol = cols.find(c => c.key.includes('Rank'));
+        sortColumn = rankCol ? rankCol.key : cols[0].key;
+        sortAscending = true;
+      }
+
+      renderTable();
+    }
+
+    // MANEJAR SELECCIÓN DE FILA
+    function togglePlayerSelection(playerName) {
+      const idx = selectedPlayerNames.indexOf(playerName);
+      if (idx > -1) {
+        // No permitir deseleccionar si es el único
+        if (selectedPlayerNames.length > 1) {
+          selectedPlayerNames.splice(idx, 1);
+          focusedPlayerName = selectedPlayerNames[0];
+        }
+      } else {
+        // Máximo 4 para comparación legible
+        if (selectedPlayerNames.length < 4) {
+          selectedPlayerNames.push(playerName);
+          focusedPlayerName = playerName;
+        } else {
+          alert('Puedes comparar hasta un máximo de 4 jugadores simultáneamente.');
+          return;
+        }
+      }
+      renderAll();
+    }
+
+    function focusPlayer(playerName) {
+      focusedPlayerName = playerName;
+      // Si no está en la comparación, lo ponemos como único seleccionado
+      if (!selectedPlayerNames.includes(playerName)) {
+        selectedPlayerNames = [playerName];
+      }
+      renderAll();
+    }
+
+    function removePlayerFromComparison(playerName) {
+      const idx = selectedPlayerNames.indexOf(playerName);
+      if (idx > -1 && selectedPlayerNames.length > 1) {
+        selectedPlayerNames.splice(idx, 1);
+        focusedPlayerName = selectedPlayerNames[0];
+        renderAll();
+      }
+    }
+
+    // TOGGLE DROPDOWN JUGADORES
+    function togglePlayersDropdown(event) {
+      if (event) event.stopPropagation();
+      const list = document.getElementById('dropdown-players-list');
+      if (list) list.classList.toggle('hidden');
+    }
+
+    // RENDERIZAR MENU DESPLEGABLE DE JUGADORES
+    function renderPlayersDropdown() {
+      const listContainer = document.getElementById('dropdown-players-list');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      // Filtrar y agrupar jugadores por posición
+      const filteredPlayers = PLAYERS_DATA.filter(p => {
+        if (filters.position !== 'all' && p.Position !== filters.position) return false;
+        return true;
+      });
+
+      const positions = { FW: [], MF: [], DF: [], GK: [] };
+      filteredPlayers.forEach(p => {
+        if (positions[p.Position]) {
+          positions[p.Position].push(p);
+        }
+      });
+
+      const order = ['FW', 'MF', 'DF', 'GK'];
+      order.forEach(pos => {
+        const list = positions[pos];
+        if (list && list.length > 0) {
+          list.sort((a, b) => a.Player.localeCompare(b.Player));
+
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'text-[9px] font-bold text-[#717783] bg-[#f5f5f5] px-2 py-1 mt-1 select-none tracking-wider uppercase border-b border-[#e0e0e0]';
+          titleDiv.textContent = POSICIONES_MAP[pos] || pos;
+          listContainer.appendChild(titleDiv);
+
+          list.forEach(p => {
+            const label = document.createElement('label');
+            label.className = 'flex items-center gap-2 px-3 py-1.5 hover:bg-[#f3f3f3] cursor-pointer text-xs select-none transition-colors duration-100';
+            
+            const isChecked = selectedPlayerNames.includes(p.Player);
+            
+            label.innerHTML = `
+              <input type="checkbox" ${isChecked ? 'checked' : ''} 
+                onchange="togglePlayerSelection('${p.Player}')" 
+                class="accent-[#43a1d5] w-3.5 h-3.5 cursor-pointer" />
+              <span class="font-sans text-[#1a1c1c]">${p.Player}</span>
+            `;
+            listContainer.appendChild(label);
+          });
+        }
+      });
+
+      // Actualizar texto del botón dropdown
+      const btnText = document.getElementById('dropdown-selected-text');
+      if (selectedPlayerNames.length === 0) {
+        btnText.textContent = 'Seleccionar...';
+      } else if (selectedPlayerNames.length === 1) {
+        btnText.textContent = selectedPlayerNames[0];
+      } else {
+        const lastNames = selectedPlayerNames.map(n => n.split(' ').slice(-1)[0]);
+        btnText.textContent = `Comparando (${selectedPlayerNames.length}): ${lastNames.join(', ')}`;
+      }
+    }
+
+    // FILTRAR JUGADORES PARA LA TABLA
+    function getFilteredPlayers() {
+      return PLAYERS_DATA.filter(p => {
+        // Filtro de posición
+        if (filters.position !== 'all') {
+          if (p.Position !== filters.position) return false;
+        }
+        return true;
+      });
+    }
+
+    // RENDERIZAR TODO EL DASHBOARD
+    function renderAll() {
+      renderPlayersDropdown();
+      renderLateralPanel();
+      renderTable();
+      updateChart();
+    }
+
+    // RENDERIZAR PANEL LATERAL
+    function renderLateralPanel() {
+      const container = document.getElementById('panel-lateral');
+      container.innerHTML = '';
+
+      if (selectedPlayerNames.length === 1) {
+        // MODO DETALLE INDIVIDUAL
+        const player = PLAYERS_DATA.find(p => p.Player === selectedPlayerNames[0]);
+        if (!player) return;
+
+        const rankGral = player['Datos generales_Rank'] !== null ? `#${player['Datos generales_Rank']}` : 'Sin Clasif.';
+        const mins = player['Minutes Played'] !== null ? `${player['Minutes Played']} m` : '-';
+        const positionLong = POSICIONES_MAP[player.Position] || player.Position;
+
+        const html = `
+          <!-- CARD PRINCIPAL -->
+          <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-5">
+            <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
+              Perfil del Jugador
+            </h3>
+            
+            <div class="flex items-center gap-4">
+              <!-- Espacio para Foto Placeholder -->
+              <div class="w-24 h-32 bg-[#eeeeee] border border-[#d2d2d2] flex flex-col items-center justify-center sharp-ui shrink-0 relative overflow-hidden">
+                <svg class="w-12 h-12 text-[#b0b4b8]" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <div class="absolute bottom-1 bg-[#1a1c1c] text-white text-[8px] font-bold px-1.5 py-0.5 tracking-wider sharp-ui uppercase">
+                  FOTO
+                </div>
+              </div>
+              <div class="flex-grow min-w-0">
+                <span class="bg-[#e6f3fa] text-[#43a1d5] text-[10px] font-bold px-2 py-0.5 sharp-ui uppercase font-sans tracking-wide">
+                  ${positionLong}
+                </span>
+                <h2 class="font-serif text-2xl font-bold text-[#1a1c1c] mt-2 truncate leading-tight">
+                  ${player.Player}
+                </h2>
+                <p class="text-xs text-[#414752] font-sans mt-2">
+                  Minutos: <strong class="text-black font-semibold">${mins}</strong>
+                </p>
+                <p class="text-xs text-[#414752] font-sans mt-0.5">
+                  Ranking general: <strong class="text-[#43a1d5] font-bold">${rankGral}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD MÉTRIQUEAS RÁPIDAS -->
+          <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
+            <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
+              Estadísticas Clave
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <!-- KPI Goles -->
+              <div class="bg-[#f9f9f9] border border-[#e0e0e0] p-3 sharp-ui">
+                <span class="text-[9px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles</span>
+                <div class="text-2xl font-bold text-[#1a1c1c] mt-1 font-mono">
+                  ${player.Goals !== null ? player.Goals : 0}
+                </div>
+              </div>
+              <!-- KPI Asistencias -->
+              <div class="bg-[#f9f9f9] border border-[#e0e0e0] p-3 sharp-ui">
+                <span class="text-[9px] font-bold text-[#414752] tracking-wider uppercase font-sans">Asistencias</span>
+                <div class="text-2xl font-bold text-[#1a1c1c] mt-1 font-mono">
+                  ${player.Assists !== null ? player.Assists : 0}
+                </div>
+              </div>
+              <!-- KPI Despliegue Físico -->
+              <div class="col-span-2 bg-[#f9f9f9] border border-[#e0e0e0] p-3 sharp-ui flex justify-between items-center">
+                <div>
+                  <span class="text-[9px] font-bold text-[#414752] tracking-wider uppercase font-sans">Distancia Recorrida</span>
+                  <div class="text-xs text-[#414752] mt-0.5">Metros acumulados</div>
+                </div>
+                <div class="text-xl font-bold text-[#43a1d5] font-mono">
+                  ${player['Total Distance (m)'] !== null ? (player['Total Distance (m)']).toLocaleString() + ' m' : '-'}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML = html;
+      } else {
+        // MODO COMPARACIÓN MULTIPLAYER
+        let playersHtml = '';
+        selectedPlayerNames.forEach((name, idx) => {
+          const player = PLAYERS_DATA.find(p => p.Player === name);
+          if (!player) return;
+
+          const colors = ['border-[#43a1d5]', 'border-[#b6171e]', 'border-[#59595a]', 'border-[#ba1a1a]'];
+          const borderClass = colors[idx] || 'border-[#e0e0e0]';
+
+          playersHtml += `
+            <div class="bg-[#f9f9f9] border-l-4 ${borderClass} border-y border-r border-[#e0e0e0] p-3 sharp-ui flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <!-- Foto pequeña placeholder -->
+                <div class="w-10 h-14 bg-[#eeeeee] border border-[#d2d2d2] flex items-center justify-center sharp-ui shrink-0 relative overflow-hidden">
+                  <svg class="w-5 h-5 text-[#b0b4b8]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <h4 class="font-serif text-sm font-bold text-[#1a1c1c] truncate">${player.Player}</h4>
+                  <span class="text-[9px] text-[#414752] uppercase font-bold tracking-wider">${POSICIONES_MAP[player.Position]}</span>
+                </div>
+              </div>
+              <button onclick="removePlayerFromComparison('${player.Player}')"
+                class="text-[#b6171e] hover:bg-[#ffdad6] p-1.5 sharp-ui text-xs font-bold font-sans cursor-pointer transition-colors duration-150">
+                QUITAR
+              </button>
+            </div>
+          `;
+        });
+
+        // Crear contenedor
+        const html = `
+          <div class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
+            <div class="flex justify-between items-center border-b border-[#e0e0e0] pb-2">
+              <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase font-sans">
+                Comparativa Activa
+              </h3>
+              <span class="text-[9px] font-mono font-bold bg-[#eeeeee] text-[#1a1c1c] px-2 py-0.5 sharp-ui">
+                ${selectedPlayerNames.length} / 4 JUGADORES
+              </span>
+            </div>
+            
+            <div class="flex flex-col gap-2">
+              ${playersHtml}
+            </div>
+
+            <!-- TABLA COMPARATIVA RÁPIDA -->
+            <div class="overflow-x-auto mt-2">
+              <table class="w-full text-left text-[10px] border-collapse">
+                <thead>
+                  <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
+                    <th class="py-1.5 font-sans">Jugador</th>
+                    <th class="py-1.5 text-center font-sans">Goles</th>
+                    <th class="py-1.5 text-center font-sans">Asist.</th>
+                    <th class="py-1.5 text-center font-sans">Minutos</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+                  ${selectedPlayerNames.map(name => {
+                    const p = PLAYERS_DATA.find(x => x.Player === name);
+                    return `
+                      <tr>
+                        <td class="py-2 font-bold">${p.Player.split(' ').slice(-1)[0]}</td>
+                        <td class="py-2 text-center font-mono font-semibold">${p.Goals !== null ? p.Goals : 0}</td>
+                        <td class="py-2 text-center font-mono font-semibold">${p.Assists !== null ? p.Assists : 0}</td>
+                        <td class="py-2 text-center font-mono">${p['Minutes Played'] !== null ? p['Minutes Played'] : 0}</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <button onclick="clearComparison()"
+              class="w-full border border-[#e0e0e0] py-2 text-[10px] font-bold tracking-wider sharp-ui hover:bg-[#f3f3f3] transition-colors duration-150 cursor-pointer text-[#b6171e]">
+              VOLVER A VISTA INDIVIDUAL
+            </button>
+          </div>
+        `;
+        container.innerHTML = html;
+      }
+    }
+
+    // LIMPIAR COMPARACIÓN Y VOLVER A MESSI (O INDIVIDUAL)
+    function clearComparison() {
+      selectedPlayerNames = [focusedPlayerName || 'Lionel Messi'];
+      renderAll();
+    }
+
+    // RENDERIZAR TABLA DE JUGADORES
+    function renderTable() {
+      const filtered = getFilteredPlayers();
+      document.getElementById('visible-count').textContent = filtered.length;
+
+      // Ordenar datos
+      filtered.sort((a, b) => {
+        let valA = a[sortColumn];
+        let valB = b[sortColumn];
+
+        // Manejar nulos en ordenación
+        if (valA === null || valA === undefined) valA = sortAscending ? Infinity : -Infinity;
+        if (valB === null || valB === undefined) valB = sortAscending ? Infinity : -Infinity;
+
+        if (typeof valA === 'string') {
+          return sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else {
+          return sortAscending ? valA - valB : valB - valA;
+        }
+      });
+
+      // Dibujar cabecera
+      const thead = document.getElementById('table-head');
+      const cols = TABS_COLUMNS[activeTab];
+
+      let headHtml = `<tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider whitespace-nowrap">`;
+      headHtml += `<th class="py-3 px-2 text-center font-sans w-8">Comp.</th>`; // Para comparar checkbox
+
+      cols.forEach(col => {
+        const isSorted = col.key === sortColumn;
+        const arrow = isSorted ? (sortAscending ? ' ▲' : ' ▼') : '';
+        const alignClass = col.type === 'number' ? 'text-right' : 'text-left';
+        headHtml += `
+          <th onclick="sortTableBy('${col.key}')" class="py-3 px-3 font-sans cursor-pointer hover:text-black transition-colors duration-150 select-none ${alignClass}">
+            ${col.name}${arrow}
+          </th>
+        `;
+      });
+      headHtml += `</tr>`;
+      thead.innerHTML = headHtml;
+
+      // Dibujar cuerpo
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="${cols.length + 1}" class="py-6 text-center text-[#414752] font-sans">
+              No se encontraron jugadores que coincidan con los filtros aplicados.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach(player => {
+        const isChecked = selectedPlayerNames.includes(player.Player);
+        const isFocused = selectedPlayerNames.length === 1 && focusedPlayerName === player.Player;
+        const rowClass = isFocused ? 'active-row' : (isChecked ? 'bg-[#f4f7f6]' : 'hover:bg-[#f9f9f9]');
+
+        let rowHtml = `<tr class="transition-colors duration-100 ${rowClass} border-b border-[#eeeeee]">`;
+        
+        // Columna checkbox
+        rowHtml += `
+          <td class="py-3 px-2 text-center">
+            <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); togglePlayerSelection('${player.Player}')" 
+              class="accent-[#43a1d5] w-4 h-4 cursor-pointer" />
+          </td>
+        `;
+
+        cols.forEach(col => {
+          let val = player[col.key];
+          let valStr = val !== null ? val : '-';
+
+          // Dar formato a campos especiales
+          if (col.key === 'Position') {
+            valStr = val;
+          } else if (col.key === 'Total Distance (m)' && val !== null) {
+            valStr = Math.round(val).toLocaleString();
+          } else if (col.key.includes('Rank') && val !== null) {
+            valStr = `#${val}`;
+          }
+
+          const alignClass = col.type === 'number' ? 'text-right font-mono font-semibold' : 'text-left';
+          
+          if (col.key === 'Player') {
+            rowHtml += `
+              <td onclick="focusPlayer('${player.Player}')" class="py-3 px-3 font-sans font-bold cursor-pointer text-[#43a1d5] hover:underline whitespace-nowrap">
+                ${valStr}
+              </td>
+            `;
+          } else {
+            rowHtml += `
+              <td onclick="focusPlayer('${player.Player}')" class="py-3 px-3 font-sans cursor-pointer whitespace-nowrap ${alignClass}">
+                ${valStr}
+              </td>
+            `;
+          }
+        });
+
+        rowHtml += `</tr>`;
+        tbody.innerHTML += rowHtml;
+      });
+    }
+
+    // CAMBIAR COLUMNA DE ORDENACIÓN
+    function sortTableBy(columnKey) {
+      if (sortColumn === columnKey) {
+        sortAscending = !sortAscending;
+      } else {
+        sortColumn = columnKey;
+        sortAscending = true;
+      }
+      renderTable();
+    }
+
+    // ACTUALIZAR GRÁFICO (Chart.js)
+    function updateChart() {
+      const ctx = document.getElementById('metricsChart').getContext('2d');
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      // Definir los ejes/métricas para graficar en base a las posiciones de los seleccionados.
+      // Si el primer jugador seleccionado es un portero, usamos métricas de portero, sino métricas normales de campo.
+      const firstPlayer = PLAYERS_DATA.find(p => p.Player === selectedPlayerNames[0]);
+      if (!firstPlayer) return;
+
+      let metrics = [];
+      let labels = [];
+
+      if (firstPlayer.Position === 'GK') {
+        metrics = [
+          { key: 'Goalkeeper Saves', name: 'Atajadas' },
+          { key: 'GK Actions Inside Penalty Area', name: 'Acc. Área Chica' },
+          { key: 'GK Actions Outside Penalty Area', name: 'Acc. Área Grande' },
+          { key: 'Passing Accuracy (%)', name: 'Eficacia Pases' },
+          { key: 'Total Distance (m)', name: 'Distancia' }
+        ];
+      } else {
+        metrics = [
+          { key: 'xG', name: 'Goles Esp. (xG)' },
+          { key: 'Attempts At Goal', name: 'Remates' },
+          { key: 'Passes', name: 'Pases Acum.' },
+          { key: 'Forced Turnovers', name: 'Recuperaciones' },
+          { key: 'Offers To Receive', name: 'Ofrecimientos' },
+          { key: 'Total Distance (m)', name: 'Distancia (m)' }
+        ];
+      }
+
+      labels = metrics.map(m => m.name);
+
+      // Crear los datasets
+      const colors = [
+        { border: 'rgba(67, 161, 213, 1)', background: 'rgba(67, 161, 213, 0.15)', hover: '#004785' }, // Celeste
+        { border: 'rgba(182, 23, 30, 1)', background: 'rgba(182, 23, 30, 0.15)', hover: '#930010' },   // Rojo
+        { border: 'rgba(89, 89, 90, 1)', background: 'rgba(89, 89, 90, 0.15)', hover: '#1b1b1c' },     // Gris
+        { border: 'rgba(186, 26, 26, 1)', background: 'rgba(186, 26, 26, 0.15)', hover: '#ba1a1a' }     // Rojo Fuerte
+      ];
+
+      const datasets = selectedPlayerNames.map((playerName, index) => {
+        const player = PLAYERS_DATA.find(p => p.Player === playerName);
+        const color = colors[index] || { border: '#e0e0e0', background: 'rgba(0,0,0,0.05)', hover: '#1a1c1c' };
+
+        // Normalizar cada métrica sobre el máximo de la plantilla
+        const dataNorm = metrics.map(m => {
+          const val = player[m.key] !== null ? Number(player[m.key]) : 0;
+          const max = squadMaxStats[m.key] || 1;
+          return Math.round((val / max) * 100);
+        });
+
+        return {
+          label: player.Player,
+          data: dataNorm,
+          backgroundColor: currentChartType === 'radar' ? color.background : color.border,
+          borderColor: color.border,
+          borderWidth: 2,
+          pointBackgroundColor: color.border,
+          pointBorderColor: '#ffffff',
+          pointHoverBackgroundColor: '#ffffff',
+          pointHoverBorderColor: color.border,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          barThickness: 10
+        };
+      });
+
+      // Actualizar título de visualización
+      const chartTitle = document.getElementById('chart-title');
+      if (selectedPlayerNames.length === 1) {
+        chartTitle.textContent = `Rendimiento de ${selectedPlayerNames[0]}`;
+      } else {
+        chartTitle.textContent = `Comparativa: ${selectedPlayerNames.map(n => n.split(' ').slice(-1)[0]).join(' vs ')}`;
+      }
+
+      if (currentChartType === 'radar') {
+        chartInstance = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                angleLines: { color: '#e2e2e2' },
+                grid: { color: '#e8e8e8' },
+                pointLabels: {
+                  font: { family: 'Inter', size: 10, weight: '600' },
+                  color: '#1a1c1c'
+                },
+                ticks: { display: false, maxTicksLimit: 5 },
+                suggestedMin: 0,
+                suggestedMax: 100
+              }
+            },
+            plugins: {
+              legend: {
+                display: selectedPlayerNames.length > 1,
+                position: 'top',
+                labels: { font: { family: 'Inter', size: 10, weight: '600' }, boxWidth: 12 }
+              },
+              tooltip: {
+                backgroundColor: '#1a1c1c',
+                titleFont: { family: 'Inter', size: 11, weight: '700' },
+                bodyFont: { family: 'Inter', size: 11 },
+                cornerRadius: 0,
+                callbacks: {
+                  label: function (context) {
+                    const player = PLAYERS_DATA.find(p => p.Player === context.dataset.label);
+                    const metricKey = metrics[context.dataIndex].key;
+                    let rawVal = player[metricKey];
+                    if (rawVal === null) rawVal = 0;
+                    if (metricKey === 'Total Distance (m)') {
+                      rawVal = Math.round(rawVal).toLocaleString() + ' m';
+                    }
+                    return `${context.dataset.label}: ${rawVal} (${context.formattedValue}% del máx.)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      } else {
+        // Bar Chart (Grouped)
+        chartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                grid: { color: '#e8e8e8' },
+                ticks: { font: { family: 'Inter', size: 10 }, color: '#414752' }
+              },
+              y: {
+                min: 0,
+                max: 100,
+                ticks: {
+                  font: { family: 'Inter', size: 9 },
+                  color: '#414752',
+                  callback: function (value) { return value + '%'; }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: { font: { family: 'Inter', size: 10, weight: '600' }, boxWidth: 12 }
+              },
+              tooltip: {
+                backgroundColor: '#1a1c1c',
+                titleFont: { family: 'Inter', size: 11, weight: '700' },
+                bodyFont: { family: 'Inter', size: 11 },
+                cornerRadius: 0,
+                callbacks: {
+                  label: function (context) {
+                    const player = PLAYERS_DATA.find(p => p.Player === context.dataset.label);
+                    const metricKey = metrics[context.dataIndex].key;
+                    let rawVal = player[metricKey];
+                    if (rawVal === null) rawVal = 0;
+                    if (metricKey === 'Total Distance (m)') {
+                      rawVal = Math.round(rawVal).toLocaleString() + ' m';
+                    }
+                    return `${context.dataset.label}: ${rawVal} (${context.formattedValue}% del máx.)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>
