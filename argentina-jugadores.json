@@ -56,7 +56,8 @@
     "Average Speed (km/h)": 4.56,
     "High Speed Running": 449,
     "Sprints": 176,
-    "Total Distance (m)": 54273.81
+    "Total Distance (m)": 54273.81,
+    "Photo": "images/miniaturas/MESSI-Lionel_229397.jpg"
   },
   {
     "Player": "Lautaro Martinez",
@@ -115,7 +116,8 @@
     "Average Speed (km/h)": 6.08,
     "High Speed Running": 369,
     "Sprints": 151,
-    "Total Distance (m)": 37720.93
+    "Total Distance (m)": 37720.93,
+    "Photo": "images/miniaturas/MARTINEZ-Lautaro_402920.jpg"
   },
   {
     "Player": "Enzo Fernandez",
@@ -174,7 +176,8 @@
     "Average Speed (km/h)": 5.57,
     "High Speed Running": 881,
     "Sprints": 294,
-    "Total Distance (m)": 71419.8
+    "Total Distance (m)": 71419.8,
+    "Photo": "images/miniaturas/FERNANDEZ-Enzo_448252.jpg"
   },
   {
     "Player": "Lisandro Martinez",
@@ -233,7 +236,8 @@
     "Average Speed (km/h)": 4.49,
     "High Speed Running": 437,
     "Sprints": 154,
-    "Total Distance (m)": 57920.58
+    "Total Distance (m)": 57920.58,
+    "Photo": "images/miniaturas/MARTINEZ-Lisandro_402921.jpg"
   },
   {
     "Player": "Alexis Mac Allister",
@@ -292,7 +296,8 @@
     "Average Speed (km/h)": 6.21,
     "High Speed Running": 843,
     "Sprints": 218,
-    "Total Distance (m)": 75574.07
+    "Total Distance (m)": 75574.07,
+    "Photo": "images/miniaturas/MAC-ALLISTER-Alexis_430628.jpg"
   },
   {
     "Player": "Giovani Lo Celso",
@@ -351,7 +356,8 @@
     "Average Speed (km/h)": 1,
     "High Speed Running": 123,
     "Sprints": 23,
-    "Total Distance (m)": 7525.5
+    "Total Distance (m)": 7525.5,
+    "Photo": "images/miniaturas/LO-CELSO-Giovani_395414.jpg"
   },
   {
     "Player": "Julian Alvarez",
@@ -410,7 +416,8 @@
     "Average Speed (km/h)": 6.22,
     "High Speed Running": 669,
     "Sprints": 284,
-    "Total Distance (m)": 59379.47
+    "Total Distance (m)": 59379.47,
+    "Photo": "images/miniaturas/ALVAREZ-Julian_416081.jpg"
   },
   {
     "Player": "Cristian Romero",
@@ -469,7 +476,8 @@
     "Average Speed (km/h)": 4.27,
     "High Speed Running": 337,
     "Sprints": 93,
-    "Total Distance (m)": 50779.65
+    "Total Distance (m)": 50779.65,
+    "Photo": "images/miniaturas/ROMERO-Cristian_431196.jpg"
   },
   {
     "Player": "Jose Manuel Lopez",
@@ -528,7 +536,8 @@
     "Average Speed (km/h)": 1.87,
     "High Speed Running": 43,
     "Sprints": 17,
-    "Total Distance (m)": 3081.24
+    "Total Distance (m)": 3081.24,
+    "Photo": "images/miniaturas/LOPEZ-Jose-Manuel_495054.jpg"
   },
   {
     "Player": "Gonzalo Montiel",
@@ -587,7 +596,8 @@
     "Average Speed (km/h)": 4.76,
     "High Speed Running": 265,
     "Sprints": 76,
-    "Total Distance (m)": 19824.93
+    "Total Distance (m)": 19824.93,
+    "Photo": "images/miniaturas/MONTIEL-Gonzalo_402926.jpg"
   },
   {
     "Player": "Nico Gonzalez",
@@ -646,7 +656,8 @@
     "Average Speed (km/h)": 5.14,
     "High Speed Running": 269,
     "Sprints": 119,
-    "Total Distance (m)": 27504.67
+    "Total Distance (m)": 27504.67,
+    "Photo": "images/miniaturas/GONZALEZ-Nico_430631.jpg"
   },
   {
     "Player": "Facundo Medina",
@@ -705,7 +716,8 @@
     "Average Speed (km/h)": 3.4,
     "High Speed Running": 330,
     "Sprints": 104,
-    "Total Distance (m)": 29270.89
+    "Total Distance (m)": 29270.89,
+    "Photo": "images/miniaturas/MEDINA-Facundo_418963.jpg"
   },
   {
     "Player": "Rodrigo De Paul",
@@ -764,7 +776,8 @@
     "Average Speed (km/h)": 5.22,
     "High Speed Running": 471,
     "Sprints": 233,
-    "Total Distance (m)": 46670.21
+    "Total Distance (m)": 46670.21,
+    "Photo": "images/miniaturas/DE-PAUL-Rodrigo_428882.jpg"
   },
   {
     "Player": "Geronimo Rulli",
@@ -823,7 +836,8 @@
     "Average Speed (km/h)": 0,
     "High Speed Running": 0,
     "Sprints": 0,
-    "Total Distance (m)": 0
+    "Total Distance (m)": 0,
+    "Photo": "images/miniaturas/RULLI-Geronimo_394824.jpg"
   },
   {
     "Player": "Valentin Barco",
@@ -882,7 +896,8 @@
     "Average Speed (km/h)": 0.98,
     "High Speed Running": 41,
     "Sprints": 14,
-    "Total Distance (m)": 2814.61
+    "Total Distance (m)": 2814.61,
+    "Photo": "images/miniaturas/BARCO-Valentin_463661.jpg"
   },
   {
     "Player": "Nico Paz",
@@ -941,7 +956,8 @@
     "Average Speed (km/h)": 1.99,
     "High Speed Running": 110,
     "Sprints": 39,
-    "Total Distance (m)": 9189.47
+    "Total Distance (m)": 9189.47,
+    "Photo": "images/miniaturas/PAZ-Nico_441422.jpg"
   },
   {
     "Player": "Exequiel Palacios",
@@ -1000,7 +1016,8 @@
     "Average Speed (km/h)": 0.86,
     "High Speed Running": 113,
     "Sprints": 37,
-    "Total Distance (m)": 10029.01
+    "Total Distance (m)": 10029.01,
+    "Photo": "images/miniaturas/PALACIOS-Exequiel_389485.jpg"
   },
   {
     "Player": "Marcos Senesi",
@@ -1059,7 +1076,8 @@
     "Average Speed (km/h)": 0.8,
     "High Speed Running": 86,
     "Sprints": 25,
-    "Total Distance (m)": 9406.52
+    "Total Distance (m)": 9406.52,
+    "Photo": "images/miniaturas/SENESI-Marcos_402934.jpg"
   },
   {
     "Player": "Giuliano Simeone",
@@ -1118,7 +1136,8 @@
     "Average Speed (km/h)": 1.82,
     "High Speed Running": 191,
     "Sprints": 81,
-    "Total Distance (m)": 15979.48
+    "Total Distance (m)": 15979.48,
+    "Photo": "images/miniaturas/SIMEONE-Giuliano_485595.jpg"
   },
   {
     "Player": "Nicolas Otamendi",
@@ -1177,7 +1196,8 @@
     "Average Speed (km/h)": 4.97,
     "High Speed Running": 240,
     "Sprints": 61,
-    "Total Distance (m)": 20600.15
+    "Total Distance (m)": 20600.15,
+    "Photo": "images/miniaturas/OTAMENDI-Nicolas_310116.jpg"
   },
   {
     "Player": "Thiago Almada",
@@ -1236,7 +1256,8 @@
     "Average Speed (km/h)": 5.03,
     "High Speed Running": 362,
     "Sprints": 137,
-    "Total Distance (m)": 31810.05
+    "Total Distance (m)": 31810.05,
+    "Photo": "images/miniaturas/ALMADA-Thiago_418975.jpg"
   },
   {
     "Player": "Nicolas Tagliafico",
@@ -1295,7 +1316,8 @@
     "Average Speed (km/h)": 5.2,
     "High Speed Running": 433,
     "Sprints": 155,
-    "Total Distance (m)": 39975.6
+    "Total Distance (m)": 39975.6,
+    "Photo": "images/miniaturas/TAGLIAFICO-Nicolas_308322.jpg"
   },
   {
     "Player": "Leandro Paredes",
@@ -1354,7 +1376,8 @@
     "Average Speed (km/h)": 5.27,
     "High Speed Running": 468,
     "Sprints": 117,
-    "Total Distance (m)": 45691.97
+    "Total Distance (m)": 45691.97,
+    "Photo": "images/miniaturas/PAREDES-Leandro_332847.jpg"
   },
   {
     "Player": "Nahuel Molina",
@@ -1413,7 +1436,8 @@
     "Average Speed (km/h)": 5.08,
     "High Speed Running": 521,
     "Sprints": 230,
-    "Total Distance (m)": 50504.69
+    "Total Distance (m)": 50504.69,
+    "Photo": "images/miniaturas/MOLINA-Nahuel_402925.jpg"
   },
   {
     "Player": "Emiliano Martinez",
@@ -1472,7 +1496,8 @@
     "Average Speed (km/h)": 2.73,
     "High Speed Running": 68,
     "Sprints": 16,
-    "Total Distance (m)": 36144.11
+    "Total Distance (m)": 36144.11,
+    "Photo": "images/miniaturas/MARTINEZ-Emiliano_308300.jpg"
   },
   {
     "Player": "Juan Musso",
@@ -1531,6 +1556,7 @@
     "Average Speed (km/h)": 0,
     "High Speed Running": 0,
     "Sprints": 0,
-    "Total Distance (m)": 0
+    "Total Distance (m)": 0,
+    "Photo": "images/miniaturas/MUSSO-Juan_430624.jpg"
   }
 ]
