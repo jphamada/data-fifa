@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Argentina vs España - Historial de encuentros</title>
+  <title>Final Mundial 2026: España vs Argentina - Dashboard Táctico e Interactivo</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -16,17 +16,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..900;1,8..60,400..900&display=swap"
     rel="stylesheet">
 
   <style type="text/css">
-    /* Estilos basados en design.md */
     :root {
-      --color-argentina: #43a1d5;
-      /* Celeste Argentina */
+      --color-argentina: #0059a4;
+      --color-argentina-celeste: #43a1d5;
       --color-argentina-light: #e6f3fa;
       --color-spain: #b6171e;
-      /* Rojo España */
       --color-spain-light: #ffdad6;
       --color-bg: #f9f9f9;
       --color-surface: #ffffff;
@@ -49,38 +47,31 @@
       font-family: 'Inter', sans-serif;
     }
 
-    /* Forzado estricto de bordes a 90 grados (Sharp 0) */
     .sharp-ui {
       border-radius: 0px !important;
     }
 
-    /* Quitar sombras para estética plana editorial */
     .no-shadow {
       box-shadow: none !important;
     }
 
-    /* Animación sutil de pulso para indicador Live */
     @keyframes pulse-dot {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.4;
-      }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     .pulse-indicator {
       animation: pulse-dot 2s infinite;
     }
 
-    /* Foco personalizado según design.md */
     .focus-border-primary:focus {
       outline: none;
-      border-color: var(--color-argentina) !important;
+      border-color: var(--color-spain) !important;
       border-bottom-width: 2px;
+    }
+
+    .transition-custom {
+      transition: all 0.2s ease-in-out;
     }
   </style>
 </head>
@@ -88,220 +79,409 @@
 <body class="p-0 m-0 min-h-screen flex flex-col antialiased">
 
   <!-- CABECERA EDITORIAL (Masthead) -->
-  <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-0">
+  <header class="w-full bg-white border-b border-[#e0e0e0] px-4 md:px-8 pt-6 pb-6">
     <div class="max-w-[1280px] mx-auto flex flex-col gap-4">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold tracking-widest text-[#43a1d5] flex items-center gap-2">
-          <span class="inline-block w-2.5 h-2.5 bg-[#43a1d5] pulse-indicator sharp-ui"></span>
-          HISTORIAL CARA A CARA
+
+      <!-- Navegación y Tag de Sección -->
+      <div class="flex items-center justify-between text-xs">
+        <span class="font-bold tracking-widest text-[#b6171e] flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 bg-[#b6171e] pulse-indicator sharp-ui"></span>
+          COPA MUNDIAL DE LA FIFA 2026 &bull; GRAN FINAL
         </span>
-        <span class="text-xs font-semibold text-[#414752] tracking-wider uppercase font-sans">
-          Fecha 2026-07-16
+        <span class="text-[11px] font-semibold text-[#414752] uppercase font-sans">
+          REPORTE TÁCTICO OFICIAL (PMSR-M104)
         </span>
       </div>
 
+      <!-- Título Principal -->
       <div class="border-t border-[#e2e2e2] pt-4 mt-1">
         <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight text-[#1a1c1c] leading-tight">
-          Argentina vs España: balance histórico
+          Análisis Táctico: España vs Argentina
         </h1>
+        <p class="text-xs md:text-sm text-[#414752] font-sans mt-2">
+          Panel interactivo de rendimiento colectivo e individual de la Final de la Copa del Mundo 2026 disputada en Nueva York / Nueva Jersey.
+        </p>
+      </div>
+
+      <!-- Ficha Técnica Rápida -->
+      <div class="flex flex-wrap items-center justify-between border-t border-[#e2e2e2] pt-4 mt-2 gap-4 text-xs text-[#414752]">
+        <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+          <span><strong>PARTIDO:</strong> Gran Final (Partido 104)</span>
+          <span class="text-[#e0e0e0]">|</span>
+          <span><strong>SEDE:</strong> New York / New Jersey Stadium</span>
+          <span class="text-[#e0e0e0]">|</span>
+          <span><strong>FECHA:</strong> 19 de Julio, 2026</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="bg-[#ffdad6] text-[#b6171e] font-bold px-2 py-0.5 sharp-ui uppercase text-[10px]">ESPAÑA (CAMPEÓN)</span>
+          <span class="text-[#414752] font-bold text-xs">vs</span>
+          <span class="bg-[#e6f3fa] text-[#0059a4] font-bold px-2 py-0.5 sharp-ui uppercase text-[10px]">ARGENTINA</span>
+        </div>
       </div>
 
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-6">
-
-    <!-- BANNER DE ÚLTIMA HORA (Historial Reciente) -->
-    <div class="bg-white border-l-4 border-[#b6171e] border-y border-r border-[#e0e0e0] p-4 sharp-ui flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div>
-        <span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Último Encuentro</span>
-        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1.5">Goleada en Madrid en el último cara a cara</h4>
-        <p class="text-xs text-[#414752] font-sans mt-0.5">El último enfrentamiento entre ambas selecciones se disputó en 2018 en el Wanda Metropolitano, saldándose con una contundente victoria de España por 6-1.</p>
+  <!-- CONTROLES E INTERACTIVIDAD AL INICIO (Sticky Top Controls Bar) -->
+  <section class="w-full bg-[#f3f3f3] border-b border-[#e0e0e0] sticky top-0 z-40 px-4 md:px-8 py-3">
+    <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+      
+      <!-- Selector de Aislamiento por Equipo -->
+      <div class="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
+        <span class="text-xs font-bold text-[#1a1c1c] tracking-wider uppercase font-sans whitespace-nowrap">
+          Filtrar Equipo:
+        </span>
+        <div class="inline-flex border border-[#e0e0e0] p-0.5 bg-white sharp-ui w-full sm:w-auto text-xs font-bold tracking-wider font-sans">
+          <button id="btn-filter-both" onclick="setTeamFilter('both')"
+            class="flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-[#1a1c1c] text-white">
+            AMBOS EQUIPOS
+          </button>
+          <button id="btn-filter-esp" onclick="setTeamFilter('esp')"
+            class="flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#f3f3f3]">
+            ESPAÑA (ROJO)
+          </button>
+          <button id="btn-filter-arg" onclick="setTeamFilter('arg')"
+            class="flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#f3f3f3]">
+            ARGENTINA (AZUL)
+          </button>
+        </div>
       </div>
-      <span class="text-xs font-bold font-mono text-[#b6171e] bg-[#ffdad6] px-3 py-1.5 sharp-ui self-start md:self-auto uppercase tracking-wider">
-        ÚLTIMO: ESP 6 - 1 ARG
-      </span>
+
+      <!-- Filtro Rápido de Categorías de la Página -->
+      <div class="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 text-xs font-sans">
+        <span class="font-bold text-[#414752] uppercase text-[10px] tracking-wider whitespace-nowrap">Secciones:</span>
+        <button onclick="scrollToSection('sec-kpis')" class="bg-white border border-[#e0e0e0] px-2.5 py-1 sharp-ui hover:bg-[#1a1c1c] hover:text-white transition-colors cursor-pointer whitespace-nowrap font-medium">
+          Métricas
+        </button>
+        <button onclick="scrollToSection('sec-charts')" class="bg-white border border-[#e0e0e0] px-2.5 py-1 sharp-ui hover:bg-[#1a1c1c] hover:text-white transition-colors cursor-pointer whitespace-nowrap font-medium">
+          Gráficos Tácticos
+        </button>
+        <button onclick="scrollToSection('sec-shots')" class="bg-white border border-[#e0e0e0] px-2.5 py-1 sharp-ui hover:bg-[#1a1c1c] hover:text-white transition-colors cursor-pointer whitespace-nowrap font-medium">
+          Historial Remates
+        </button>
+        <button onclick="scrollToSection('sec-players')" class="bg-white border border-[#e0e0e0] px-2.5 py-1 sharp-ui hover:bg-[#1a1c1c] hover:text-white transition-colors cursor-pointer whitespace-nowrap font-medium">
+          Jugadores
+        </button>
+      </div>
+
     </div>
+  </section>
 
-    <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos Dinámicos) -->
-    <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 md:px-8 py-6 flex flex-col gap-8">
 
-      <!-- Partidos -->
-      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between col-span-2 lg:col-span-1">
-        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Partidos Jugados</span>
-        <div class="mt-2 flex items-baseline gap-1">
-          <span id="kpi-total" class="text-3xl font-bold font-sans text-[#1a1c1c]">-</span>
+    <!-- SECCIÓN DE MARCADOR Y GOLES -->
+    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+
+      <!-- Equipo Local (España) -->
+      <div class="text-center md:text-left flex flex-col items-center md:items-start transition-custom" id="scorecard-esp">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold bg-[#ffdad6] text-[#b6171e] px-2 py-0.5 sharp-ui uppercase">Campeón del Mundo</span>
         </div>
-        <p class="text-[10px] text-[#414752] mt-1">Historial acumulado</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-[#1a1c1c] mt-2">España</h2>
+        <ul class="text-xs text-[#414752] mt-3 space-y-1 font-sans">
+          <li class="flex items-center gap-1.5 justify-center md:justify-start font-semibold text-[#b6171e]">
+            <span class="inline-block w-2.5 h-2.5 bg-[#b6171e] sharp-ui"></span>
+            105' Ferran Torres (GOL T.S.)
+          </li>
+        </ul>
       </div>
 
-      <!-- Victorias Argentina -->
-      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
-        <span class="text-[10px] font-bold text-[#43a1d5] tracking-wider uppercase font-sans">Victorias Argentina</span>
-        <div class="mt-2 flex items-baseline gap-1">
-          <span id="kpi-wins-argentina" class="text-3xl font-bold font-sans text-[#43a1d5]">-</span>
-          <span id="kpi-winrate-argentina" class="text-xs font-semibold text-[#414752] font-sans">(-%)</span>
+      <!-- Marcador Central -->
+      <div class="text-center border-y md:border-y-0 md:border-x border-[#e2e2e2] py-4 md:py-2">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase">RESULTADO FINAL (T.S.)</span>
+        <div class="text-5xl font-bold font-serif tracking-widest text-[#1a1c1c] my-1">
+          1 - 0
         </div>
-        <p class="text-[10px] text-[#414752] mt-1">"La Albiceleste" dominante</p>
+        <span class="text-xs text-[#b6171e] font-bold bg-[#ffdad6] px-3 py-1 sharp-ui tracking-wide">
+          ESPAÑA CAMPEÓN MUNDIAL 2026
+        </span>
       </div>
 
-      <!-- Victorias España -->
-      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
-        <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">Victorias España</span>
-        <div class="mt-2 flex items-baseline gap-1">
-          <span id="kpi-wins-spain" class="text-3xl font-bold font-sans text-[#b6171e]">-</span>
-          <span id="kpi-winrate-spain" class="text-xs font-semibold text-[#414752] font-sans">(-%)</span>
+      <!-- Equipo Visitante (Argentina) -->
+      <div class="text-center md:text-right flex flex-col items-center md:items-end transition-custom" id="scorecard-arg">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold bg-[#e6f3fa] text-[#0059a4] px-2 py-0.5 sharp-ui uppercase">Subcampeón</span>
         </div>
-        <p class="text-[10px] text-[#414752] mt-1">"La Roja" al acecho</p>
-      </div>
-
-      <!-- Empates -->
-      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between">
-        <span class="text-[10px] font-bold text-[#59595a] tracking-wider uppercase font-sans">Empates</span>
-        <div class="mt-2 flex items-baseline gap-1">
-          <span id="kpi-draws" class="text-3xl font-bold font-sans text-[#59595a]">-</span>
-        </div>
-        <p class="text-[10px] text-[#414752] mt-1">Tablas en el marcador</p>
-      </div>
-
-      <!-- Goles Totales -->
-      <div class="bg-white border border-[#e0e0e0] p-4 sharp-ui flex flex-col justify-between col-span-2 lg:col-span-1">
-        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">Goles Totales</span>
-        <div class="mt-2 flex items-baseline gap-1">
-          <span id="kpi-goals-total" class="text-2xl font-bold font-sans text-[#1a1c1c]">-</span>
-        </div>
-        <p id="kpi-goals-ratio" class="text-[10px] text-[#414752] mt-1">ARG - vs - ESP</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-[#1a1c1c] mt-2">Argentina</h2>
+        <ul class="text-xs text-[#414752] mt-3 space-y-1 font-sans">
+          <li class="flex items-center gap-1.5 justify-center md:justify-end text-[#414752]">
+            Sin goles convertidos
+            <span class="inline-block w-2.5 h-2.5 bg-[#0059a4] sharp-ui"></span>
+          </li>
+        </ul>
       </div>
 
     </section>
 
-    <!-- CUERPO CENTRAL: FILTROS + APUNTES (Izquierda, 4 cols) & GRÁFICO (Derecha, 8 cols) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-      <!-- COLUMNA IZQUIERDA: FILTROS Y APUNTES DE PRENSA (4 Cols) -->
-      <div class="lg:col-span-4 flex flex-col gap-6">
-
-        <!-- PANEL DE CONTROL / FILTROS -->
-        <section class="bg-white border border-[#e0e0e0] p-5 sharp-ui flex flex-col gap-4">
-          <h3
-            class="text-xs font-bold tracking-widest text-[#414752] uppercase border-b border-[#e0e0e0] pb-2 font-sans">
-            Filtros del Historial
-          </h3>
-
-          <!-- Buscador por Texto -->
-          <div>
-            <label for="search-input" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
-              Buscar por Estadio / Año
-            </label>
-            <input type="text" id="search-input" placeholder="Ej: Wanda Metropolitano, 2010..."
-              class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-sm font-sans text-[#1a1c1c] focus-border-primary" />
-          </div>
-
-          <!-- Filtro de Competición -->
-          <div>
-            <label for="comp-select" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
-              Tipo de Competición
-            </label>
-            <select id="comp-select"
-              class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-sm font-sans text-[#1a1c1c] focus-border-primary appearance-none cursor-pointer">
-              <option value="all">Todas las Competiciones</option>
-              <option value="official">Partidos Oficiales</option>
-              <option value="amistoso">Partidos Amistosos</option>
-              <option value="worldcup">Copa Mundial de la FIFA</option>
-            </select>
-          </div>
-
-          <!-- Filtro de Ganador -->
-          <div>
-            <label for="winner-select" class="block text-[10px] font-bold tracking-wider text-[#414752] uppercase mb-1">
-              Resultado del Encuentro
-            </label>
-            <select id="winner-select"
-              class="w-full bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-2 sharp-ui text-sm font-sans text-[#1a1c1c] focus-border-primary appearance-none cursor-pointer">
-              <option value="all">Cualquier Resultado</option>
-              <option value="argentina">Ganó Argentina</option>
-              <option value="spain">Ganó España</option>
-              <option value="draw">Empate</option>
-            </select>
-          </div>
-
-          <!-- Botón restablecer -->
-          <button id="btn-reset" onclick="resetFilters()"
-            class="w-full border border-[#e0e0e0] py-2 text-xs font-bold tracking-wider sharp-ui hover:bg-[#f3f3f3] transition-colors duration-150 cursor-pointer text-[#1a1c1c]">
-            LIMPIAR FILTROS
-          </button>
-        </section>
-
+    <!-- RESUMEN DE METRICAS GENERALES (KPIs Colectivos) -->
+    <section id="sec-kpis" class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-5">
+      <div class="border-b border-[#e0e0e0] pb-2 flex justify-between items-center">
+        <h3 class="text-xs font-bold tracking-widest text-[#414752] uppercase font-sans">Métricas Principales del Encuentro</h3>
+        <span class="text-[10px] text-[#414752] font-semibold">DISTRIBUCIÓN COLECTIVA DE JUEGO</span>
       </div>
 
-      <!-- COLUMNA DERECHA: SECTOR GRÁFICO CON PESTAÑAS (8 Cols) -->
-      <div class="lg:col-span-8 flex flex-col gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="kpis-grid">
 
-        <div class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#e2e2e2] pb-4 gap-3">
-            <div>
-              <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Visualización táctica de datos</h3>
-              <p class="text-xs text-[#414752] font-sans">Balance comparado e histórico entre ambas escuadras.</p>
-            </div>
-
-            <!-- Selector de Pestañas de Gráfico -->
-            <div
-              class="inline-flex border border-[#e0e0e0] p-0.5 bg-[#f3f3f3] sharp-ui select-none shrink-0 self-start sm:self-auto text-[10px] font-bold tracking-wider font-sans">
-              <button id="btn-tab-timeline" onclick="switchTab('timeline')"
-                class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-[#43a1d5] text-white">
-                RECIENTES
-              </button>
-              <button id="btn-tab-balance" onclick="switchTab('balance')"
-                class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
-                BALANCE
-              </button>
-              <button id="btn-tab-type" onclick="switchTab('type')"
-                class="px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]">
-                OFICIAL VS AMISTOSO
-              </button>
-            </div>
+        <!-- KPI 1: Posesión -->
+        <div class="flex flex-col justify-between p-3.5 border border-[#eeeeee] sharp-ui transition-custom" id="kpi-card-possession">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Posesión de Balón</span>
+            <span class="text-[#b6171e]" id="val-possession-esp">60.2%</span>
           </div>
-
-          <!-- Canvas del Gráfico -->
-          <div
-            class="relative w-full aspect-square sm:aspect-video flex items-center justify-center p-2 min-h-[300px] max-h-[380px]">
-            <canvas id="historicalChart" class="w-full h-full"></canvas>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-2xl font-bold">60.2%</span>
+            <span class="text-[10px] text-[#59595a]">En Disputa: 7.4%</span>
+            <span class="text-[#0059a4] text-lg font-bold" id="val-possession-arg">32.5%</span>
+          </div>
+          <div class="w-full h-2.5 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 60.2%"></div>
+            <div class="bg-[#a0a0a0]" style="width: 7.4%"></div>
+            <div class="bg-[#0059a4]" style="width: 32.4%"></div>
           </div>
         </div>
 
+        <!-- KPI 2: xG -->
+        <div class="flex flex-col justify-between p-3.5 border border-[#eeeeee] sharp-ui transition-custom" id="kpi-card-xg">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Goles Esperados (xG)</span>
+            <span class="text-[#b6171e]">2.52</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-2xl font-bold">2.52</span>
+            <span class="text-[10px] text-[#414752]">Generación de Peligro</span>
+            <span class="text-[#0059a4] text-lg font-bold">0.07</span>
+          </div>
+          <div class="w-full h-2.5 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 97.3%"></div>
+            <div class="bg-[#0059a4]" style="width: 2.7%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 3: Remates -->
+        <div class="flex flex-col justify-between p-3.5 border border-[#eeeeee] sharp-ui transition-custom" id="kpi-card-shots">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Remates (Al Arco)</span>
+            <span class="text-[#b6171e]">20 (11)</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-2xl font-bold">20 (11)</span>
+            <span class="text-[10px] text-[#414752]">Volumen de disparo</span>
+            <span class="text-[#0059a4] text-lg font-bold">2 (0)</span>
+          </div>
+          <div class="w-full h-2.5 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 90.9%"></div>
+            <div class="bg-[#0059a4]" style="width: 9.1%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 4: Pases Completados -->
+        <div class="flex flex-col justify-between p-3.5 border border-[#eeeeee] sharp-ui transition-custom" id="kpi-card-passes">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Pases (Efectividad %)</span>
+            <span class="text-[#b6171e]">789 / 878 (90%)</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-2xl font-bold">789 <span class="text-xs font-normal text-[#414752]">(90%)</span></span>
+            <span class="text-[10px] text-[#414752]">Circulación de Balón</span>
+            <span class="text-[#0059a4] text-lg font-bold">375 <span class="text-xs font-normal text-[#414752]">(79%)</span></span>
+          </div>
+          <div class="w-full h-2.5 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 67.8%"></div>
+            <div class="bg-[#0059a4]" style="width: 32.2%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 5: Líneas de Ruptura -->
+        <div class="flex flex-col justify-between p-3.5 border border-[#eeeeee] sharp-ui transition-custom" id="kpi-card-breaks">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Líneas Rotas Completadas</span>
+            <span class="text-[#b6171e]">182 (22 Def)</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-2xl font-bold">182</span>
+            <span class="text-[10px] text-[#414752]">Pases filtrados profundos</span>
+            <span class="text-[#0059a4] text-lg font-bold">87</span>
+          </div>
+          <div class="w-full h-2.5 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 67.7%"></div>
+            <div class="bg-[#0059a4]" style="width: 32.3%"></div>
+          </div>
+        </div>
+
+        <!-- KPI 6: Presión Defensiva -->
+        <div class="flex flex-col justify-between p-3.5 border border-[#eeeeee] sharp-ui transition-custom" id="kpi-card-receptions">
+          <div class="flex justify-between items-center text-xs font-bold text-[#414752] uppercase">
+            <span>Presiones Defensivas (Directas)</span>
+            <span class="text-[#0059a4]">445 (57)</span>
+          </div>
+          <div class="flex justify-between items-baseline mt-2">
+            <span class="text-[#b6171e] text-lg font-bold">300 (39)</span>
+            <span class="text-[10px] text-[#414752]">Esfuerzo sin balón</span>
+            <span class="text-[#0059a4] text-2xl font-bold">445 (57)</span>
+          </div>
+          <div class="w-full h-2.5 bg-[#eeeeee] sharp-ui mt-3 flex">
+            <div class="bg-[#b6171e]" style="width: 40.3%"></div>
+            <div class="bg-[#0059a4]" style="width: 59.7%"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE GRÁFICOS PRINCIPALES -->
+    <div id="sec-charts" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- GRÁFICO 1: EVOLUCIÓN DEL xG ACUMULADO (8 Columnas) -->
+      <div class="lg:col-span-8 bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col justify-between min-h-[420px]">
+        <div>
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Evolución Dinámica: Goles Esperados (xG) Acumulados</h3>
+            <span class="text-[10px] font-bold bg-[#f3f3f3] text-[#414752] px-2 py-0.5 sharp-ui uppercase">90' Regular + 30' T.S.</span>
+          </div>
+          <p class="text-xs text-[#414752] font-sans mt-1">Progreso temporal de tiros. El hito clave ocurre en el minuto 105 con el gol de Ferran Torres.</p>
+        </div>
+
+        <div class="relative w-full flex-grow my-4 aspect-video min-h-[300px] max-h-[360px]">
+          <canvas id="cumulativeXgChart"></canvas>
+        </div>
+
+        <div class="text-[10px] text-[#414752] border-t border-[#eeeeee] pt-3 flex flex-wrap justify-between gap-2">
+          <span>* Basado en modelos oficiales de tiro FIFA PMSR-M104.</span>
+          <span>Min 0 &rarr; Min 121 (Fin del encuentro)</span>
+        </div>
+      </div>
+
+      <!-- GRÁFICO 2: FASES TÁCTICAS (4 Columnas) -->
+      <div class="lg:col-span-4 bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col justify-between min-h-[420px]">
+        <div>
+          <h3 class="font-serif text-lg font-bold text-[#1a1c1c]">Estructura y Fases del Juego</h3>
+          <p class="text-xs text-[#414752] font-sans mt-1">Comparativa de zonas de posesión y bloques defensivos (% de tiempo).</p>
+        </div>
+
+        <div class="relative w-full flex-grow my-4 flex items-center justify-center min-h-[260px] max-h-[320px]">
+          <canvas id="phasesChart"></canvas>
+        </div>
+
+        <div class="text-[10px] text-[#414752] border-t border-[#eeeeee] pt-3 text-center font-semibold">
+          Dominio territorial de España vs Bloque Bajo de Argentina
+        </div>
       </div>
 
     </div>
 
-    <!-- TABLA DE HISTORIAL COMPLETO DE ENCUENTROS -->
-    <section class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e0e0e0] pb-4">
-        <div>
-          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Historial completo de encuentros</h3>
-          <p class="text-xs text-[#414752] font-sans">Registro cronológico de los duelos directos Argentina vs España.</p>
-        </div>
-        <span
-          class="text-xs font-mono text-[#414752] bg-[#f3f3f3] border border-[#e0e0e0] px-2.5 py-1 sharp-ui self-start sm:self-auto">
-          Mostrando: <strong id="table-count">-</strong> encuentros
-        </span>
+    <!-- TARJETAS DE DESTACADOS TÁCTICOS -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Tarjeta 1 -->
+      <div class="bg-white border-t-2 border-[#b6171e] border-x border-b border-[#e0e0e0] p-5 sharp-ui">
+        <span class="text-[10px] font-bold text-[#b6171e] tracking-wider uppercase font-sans">DOMINIO DE ESPAÑA</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1 leading-snug">Circulación incesante en 3er tercio</h4>
+        <p class="text-xs text-[#414752] font-sans mt-3 leading-relaxed">
+          España acumuló <strong>251 recepciones en el último tercio</strong> y completó <strong>789 pases (90% de precisión)</strong>. Lamine Yamal protagonizó 10 progresiones de balón y 4 remates, desgastando la estructura defensiva albiceleste hasta romper el marcador en la prórroga.
+        </p>
       </div>
 
+      <!-- Tarjeta 2 -->
+      <div class="bg-white border-t-2 border-[#0059a4] border-x border-b border-[#e0e0e0] p-5 sharp-ui">
+        <span class="text-[10px] font-bold text-[#0059a4] tracking-wider uppercase font-sans">RESISTENCIA ARGENTINA</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1 leading-snug">Resistencia en Bloque Bajo y Presión</h4>
+        <p class="text-xs text-[#414752] font-sans mt-3 leading-relaxed">
+          Argentina permaneció el <strong>33% del tiempo defensivo en Bloque Bajo</strong> y acumuló <strong>445 presiones defensivas</strong>. Nicolás Tagliafico lideró el partido con 14 presiones directas y Emiliano Martínez registró 13 recuperaciones de balón.
+        </p>
+      </div>
+
+      <!-- Tarjeta 3 -->
+      <div class="bg-white border-t-2 border-[#414752] border-x border-b border-[#e0e0e0] p-5 sharp-ui">
+        <span class="text-[10px] font-bold text-[#414752] tracking-wider uppercase font-sans">MOMENTO DECISIVO</span>
+        <h4 class="font-serif text-lg font-bold text-[#1a1c1c] mt-1 leading-snug">El impacto de Ferran Torres en el 105'</h4>
+        <p class="text-xs text-[#414752] font-sans mt-3 leading-relaxed">
+          Ingresando desde el banco de suplentes, Ferran Torres ejecutó 3 remates en el tramo final. A los 105 minutos de juego, tras un pase filtrado al área, definió de zurda para otorgar el título mundial a la selección española.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- REGISTRO CRONOLÓGICO DE REMATES (Tabla Filtrable) -->
+    <section id="sec-shots" class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e0e0e0] pb-4">
+        <div>
+          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Dinámica de Tiro: Historial Completo del Partido</h3>
+          <p class="text-xs text-[#414752] font-sans">Registro cronológico de los 22 remates de la Final del Mundo.</p>
+        </div>
+
+        <!-- Controles de Filtro de Remates -->
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="shot-filter" class="text-xs font-bold text-[#414752] uppercase font-sans">Filtrar por:</label>
+          <select id="shot-filter" onchange="applyShotFilter()"
+            class="bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-1.5 sharp-ui text-xs font-sans font-semibold text-[#1a1c1c] focus-border-primary cursor-pointer">
+            <option value="all">Todos los Remates (22)</option>
+            <option value="goals">Solo Goles (1)</option>
+            <option value="esp">Solo España (20)</option>
+            <option value="arg">Solo Argentina (2)</option>
+            <option value="ontarget">Remates al Arco (11)</option>
+            <option value="head">Solo Cabezazos (5)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabla Responsive de Remates -->
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs border-collapse">
           <thead>
             <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
-              <th class="py-3 font-sans">Fecha</th>
-              <th class="py-3 font-sans">Local</th>
-              <th class="py-3 text-center font-sans">Score</th>
-              <th class="py-3 text-right font-sans">Visitante</th>
-              <th class="py-3 text-center font-sans hidden sm:table-cell">Resultado</th>
-              <th class="py-3 font-sans hidden md:table-cell">Competición</th>
-              <th class="py-3 font-sans hidden md:table-cell">Fase</th>
-              <th class="py-3 font-sans hidden lg:table-cell">Estadio</th>
+              <th class="py-3 font-sans w-16 text-center sm:text-left">Minuto</th>
+              <th class="py-3 font-sans w-24">Equipo</th>
+              <th class="py-3 font-sans">Jugador</th>
+              <th class="py-3 font-sans">Resultado del Remate</th>
+              <th class="py-3 font-sans hidden sm:table-cell">Parte del Cuerpo</th>
+              <th class="py-3 font-sans hidden md:table-cell">Origen</th>
+              <th class="py-3 font-sans text-right w-16">xG Est.</th>
             </tr>
           </thead>
-          <tbody id="matches-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+          <tbody id="shots-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
+            <!-- Se llena dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ESTADÍSTICAS INDIVIDUALES DE JUGADORES (Tabla Filtrable) -->
+    <section id="sec-players" class="bg-white border border-[#e0e0e0] p-6 sharp-ui flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e0e0e0] pb-4">
+        <div>
+          <h3 class="font-serif text-xl font-bold text-[#1a1c1c]">Estadísticas Individuales de Jugadores</h3>
+          <p class="text-xs text-[#414752] font-sans">Métricas oficiales de pase, efectividad, líneas rotas, recuperaciones y volumen físico.</p>
+        </div>
+
+        <!-- Controles de Tabla de Jugadores -->
+        <div class="flex flex-wrap items-center gap-3">
+          <input type="text" id="player-search" onkeyup="applyPlayerFilter()" placeholder="Buscar jugador..."
+            class="bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-1.5 sharp-ui text-xs font-sans text-[#1a1c1c] focus-border-primary w-40 sm:w-48">
+          <select id="player-team-filter" onchange="applyPlayerFilter()"
+            class="bg-[#f9f9f9] border border-[#e0e0e0] px-3 py-1.5 sharp-ui text-xs font-sans font-semibold text-[#1a1c1c] focus-border-primary cursor-pointer">
+            <option value="all">Todos los Planteles</option>
+            <option value="ESP">España</option>
+            <option value="ARG">Argentina</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabla Responsive de Jugadores -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-[#e0e0e0] text-[#414752] uppercase font-bold tracking-wider">
+              <th class="py-3 font-sans w-20">Equipo</th>
+              <th class="py-3 font-sans">Jugador</th>
+              <th class="py-3 font-sans text-center">Pases (Comp/Att)</th>
+              <th class="py-3 font-sans text-center">Precisión %</th>
+              <th class="py-3 font-sans text-center hidden sm:table-cell">Líneas Rotas</th>
+              <th class="py-3 font-sans text-center hidden md:table-cell">Recuperaciones</th>
+              <th class="py-3 font-sans text-right">Remates / Goles</th>
+            </tr>
+          </thead>
+          <tbody id="players-tbody" class="divide-y divide-[#eeeeee] text-[#1a1c1c]">
             <!-- Se llena dinámicamente -->
           </tbody>
         </table>
@@ -311,462 +491,393 @@
   </main>
 
   <!-- PIE DE PÁGINA -->
-  <footer class="w-full bg-white border-t border-[#e0e0e0] py-6 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
+  <footer class="w-full bg-white border-t border-[#e0e0e0] py-8 px-4 md:px-8 mt-12 text-center text-xs text-[#414752]">
     <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <span>Historial Argentina vs España © 2026</span>
-      <span>Datos basados en encuentros oficiales y amistosos.</span>
+      <span>La Crónica Deportiva &bull; Cobertura Especial Final Mundial 2026</span>
+      <span class="text-[#b6171e] font-bold">Datos extraídos de FIFA Post Match Summary Report (PMSR-M104: ESP vs ARG)</span>
     </div>
   </footer>
 
-  <!-- DATA & LOGIC -->
+  <!-- LÓGICA E INTERACTIVIDAD JAVASCRIPT -->
   <script>
-    // DATASET ORIGINAL EMBEBIDO (En español)
-    const ARGENTINA_ESPANA_DATA = [
-      { "fecha": "27 mar 2018", "local": "España", "visitante": "Argentina", "goles_local": 6, "goles_visitante": 1, "competicion": "Amistoso 2018", "fase": "-", "estadio": "Wanda Metropolitano" },
-      { "fecha": "07 sep 2010", "local": "Argentina", "visitante": "España", "goles_local": 4, "goles_visitante": 1, "competicion": "Amistoso 2010", "fase": "-", "estadio": "Estadio Monumental" },
-      { "fecha": "14 nov 2009", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 2009", "fase": "-", "estadio": "Vicente Calderón" },
-      { "fecha": "11 oct 2006", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 2006", "fase": "-", "estadio": "Estadio Nueva Condomina" },
-      { "fecha": "17 nov 1999", "local": "España", "visitante": "Argentina", "goles_local": 0, "goles_visitante": 2, "competicion": "Amistoso 1999", "fase": "Amistoso", "estadio": "Estadio La Cartuja de Sevilla" },
-      { "fecha": "20 sep 1995", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 1, "competicion": "Amistoso 1995", "fase": "Amistoso", "estadio": "Vicente Calderón" },
-      { "fecha": "12 oct 1988", "local": "España", "visitante": "Argentina", "goles_local": 1, "goles_visitante": 1, "competicion": "Amistoso 1988", "fase": "Amistoso", "estadio": "Ramón Sánchez Pizjuán" },
-      { "fecha": "12 oct 1974", "local": "Argentina", "visitante": "España", "goles_local": 1, "goles_visitante": 1, "competicion": "Amistoso 1974", "fase": "-", "estadio": "BUENOS AIRES" },
-      { "fecha": "11 oct 1972", "local": "España", "visitante": "Argentina", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1972", "fase": "-", "estadio": "MADRID" },
-      { "fecha": "13 jul 1966", "local": "Argentina", "visitante": "España", "goles_local": 2, "goles_visitante": 1, "competicion": "Copa Mundial de la FIFA Inglaterra 1966", "fase": "Partidos de grupo", "estadio": "Villa Park" },
-      { "fecha": "11 jun 1961", "local": "España", "visitante": "Argentina", "goles_local": 2, "goles_visitante": 0, "competicion": "Amistoso 1961", "fase": "-", "estadio": "SEVILLE" },
-      { "fecha": "24 jul 1960", "local": "Argentina", "visitante": "España", "goles_local": 2, "goles_visitante": 0, "competicion": "Amistoso 1960", "fase": "-", "estadio": "BUENOS AIRES" },
-      { "fecha": "05 jul 1953", "local": "Argentina", "visitante": "España", "goles_local": 1, "goles_visitante": 0, "competicion": "Amistoso 1953", "fase": "-", "estadio": "BUENOS AIRES" },
-      { "fecha": "07 dic 1952", "local": "España", "visitante": "Argentina", "goles_local": 0, "goles_visitante": 1, "competicion": "Amistoso 1952", "fase": "-", "estadio": "MADRID" }
+    // DATASET COMPLETO DE REMATES (Páginas 15, 16, 18 de ESP-V-ARG.pdf)
+    const SHOTS_DATA = [
+      { min: 4, team: "ESP", player: "Lamine YAMAL", outcome: "Parado (On Target - Saved)", body: "Pie Izquierdo", type: "Pase", xg: 0.10 },
+      { min: 38, team: "ESP", player: "Mikel OYARZABAL", outcome: "Parado (On Target - Saved)", body: "Pie Izquierdo", type: "Pase", xg: 0.12 },
+      { min: 42, team: "ESP", player: "Marc CUCURELLA", outcome: "Desviado (Off Target)", body: "Pie Izquierdo", type: "Pase", xg: 0.05 },
+      { min: 45, team: "ESP", player: "Alex BAENA", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Balón Suelto", xg: 0.08 },
+      { min: 60, team: "ESP", player: "Lamine YAMAL", outcome: "Bloqueado (Incomplete - Blocked)", body: "Pie Izquierdo", type: "Tiro Libre", xg: 0.06 },
+      { min: 63, team: "ESP", player: "Dani OLMO", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Pase", xg: 0.14 },
+      { min: 64, team: "ESP", player: "Dani OLMO", outcome: "Desviado (Off Target)", body: "Cabeza", type: "Balón Suelto", xg: 0.07 },
+      { min: 66, team: "ESP", player: "Ferran TORRES", outcome: "Parado (On Target - Saved)", body: "Cabeza", type: "Centro", xg: 0.15 },
+      { min: 76, team: "ESP", player: "PEDRI", outcome: "Parado (On Target - Saved)", body: "Pie Izquierdo", type: "Pase", xg: 0.11 },
+      { min: 76, team: "ESP", player: "Pau CUBARSI", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Pase", xg: 0.08 },
+      { min: 80, team: "ESP", player: "Aymeric LAPORTE", outcome: "Parado (On Target - Saved)", body: "Cabeza", type: "Centro", xg: 0.14 },
+      { min: 86, team: "ESP", player: "Ferran TORRES", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Pase", xg: 0.09 },
+      { min: 88, team: "ESP", player: "RODRI", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Pase", xg: 0.06 },
+      { min: 92, team: "ESP", player: "Nico WILLIAMS", outcome: "Parado (On Target - Saved)", body: "Pie Derecho", type: "Pase", xg: 0.12 },
+      { min: 92, team: "ESP", player: "Nico WILLIAMS", outcome: "Parado (On Target - Saved)", body: "Cabeza", type: "Pase", xg: 0.09 },
+      { min: 97, team: "ESP", player: "Lamine YAMAL", outcome: "Parado (On Target - Saved)", body: "Pie Izquierdo", type: "Tiro Libre", xg: 0.15 },
+      { min: 100, team: "ESP", player: "Lamine YAMAL", outcome: "Desviado (Off Target)", body: "Pie Izquierdo", type: "Pase", xg: 0.08 },
+      { min: 102, team: "ESP", player: "Mikel MERINO", outcome: "Desviado (Off Target)", body: "Cabeza", type: "Centro", xg: 0.09 },
+      { min: 103, team: "ESP", player: "Nico WILLIAMS", outcome: "Bloqueado (Incomplete - Blocked)", body: "Pie Derecho", type: "Pase", xg: 0.05 },
+      { min: 105, team: "ESP", player: "Ferran TORRES", outcome: "GOL (On Target - Goal)", body: "Pie Izquierdo", type: "Pase", xg: 0.69 },
+      { min: 116, team: "ARG", player: "Lionel MESSI", outcome: "Bloqueado (Incomplete - Blocked)", body: "Pie Izquierdo", type: "Pase", xg: 0.04 },
+      { min: 121, team: "ARG", player: "Giuliano SIMEONE", outcome: "Desviado (Off Target)", body: "Pie Derecho", type: "Pase", xg: 0.03 }
     ];
 
-    // VARIABLES DE CONTROL
-    let currentTab = 'timeline'; // 'timeline', 'balance', 'type'
-    let chartInstance = null;
+    // DATASET DE JUGADORES (Páginas 26, 27, 43, 45 de ESP-V-ARG.pdf)
+    const PLAYERS_DATA = [
+      // ESPAÑA
+      { team: "ESP", player: "Unai SIMON", pos: "GK", passesComp: 34, passesAtt: 45, pct: 76, breaks: 5, regains: 9, shots: "0 / 0" },
+      { team: "ESP", player: "Pau CUBARSI", pos: "DF", passesComp: 121, passesAtt: 124, pct: 98, breaks: 32, regains: 8, shots: "1 / 0" },
+      { team: "ESP", player: "Pedro PORRO", pos: "DF", passesComp: 105, passesAtt: 115, pct: 91, breaks: 28, regains: 8, shots: "0 / 0" },
+      { team: "ESP", player: "RODRI", pos: "MF", passesComp: 99, passesAtt: 105, pct: 94, breaks: 27, regains: 9, shots: "1 / 0" },
+      { team: "ESP", player: "Aymeric LAPORTE", pos: "DF", passesComp: 85, passesAtt: 92, pct: 92, breaks: 18, regains: 3, shots: "1 / 0" },
+      { team: "ESP", player: "Marc CUCURELLA", pos: "DF", passesComp: 75, passesAtt: 85, pct: 88, breaks: 16, regains: 2, shots: "1 / 0" },
+      { team: "ESP", player: "PEDRI", pos: "MF", passesComp: 56, passesAtt: 59, pct: 95, breaks: 13, regains: 4, shots: "1 / 0" },
+      { team: "ESP", player: "Fabian RUIZ", pos: "MF", passesComp: 46, passesAtt: 51, pct: 90, breaks: 7, regains: 1, shots: "0 / 0" },
+      { team: "ESP", player: "Lamine YAMAL", pos: "FW", passesComp: 44, passesAtt: 53, pct: 83, breaks: 6, regains: 4, shots: "4 / 0" },
+      { team: "ESP", player: "Martin ZUBIMENDI", pos: "MF", passesComp: 22, passesAtt: 24, pct: 92, breaks: 4, regains: 1, shots: "0 / 0" },
+      { team: "ESP", player: "Dani OLMO", pos: "FW", passesComp: 21, passesAtt: 26, pct: 81, breaks: 10, regains: 0, shots: "2 / 0" },
+      { team: "ESP", player: "Nico WILLIAMS", pos: "FW", passesComp: 21, passesAtt: 22, pct: 95, breaks: 2, regains: 2, shots: "3 / 0" },
+      { team: "ESP", player: "Mikel MERINO", pos: "MF", passesComp: 17, passesAtt: 19, pct: 89, breaks: 4, regains: 1, shots: "1 / 0" },
+      { team: "ESP", player: "Alex BAENA", pos: "MF", passesComp: 16, passesAtt: 20, pct: 80, breaks: 5, regains: 2, shots: "1 / 0" },
+      { team: "ESP", player: "Mikel OYARZABAL", pos: "FW", passesComp: 12, passesAtt: 17, pct: 71, breaks: 1, regains: 1, shots: "1 / 0" },
+      { team: "ESP", player: "Ferran TORRES", pos: "FW", passesComp: 5, passesAtt: 10, pct: 50, breaks: 2, regains: 0, shots: "3 / 1" },
 
-    // INICIALIZACIÓN
+      // ARGENTINA
+      { team: "ARG", player: "Cristian ROMERO", pos: "DF", passesComp: 37, passesAtt: 41, pct: 90, breaks: 8, regains: 4, shots: "0 / 0" },
+      { team: "ARG", player: "Leandro PAREDES", pos: "MF", passesComp: 36, passesAtt: 44, pct: 82, breaks: 11, regains: 5, shots: "0 / 0" },
+      { team: "ARG", player: "Emiliano MARTINEZ", pos: "GK", passesComp: 34, passesAtt: 57, pct: 60, breaks: 9, regains: 13, shots: "0 / 0" },
+      { team: "ARG", player: "Nicolas TAGLIAFICO", pos: "DF", passesComp: 32, passesAtt: 40, pct: 80, breaks: 6, regains: 6, shots: "0 / 0" },
+      { team: "ARG", player: "Enzo FERNANDEZ", pos: "MF", passesComp: 32, passesAtt: 36, pct: 89, breaks: 9, regains: 2, shots: "0 / 0" },
+      { team: "ARG", player: "Lionel MESSI", pos: "FW", passesComp: 27, passesAtt: 35, pct: 77, breaks: 5, regains: 1, shots: "1 / 0" },
+      { team: "ARG", player: "Rodrigo DE PAUL", pos: "MF", passesComp: 26, passesAtt: 29, pct: 90, breaks: 2, regains: 0, shots: "0 / 0" },
+      { team: "ARG", player: "Alexis MAC ALLISTER", pos: "MF", passesComp: 25, passesAtt: 30, pct: 83, breaks: 5, regains: 1, shots: "0 / 0" },
+      { team: "ARG", player: "Nicolas OTAMENDI", pos: "DF", passesComp: 22, passesAtt: 24, pct: 92, breaks: 4, regains: 5, shots: "0 / 0" },
+      { team: "ARG", player: "Lisandro MARTINEZ", pos: "DF", passesComp: 21, passesAtt: 26, pct: 81, breaks: 13, regains: 3, shots: "0 / 0" },
+      { team: "ARG", player: "Facundo MEDINA", pos: "DF", passesComp: 19, passesAtt: 24, pct: 79, breaks: 5, regains: 2, shots: "0 / 0" },
+      { team: "ARG", player: "Nahuel MOLINA", pos: "DF", passesComp: 19, passesAtt: 27, pct: 70, breaks: 6, regains: 5, shots: "0 / 0" },
+      { team: "ARG", player: "Julián ALVAREZ", pos: "FW", passesComp: 13, passesAtt: 17, pct: 76, breaks: 1, regains: 1, shots: "0 / 0" },
+      { team: "ARG", player: "Gonzalo MONTIEL", pos: "DF", passesComp: 12, passesAtt: 19, pct: 63, breaks: 2, regains: 1, shots: "0 / 0" },
+      { team: "ARG", player: "Giuliano SIMEONE", pos: "FW", passesComp: 10, passesAtt: 15, pct: 67, breaks: 1, regains: 4, shots: "1 / 0" }
+    ];
+
+    let activeTeamFilter = 'both';
+    let cumulativeXgChartInstance = null;
+    let phasesChartInstance = null;
+
+    // INICIALIZACIÓN AL CARGAR EL DOM
     window.addEventListener('DOMContentLoaded', () => {
-      // Registrar controladores de eventos de filtro
-      document.getElementById('search-input').addEventListener('input', applyFilters);
-      document.getElementById('comp-select').addEventListener('change', applyFilters);
-      document.getElementById('winner-select').addEventListener('change', applyFilters);
-
-      // Ejecutar filtros iniciales para llenar la página
-      applyFilters();
+      renderCumulativeXgChart();
+      renderPhasesChart();
+      applyShotFilter();
+      applyPlayerFilter();
     });
 
-    // SISTEMA DE FILTRADO DINÁMICO
-    function applyFilters() {
-      const query = document.getElementById('search-input').value.toLowerCase().trim();
-      const compFilter = document.getElementById('comp-select').value;
-      const winnerFilter = document.getElementById('winner-select').value;
-
-      const filtered = ARGENTINA_ESPANA_DATA.filter(m => {
-        // Filtro por búsqueda de texto (estadio o competición o fecha)
-        const textMatch = !query ||
-          m.estadio.toLowerCase().includes(query) ||
-          m.competicion.toLowerCase().includes(query) ||
-          m.fecha.toLowerCase().includes(query) ||
-          (m.fase && m.fase.toLowerCase().includes(query));
-
-        // Filtro por tipo de competición
-        let compMatch = true;
-        const compLower = m.competicion.toLowerCase();
-        if (compFilter === 'official') {
-          compMatch = !compLower.includes('friendly') && !compLower.includes('amistoso');
-        } else if (compFilter === 'amistoso') {
-          compMatch = compLower.includes('friendly') || compLower.includes('amistoso');
-        } else if (compFilter === 'worldcup') {
-          compMatch = compLower.includes('mundial') || compLower.includes('world cup') || compLower.includes('copa mundial') || compLower.includes('copa mundial de la fifa');
-        }
-
-        // Filtro por ganador del encuentro
-        let winnerMatch = true;
-        const argentinaWon = (m.local === 'Argentina' && m.goles_local > m.goles_visitante) || (m.visitante === 'Argentina' && m.goles_visitante > m.goles_local);
-        const spainWon = (m.local === 'España' && m.goles_local > m.goles_visitante) || (m.visitante === 'España' && m.goles_visitante > m.goles_local);
-        const draw = m.goles_local === m.goles_visitante;
-
-        if (winnerFilter === 'argentina') {
-          winnerMatch = argentinaWon;
-        } else if (winnerFilter === 'spain') {
-          winnerMatch = spainWon;
-        } else if (winnerFilter === 'draw') {
-          winnerMatch = draw;
-        }
-
-        return textMatch && compMatch && winnerMatch;
-      });
-
-      // Actualizar KPIs con los datos filtrados
-      updateKPIs(filtered);
-
-      // Actualizar Tabla
-      renderTable(filtered);
-
-      // Actualizar Gráfico
-      renderChart(filtered);
+    // SCROLL A SECCIÓN
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
-    function resetFilters() {
-      document.getElementById('search-input').value = '';
-      document.getElementById('comp-select').value = 'all';
-      document.getElementById('winner-select').value = 'all';
-      applyFilters();
-    }
+    // SISTEMA DE FILTRADO DE EQUIPO (AISLAMIENTO DE SELECCIÓN)
+    function setTeamFilter(team) {
+      activeTeamFilter = team;
 
-    // ACTUALIZACIÓN DE KPIS
-    function updateKPIs(matches) {
-      const total = matches.length;
-      let argentinaWins = 0;
-      let spainWins = 0;
-      let draws = 0;
-      let argentinaGoals = 0;
-      let spainGoals = 0;
+      const btnBoth = document.getElementById('btn-filter-both');
+      const btnEsp = document.getElementById('btn-filter-esp');
+      const btnArg = document.getElementById('btn-filter-arg');
 
-      matches.forEach(m => {
-        const gl = m.goles_local;
-        const gv = m.goles_visitante;
-
-        if (m.local === 'Argentina') {
-          argentinaGoals += gl;
-          spainGoals += gv;
-          if (gl > gv) argentinaWins++;
-          else if (gl < gv) spainWins++;
-          else draws++;
-        } else {
-          spainGoals += gl;
-          argentinaGoals += gv;
-          if (gl > gv) spainWins++;
-          else if (gl < gv) argentinaWins++;
-          else draws++;
-        }
+      [btnBoth, btnEsp, btnArg].forEach(btn => {
+        btn.className = "flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#f3f3f3]";
       });
 
-      const totalGoals = argentinaGoals + spainGoals;
-
-      // Actualizar DOM
-      document.getElementById('kpi-total').textContent = total;
-      document.getElementById('kpi-wins-argentina').textContent = argentinaWins;
-      document.getElementById('kpi-wins-spain').textContent = spainWins;
-      document.getElementById('kpi-draws').textContent = draws;
-      document.getElementById('kpi-goals-total').textContent = totalGoals;
-
-      if (total > 0) {
-        document.getElementById('kpi-winrate-argentina').textContent = `(${Math.round((argentinaWins / total) * 100)}%)`;
-        document.getElementById('kpi-winrate-spain').textContent = `(${Math.round((spainWins / total) * 100)}%)`;
-        document.getElementById('kpi-goals-ratio').textContent = `${argentinaGoals} ARG - vs - ${spainGoals} ESP`;
-      } else {
-        document.getElementById('kpi-winrate-argentina').textContent = `(0%)`;
-        document.getElementById('kpi-winrate-spain').textContent = `(0%)`;
-        document.getElementById('kpi-goals-ratio').textContent = `0 ARG - vs - 0 ESP`;
+      if (team === 'both') {
+        btnBoth.className = "flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-[#1a1c1c] text-white";
+        document.getElementById('scorecard-esp').style.opacity = '1';
+        document.getElementById('scorecard-arg').style.opacity = '1';
+      } else if (team === 'esp') {
+        btnEsp.className = "flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-[#b6171e] text-white";
+        document.getElementById('scorecard-esp').style.opacity = '1';
+        document.getElementById('scorecard-arg').style.opacity = '0.35';
+      } else if (team === 'arg') {
+        btnArg.className = "flex-1 sm:flex-none px-4 py-1.5 sharp-ui transition-custom cursor-pointer bg-[#0059a4] text-white";
+        document.getElementById('scorecard-esp').style.opacity = '0.35';
+        document.getElementById('scorecard-arg').style.opacity = '1';
       }
 
-      document.getElementById('table-count').textContent = total;
+      // Actualizar Gráfico de xG Acumulado
+      if (cumulativeXgChartInstance) {
+        if (team === 'both') {
+          cumulativeXgChartInstance.setDatasetVisibility(0, true);
+          cumulativeXgChartInstance.setDatasetVisibility(1, true);
+        } else if (team === 'esp') {
+          cumulativeXgChartInstance.setDatasetVisibility(0, true);
+          cumulativeXgChartInstance.setDatasetVisibility(1, false);
+        } else if (team === 'arg') {
+          cumulativeXgChartInstance.setDatasetVisibility(0, false);
+          cumulativeXgChartInstance.setDatasetVisibility(1, true);
+        }
+        cumulativeXgChartInstance.update();
+      }
+
+      // Actualizar Gráfico de Fases
+      if (phasesChartInstance) {
+        if (team === 'both') {
+          phasesChartInstance.setDatasetVisibility(0, true);
+          phasesChartInstance.setDatasetVisibility(1, true);
+        } else if (team === 'esp') {
+          phasesChartInstance.setDatasetVisibility(0, true);
+          phasesChartInstance.setDatasetVisibility(1, false);
+        } else if (team === 'arg') {
+          phasesChartInstance.setDatasetVisibility(0, false);
+          phasesChartInstance.setDatasetVisibility(1, true);
+        }
+        phasesChartInstance.update();
+      }
+
+      // Actualizar Tarjetas KPI
+      const cards = ['possession', 'xg', 'shots', 'passes', 'breaks', 'receptions'];
+      cards.forEach(cardId => {
+        const el = document.getElementById(`kpi-card-${cardId}`);
+        if (team === 'both') {
+          el.style.opacity = '1';
+          el.style.borderColor = '#eeeeee';
+        } else if (team === 'esp') {
+          el.style.opacity = '1';
+          el.style.borderColor = '#b6171e';
+        } else if (team === 'arg') {
+          el.style.opacity = '1';
+          el.style.borderColor = '#0059a4';
+        }
+      });
+
+      // Sincronizar filtro de tablas
+      const shotSelect = document.getElementById('shot-filter');
+      if (team === 'esp') shotSelect.value = 'esp';
+      else if (team === 'arg') shotSelect.value = 'arg';
+      else shotSelect.value = 'all';
+      applyShotFilter();
+
+      const playerSelect = document.getElementById('player-team-filter');
+      if (team === 'esp') playerSelect.value = 'ESP';
+      else if (team === 'arg') playerSelect.value = 'ARG';
+      else playerSelect.value = 'all';
+      applyPlayerFilter();
     }
 
-    // RENDERIZADO DE LA TABLA
-    function renderTable(matches) {
-      const tbody = document.getElementById('matches-tbody');
+    // GRÁFICO 1: EVOLUCIÓN xG ACUMULADO
+    function renderCumulativeXgChart() {
+      const ctx = document.getElementById('cumulativeXgChart').getContext('2d');
+
+      const minutes = [0, 4, 38, 42, 45, 60, 63, 64, 66, 76, 80, 86, 88, 92, 97, 100, 102, 103, 105, 116, 121];
+
+      // xG Acumulado España
+      const xgSpain = [0.00, 0.10, 0.22, 0.27, 0.35, 0.41, 0.55, 0.62, 0.77, 0.96, 1.10, 1.19, 1.25, 1.46, 1.61, 1.69, 1.78, 1.83, 2.52, 2.52, 2.52];
+
+      // xG Acumulado Argentina
+      const xgArgentina = [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.04, 0.07];
+
+      cumulativeXgChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: minutes.map(m => `Min ${m}'`),
+          datasets: [
+            {
+              label: 'España (xG Acumulado)',
+              data: xgSpain,
+              borderColor: '#b6171e',
+              backgroundColor: 'rgba(182, 23, 30, 0.06)',
+              borderWidth: 3,
+              pointBackgroundColor: '#b6171e',
+              pointBorderColor: '#fff',
+              pointRadius: 4,
+              pointHoverRadius: 7,
+              fill: true,
+              tension: 0.15
+            },
+            {
+              label: 'Argentina (xG Acumulado)',
+              data: xgArgentina,
+              borderColor: '#0059a4',
+              backgroundColor: 'rgba(0, 89, 164, 0.06)',
+              borderWidth: 3,
+              pointBackgroundColor: '#0059a4',
+              pointBorderColor: '#fff',
+              pointRadius: 4,
+              pointHoverRadius: 7,
+              fill: true,
+              tension: 0.15
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
+            },
+            y: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' },
+              suggestedMin: 0,
+              suggestedMax: 2.8
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 12 }
+            },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              titleFont: { family: 'Inter', size: 11, weight: '700' },
+              bodyFont: { family: 'Inter', size: 11 },
+              callbacks: {
+                footer: function (tooltipItems) {
+                  const label = tooltipItems[0].label;
+                  if (label === "Min 105'") return 'GOL DE FERRAN TORRES (ESP) - xG: 0.69';
+                  if (label === "Min 116'") return 'Remate bloqueado Messi (ARG)';
+                  return null;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // GRÁFICO 2: FASES TÁCTICAS
+    function renderPhasesChart() {
+      const ctx = document.getElementById('phasesChart').getContext('2d');
+
+      phasesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Build Up / Inicio', 'Último Tercio', 'Bloque Bajo (Def)', 'Presión Defensiva'],
+          datasets: [
+            {
+              label: 'España',
+              data: [57, 22, 8, 13], // En %
+              backgroundColor: '#b6171e',
+              barThickness: 14
+            },
+            {
+              label: 'Argentina',
+              data: [46, 5, 33, 4], // En %
+              backgroundColor: '#0059a4',
+              barThickness: 14
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          scales: {
+            x: {
+              grid: { color: '#eeeeee' },
+              ticks: { font: { family: 'Inter', size: 9 }, color: '#414752', callback: val => val + '%' },
+              max: 70
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 9, weight: '600' }, color: '#1a1c1c' }
+            }
+          },
+          plugins: {
+            legend: { display: true, position: 'bottom', labels: { font: { family: 'Inter', size: 10 }, boxWidth: 10 } },
+            tooltip: {
+              backgroundColor: '#1a1c1c',
+              cornerRadius: 0,
+              titleFont: { family: 'Inter', size: 11, weight: '700' },
+              bodyFont: { family: 'Inter', size: 11 }
+            }
+          }
+        }
+      });
+    }
+
+    // FILTRADO DE LA TABLA DE REMATES
+    function applyShotFilter() {
+      const filter = document.getElementById('shot-filter').value;
+      const tbody = document.getElementById('shots-tbody');
       tbody.innerHTML = '';
 
-      if (matches.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="8" class="py-8 text-center text-xs text-[#414752] font-sans">
-              No se encontraron encuentros con los filtros seleccionados.
-            </td>
-          </tr>`;
-        return;
-      }
+      const filtered = SHOTS_DATA.filter(shot => {
+        if (filter === 'goals') return shot.outcome.includes('GOL');
+        if (filter === 'esp') return shot.team === 'ESP';
+        if (filter === 'arg') return shot.team === 'ARG';
+        if (filter === 'ontarget') return shot.outcome.includes('On Target') || shot.outcome.includes('GOL');
+        if (filter === 'head') return shot.body === 'Cabeza';
+        return true;
+      });
 
-      matches.forEach(m => {
-        const argentinaWon = (m.local === 'Argentina' && m.goles_local > m.goles_visitante) || (m.visitante === 'Argentina' && m.goles_visitante > m.goles_local);
-        const spainWon = (m.local === 'España' && m.goles_local > m.goles_visitante) || (m.visitante === 'España' && m.goles_visitante > m.goles_local);
+      filtered.forEach(shot => {
+        const teamBadge = shot.team === 'ESP'
+          ? `<span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-1.5 py-0.5 sharp-ui tracking-wider font-sans">ESP</span>`
+          : `<span class="bg-[#e6f3fa] text-[#0059a4] text-[9px] font-bold px-1.5 py-0.5 sharp-ui tracking-wider font-sans">ARG</span>`;
 
-        let badge = '';
-        if (argentinaWon) {
-          badge = `<span class="bg-[#e6f3fa] text-[#43a1d5] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Ganó ARG</span>`;
-        } else if (spainWon) {
-          badge = `<span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Ganó ESP</span>`;
-        } else {
-          badge = `<span class="bg-[#eeeeee] text-[#414752] text-[9px] font-bold px-2 py-0.5 sharp-ui tracking-wider uppercase font-sans">Empate</span>`;
+        let outcomeStyle = 'text-[#414752]';
+        if (shot.outcome.includes('GOL')) {
+          outcomeStyle = 'text-[#b6171e] font-bold text-xs bg-[#ffdad6] px-1.5 py-0.5 sharp-ui inline-block';
+        } else if (shot.outcome.includes('Saved')) {
+          outcomeStyle = 'text-[#1a1c1c] font-semibold';
         }
 
-        const localStyle = m.local === 'Argentina' ? 'text-[#43a1d5] font-bold' : 'text-[#b6171e] font-bold';
-        const visitStyle = m.visitante === 'Argentina' ? 'text-[#43a1d5] font-bold' : 'text-[#b6171e] font-bold';
-
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-[#f3f3f3] transition-colors duration-100 border-b border-[#eeeeee]';
+        tr.className = 'hover:bg-[#f5f5f5] transition-colors duration-100 border-b border-[#eeeeee]';
         tr.innerHTML = `
-          <td class="py-3 font-sans font-semibold">${m.fecha}</td>
-          <td class="py-3 font-sans"><span class="${localStyle}">${m.local}</span></td>
-          <td class="py-3 font-sans text-center font-bold text-sm bg-[#fafafa] border-l border-r border-[#e0e0e0] w-20">${m.goles_local} - ${m.goles_visitante}</td>
-          <td class="py-3 font-sans text-right"><span class="${visitStyle}">${m.visitante}</span></td>
-          <td class="py-3 font-sans text-center hidden sm:table-cell">${badge}</td>
-          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${m.competicion}</td>
-          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${m.fase !== '-' ? m.fase : 'Amistoso'}</td>
-          <td class="py-3 font-sans text-xs text-[#414752] hidden lg:table-cell">${m.estadio}</td>
+          <td class="py-3 font-semibold font-mono text-center sm:text-left">${shot.min}'</td>
+          <td class="py-3 font-sans">${teamBadge}</td>
+          <td class="py-3 font-sans font-bold">${shot.player}</td>
+          <td class="py-3 font-sans ${outcomeStyle}">${shot.outcome}</td>
+          <td class="py-3 font-sans hidden sm:table-cell">${shot.body}</td>
+          <td class="py-3 font-sans text-xs text-[#414752] hidden md:table-cell">${shot.type}</td>
+          <td class="py-3 font-mono text-right font-bold w-16">${shot.xg.toFixed(2)}</td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // CAMBIO DE PESTAÑA DEL GRÁFICO
-    function switchTab(tabId) {
-      if (currentTab === tabId) return;
-      currentTab = tabId;
+    // FILTRADO DE LA TABLA DE JUGADORES
+    function applyPlayerFilter() {
+      const search = document.getElementById('player-search').value.toLowerCase();
+      const teamFilter = document.getElementById('player-team-filter').value;
+      const tbody = document.getElementById('players-tbody');
+      tbody.innerHTML = '';
 
-      const tabs = ['timeline', 'balance', 'type'];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`btn-tab-${t}`);
-        if (t === tabId) {
-          btn.className = "px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-[#43a1d5] text-white";
-        } else {
-          btn.className = "px-2.5 py-1.5 sharp-ui transition-colors duration-150 cursor-pointer bg-transparent text-[#1a1c1c] hover:bg-[#e2e2e2]";
-        }
+      const filtered = PLAYERS_DATA.filter(p => {
+        const matchesTeam = teamFilter === 'all' || p.team === teamFilter;
+        const matchesSearch = p.player.toLowerCase().includes(search) || p.pos.toLowerCase().includes(search);
+        return matchesTeam && matchesSearch;
       });
 
-      // Volver a aplicar filtros para redibujar el gráfico respectivo
-      applyFilters();
-    }
+      filtered.forEach(p => {
+        const teamBadge = p.team === 'ESP'
+          ? `<span class="bg-[#ffdad6] text-[#b6171e] text-[9px] font-bold px-1.5 py-0.5 sharp-ui font-sans">ESP</span>`
+          : `<span class="bg-[#e6f3fa] text-[#0059a4] text-[9px] font-bold px-1.5 py-0.5 sharp-ui font-sans">ARG</span>`;
 
-    // RENDERIZADO DEL GRÁFICO
-    function renderChart(matches) {
-      const canvas = document.getElementById('historicalChart');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
-
-      if (matches.length === 0) {
-        return; // Sin datos
-      }
-
-      if (currentTab === 'timeline') {
-        // Mostrar evolución de goles en los últimos 15 encuentros (ordenados de más antiguo a más reciente)
-        const recentMatches = [...matches].slice(0, 15).reverse();
-        const labels = recentMatches.map(m => m.fecha);
-
-        const goalsArgentina = recentMatches.map(m => {
-          return m.local === 'Argentina' ? m.goles_local : m.goles_visitante;
-        });
-
-        const goalsSpain = recentMatches.map(m => {
-          return m.local === 'España' ? m.goles_local : m.goles_visitante;
-        });
-
-        chartInstance = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: 'Goles Argentina',
-                data: goalsArgentina,
-                borderColor: '#43a1d5', // Celeste
-                backgroundColor: 'rgba(67, 161, 213, 0.05)',
-                fill: true,
-                tension: 0.25,
-                borderWidth: 2.5,
-                pointBackgroundColor: '#43a1d5',
-                pointRadius: 4,
-                pointHoverRadius: 6
-              },
-              {
-                label: 'Goles España',
-                data: goalsSpain,
-                borderColor: '#b6171e', // Rojo
-                backgroundColor: 'rgba(182, 23, 30, 0.05)',
-                fill: true,
-                tension: 0.25,
-                borderWidth: 2.5,
-                pointBackgroundColor: '#b6171e',
-                pointRadius: 4,
-                pointHoverRadius: 6
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                grid: { display: false },
-                ticks: { font: { family: 'Inter', size: 9 }, color: '#414752' }
-              },
-              y: {
-                grid: { color: '#eeeeee' },
-                ticks: { font: { family: 'Inter', size: 9 }, color: '#414752', stepSize: 1 },
-                suggestedMin: 0,
-                suggestedMax: 6
-              }
-            },
-            plugins: {
-              legend: {
-                position: 'top',
-                labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
-              },
-              tooltip: {
-                backgroundColor: '#1a1c1c',
-                cornerRadius: 0,
-                titleFont: { family: 'Inter', size: 11, weight: '700' },
-                bodyFont: { family: 'Inter', size: 11 },
-                callbacks: {
-                  footer: function (tooltipItems) {
-                    const matchIndex = tooltipItems[0].dataIndex;
-                    const m = recentMatches[matchIndex];
-                    return `${m.competicion}\nEstadio: ${m.estadio}`;
-                  }
-                }
-              }
-            }
-          }
-        });
-
-      } else if (currentTab === 'balance') {
-        // Mostrar balance global de victorias
-        let winsArgentina = 0;
-        let winsSpain = 0;
-        let draws = 0;
-
-        matches.forEach(m => {
-          const gl = m.goles_local;
-          const gv = m.goles_visitante;
-          if (m.local === 'Argentina') {
-            if (gl > gv) winsArgentina++;
-            else if (gl < gv) winsSpain++;
-            else draws++;
-          } else {
-            if (gl > gv) winsSpain++;
-            else if (gl < gv) winsArgentina++;
-            else draws++;
-          }
-        });
-
-        chartInstance = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['Victorias Argentina', 'Empates', 'Victorias España'],
-            datasets: [{
-              data: [winsArgentina, draws, winsSpain],
-              backgroundColor: ['#43a1d5', '#727172', '#b6171e'],
-              hoverBackgroundColor: ['#2b82b3', '#59595a', '#930010'],
-              barThickness: 40
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                grid: { display: false },
-                ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
-              },
-              y: {
-                grid: { color: '#eeeeee' },
-                ticks: { font: { family: 'Inter', size: 10 }, color: '#414752', stepSize: 1 },
-                min: 0
-              }
-            },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                backgroundColor: '#1a1c1c',
-                cornerRadius: 0,
-                titleFont: { family: 'Inter', size: 12, weight: '700' },
-                bodyFont: { family: 'Inter', size: 12 }
-              }
-            }
-          }
-        });
-
-      } else if (currentTab === 'type') {
-        // Comparativa Oficiales vs Amistosos
-        let offArgentina = 0, offSpain = 0, offDraw = 0;
-        let friArgentina = 0, friSpain = 0, friDraw = 0;
-
-        matches.forEach(m => {
-          const gl = m.goles_local;
-          const gv = m.goles_visitante;
-          const isOfficial = !m.competicion.toLowerCase().includes('friendly') && !m.competicion.toLowerCase().includes('amistoso');
-
-          if (isOfficial) {
-            if (m.local === 'Argentina') {
-              if (gl > gv) offArgentina++;
-              else if (gl < gv) offSpain++;
-              else offDraw++;
-            } else {
-              if (gl > gv) offSpain++;
-              else if (gl < gv) offArgentina++;
-              else offDraw++;
-            }
-          } else {
-            if (m.local === 'Argentina') {
-              if (gl > gv) friArgentina++;
-              else if (gl < gv) friSpain++;
-              else friDraw++;
-            } else {
-              if (gl > gv) friSpain++;
-              else if (gl < gv) friArgentina++;
-              else friDraw++;
-            }
-          }
-        });
-
-        chartInstance = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['Partidos Oficiales', 'Partidos Amistosos'],
-            datasets: [
-              {
-                label: 'Victorias Argentina',
-                data: [offArgentina, friArgentina],
-                backgroundColor: '#43a1d5',
-                barThickness: 25
-              },
-              {
-                label: 'Empates',
-                data: [offDraw, friDraw],
-                backgroundColor: '#727172',
-                barThickness: 25
-              },
-              {
-                label: 'Victorias España',
-                data: [offSpain, friSpain],
-                backgroundColor: '#b6171e',
-                barThickness: 25
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                grid: { display: false },
-                ticks: { font: { family: 'Inter', size: 11, weight: '600' }, color: '#1a1c1c' }
-              },
-              y: {
-                grid: { color: '#eeeeee' },
-                ticks: { font: { family: 'Inter', size: 10 }, color: '#414752', stepSize: 1 },
-                min: 0
-              }
-            },
-            plugins: {
-              legend: {
-                position: 'top',
-                labels: { font: { family: 'Inter', size: 10, weight: '600' }, color: '#1a1c1c', boxWidth: 10 }
-              },
-              tooltip: {
-                backgroundColor: '#1a1c1c',
-                cornerRadius: 0,
-                titleFont: { family: 'Inter', size: 12, weight: '700' },
-                bodyFont: { family: 'Inter', size: 12 }
-              }
-            }
-          }
-        });
-      }
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-[#f5f5f5] transition-colors duration-100 border-b border-[#eeeeee]';
+        tr.innerHTML = `
+          <td class="py-3 font-sans">${teamBadge} <span class="text-[10px] text-[#414752] font-mono ml-1">${p.pos}</span></td>
+          <td class="py-3 font-sans font-bold">${p.player}</td>
+          <td class="py-3 font-mono text-center">${p.passesComp} / ${p.passesAtt}</td>
+          <td class="py-3 font-mono text-center font-semibold ${p.pct >= 90 ? 'text-[#b6171e]' : 'text-[#414752]'}">${p.pct}%</td>
+          <td class="py-3 font-mono text-center hidden sm:table-cell">${p.breaks}</td>
+          <td class="py-3 font-mono text-center hidden md:table-cell">${p.regains}</td>
+          <td class="py-3 font-mono text-right font-bold">${p.shots}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
   </script>
 </body>
